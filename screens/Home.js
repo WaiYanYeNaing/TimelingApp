@@ -8,7 +8,7 @@ const { width: screenWidth } = Dimensions.get("window");
 const parallaxImage =
   "https://images.hdqwalls.com/download/lake-cyan-calm-water-reflection-northern-lights-4k-6j-1536x864.jpg";
 
-export default function Home({ navigation, _carousel }) {
+export default function Home({ navigation }) {
   const _renderItem = ({ item, index }, parallaxProps) => {
     return (
       <View style={styles.imageContainer}>

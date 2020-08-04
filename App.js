@@ -5,6 +5,7 @@ import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import Login from "./screens/Login";
 import Home from "./screens/Home";
 import Find from "./screens/Find";
 import SendSuccess from "./screens/SendSuccess";
@@ -42,10 +43,21 @@ export default class App extends React.Component {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{
+              title: "Timeling",
+              headerTitleAlign: "center",
+              headerTintColor: "#00203FFF",
+              headerStyle: { backgroundColor: "#fff" },
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
             name="Home"
             component={Home}
             options={{
-              title: "PostMan",
+              title: "Timeling",
               headerTitleAlign: "center",
               headerTintColor: "#00203FFF",
               headerStyle: { backgroundColor: "#fff" },
@@ -55,7 +67,7 @@ export default class App extends React.Component {
             name="Find"
             component={Find}
             options={{
-              title: "PostMan",
+              title: "Timeling",
               headerTitleAlign: "center",
               headerTintColor: "#00203FFF",
               headerStyle: { backgroundColor: "#fff" },
@@ -68,7 +80,7 @@ export default class App extends React.Component {
             name="ReadMore"
             component={ReadMore}
             options={{
-              title: "PostMan",
+              title: "Timeling",
               headerTitleAlign: "center",
               headerTintColor: "#00203FFF",
               headerStyle: { backgroundColor: "#fff" },
@@ -81,7 +93,7 @@ export default class App extends React.Component {
             name="SendSuccess"
             component={SendSuccess}
             options={{
-              title: "PostMan",
+              title: "Timeling",
               headerTitleAlign: "center",
               headerTintColor: "#00203FFF",
               headerStyle: { backgroundColor: "#fff" },
