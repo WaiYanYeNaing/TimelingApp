@@ -1,6 +1,5 @@
 import React, { Component, useState } from "react";
 import {
-  Text,
   View,
   Image,
   TouchableOpacity,
@@ -8,6 +7,7 @@ import {
   ImageBackground,
 } from "react-native";
 import { Card, CardItem, Body, Icon, Right, CheckBox } from "native-base";
+import Text from "../components/TextR";
 
 export default function Category(props) {
   const [checked, setChecked] = useState(false);

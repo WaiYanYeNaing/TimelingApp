@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { View, ImageBackground, StyleSheet, Dimensions } from "react-native";
-import { Text, Button } from "native-base";
+import { Button } from "native-base";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Text from "../components/TextR";
 
 const { width: screenWidth } = Dimensions.get("window");
 const parallaxImage =
@@ -138,8 +139,10 @@ const styles = StyleSheet.create({
     top: -100,
     left: 100,
     width: 110,
+    justifyContent: "center",
   },
   carouselBtnText: {
     fontSize: 13,
+    color: "#ededed",
   },
 });

@@ -10,6 +10,7 @@ import Home from "./screens/Home";
 import Find from "./screens/Find";
 import SendSuccess from "./screens/SendSuccess";
 import ReadMore from "./screens/ReadMore";
+import Register from "./screens/Register";
 
 const Stack = createStackNavigator();
 
@@ -23,8 +24,9 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     await Font.loadAsync({
-      Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      // Roboto: require("native-base/Fonts/Roboto.ttf"),
+      // Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      Ubuntu: require("./assets/fonts/Ubuntu-Regular.ttf"),
       ...Ionicons.font,
     });
     this.setState({ isReady: true });
@@ -36,15 +38,22 @@ export default class App extends React.Component {
     }
 
     return (
-      // <Container>
-      //   <Text>Open up App.js to start working on your app!</Text>
-      // </Container>
-
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
             name="Login"
             component={Login}
+            options={{
+              title: "Timeling",
+              headerTitleAlign: "center",
+              headerTintColor: "#00203FFF",
+              headerStyle: { backgroundColor: "#fff" },
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={Register}
             options={{
               title: "Timeling",
               headerTitleAlign: "center",

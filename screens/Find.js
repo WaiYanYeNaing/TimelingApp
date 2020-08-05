@@ -6,8 +6,9 @@ import Dialog, {
   DialogContent,
   SlideAnimation,
 } from "react-native-popup-dialog";
-import { Text, Button, Icon, Right, Left, List, ListItem } from "native-base";
+import { Button, Icon, Right, Left, List, ListItem } from "native-base";
 import SwipeablePanel from "react-native-sheets-bottom";
+import Text from "../components/TextR";
 
 export default function Find({ navigation }) {
   const users = [
@@ -79,7 +80,7 @@ export default function Find({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* Card */}
+      {/* Cards */}
       <View style={styles.rowCard}>
         <ScrollView>
           <View>

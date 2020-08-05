@@ -1,46 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Keyboard,
   ImageBackground,
+  StyleSheet,
+  Keyboard,
   Dimensions,
   Image,
 } from "react-native";
-import { Item, Label, Input, Button, Icon } from "native-base";
-import axios from "axios";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import {
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
+import { Label, Item, Input, Button, Icon, Toast } from "native-base";
 import Text from "../components/TextR";
+import axios from "axios";
 import Dialog, {
-  SlideAnimation,
   DialogContent,
+  SlideAnimation,
 } from "react-native-popup-dialog";
 
 const BgImage = require("../assets/images/login-bg.jpg");
 const screenHeight = Math.round(Dimensions.get("window").height);
 
-export default function Login({ navigation }) {
+export default function Register({ navigation }) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [dialogVisible, setDialogVisible] = useState(false);
   const [dialogImage, setDialogImage] = useState();
   const [dialogText, setDialogText] = useState("");
+  const [status, setStatus] = useState();
 
-  useEffect(() => {});
-
-  const signIn = () => {
+  const signUp = () => {
     let temp = {
+      name,
       email,
       password,
     };
     axios
-      .post("https://timeling.herokuapp.com/api/user/login", temp)
+      .post("https://timeling.herokuapp.com/api/user/register", temp)
       .then((res) => {
         let data = res.data;
+        console.log(data);
         if (data.status === 200) {
-          navigation.navigate("Home");
+          setStatus(data.status);
+          setDialogImage(require("../assets/images/success.png"));
+          setDialogText(data.message);
+          setDialogVisible(true);
         } else {
+          setStatus(data.status);
           setDialogImage(require("../assets/images/error.png"));
           setDialogText(data.message);
           setDialogVisible(true);
@@ -48,11 +56,25 @@ export default function Login({ navigation }) {
       });
   };
 
+  const dialogButton = () => {
+    setDialogVisible(false);
+    if (status === 200) {
+      navigation.navigate("Login");
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ImageBackground source={BgImage} style={styles.bgImg}>
         <View style={styles.container}>
-          <Text style={styles.titleText}>Welcome</Text>
+          <Text style={styles.titleText1}>Create</Text>
+          <Text style={styles.titleText2}>Account</Text>
+          <View style={styles.inputContainer}>
+            <Item floatingLabel>
+              <Label style={styles.inputLabel}>Name</Label>
+              <Input style={styles.input} onChangeText={(v) => setName(v)} />
+            </Item>
+          </View>
           <View style={styles.inputContainer}>
             <Item floatingLabel>
               <Label style={styles.inputLabel}>Email</Label>
@@ -69,16 +91,16 @@ export default function Login({ navigation }) {
               />
             </Item>
           </View>
-          <View style={styles.signInContainer}>
-            <Text style={styles.textSignIn}>Sign in</Text>
-            <Button style={styles.btnSignIn} onPress={() => signIn()}>
+          <View style={styles.signUpContainer}>
+            <Text style={styles.textSignIn}>Sign up</Text>
+            <Button style={styles.btnSignIn} onPress={() => signUp()}>
               <Icon type="Feather" name="arrow-right" />
             </Button>
           </View>
         </View>
         <View style={styles.footerContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-            <Text style={styles.gotoSignUp}>Sign up</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.gotoSignUp}>Sign in</Text>
           </TouchableOpacity>
           <TouchableOpacity>
             <Text style={styles.gotoSignUp}>Forgot Passwrod</Text>
@@ -100,10 +122,7 @@ export default function Login({ navigation }) {
           <DialogContent style={styles.dialog}>
             <Image source={dialogImage} style={styles.dialogImage} />
             <Text style={styles.dialogText}>{dialogText}</Text>
-            <Button
-              style={styles.dialogButton}
-              onPress={() => setDialogVisible(false)}
-            >
+            <Button style={styles.dialogButton} onPress={() => dialogButton()}>
               <Text style={styles.dialogButtonText}>OK</Text>
             </Button>
           </DialogContent>
@@ -120,9 +139,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
   },
   bgImg: {},
-  titleText: {
+  titleText1: {
     fontSize: 30,
-    marginBottom: 140,
+    color: "#fff",
+  },
+  titleText2: {
+    fontSize: 30,
+    marginBottom: 50,
     color: "#fff",
   },
   inputContainer: {
@@ -136,8 +159,9 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: "#fff",
   },
-  signInContainer: {
-    marginVertical: 20,
+  signUpContainer: {
+    marginTop: 20,
+    marginBottom: 60,
     flexDirection: "row",
     justifyContent: "space-between",
   },

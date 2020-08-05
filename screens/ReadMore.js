@@ -1,7 +1,8 @@
 import React from "react";
 import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
-import { Card, CardItem, Text, Body, Button, Icon } from "native-base";
+import { Card, CardItem, Body, Button, Icon } from "native-base";
 import { ScrollView } from "react-native-gesture-handler";
+import Text from "../components/TextR";
 
 const { width: screenWidth } = Dimensions.get("window");
 const BgImage =
