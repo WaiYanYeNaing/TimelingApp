@@ -4,15 +4,26 @@ import { Container, Text } from "native-base";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+  TransitionPresets,
+} from "@react-navigation/stack";
 import Login from "./screens/Login";
 import Home from "./screens/Home";
 import Find from "./screens/Find";
 import SendSuccess from "./screens/SendSuccess";
 import ReadMore from "./screens/ReadMore";
 import Register from "./screens/Register";
+import { Easing } from "react-native";
 
 const Stack = createStackNavigator();
+const closeConfig = {
+  config: {
+    duration: 300,
+    easing: Easing.out(Easing.poly(4)),
+  },
+};
 
 export default class App extends React.Component {
   constructor(props) {
@@ -23,9 +34,8 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
+    //* Load Font
     await Font.loadAsync({
-      // Roboto: require("native-base/Fonts/Roboto.ttf"),
-      // Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
       Ubuntu: require("./assets/fonts/Ubuntu-Regular.ttf"),
       ...Ionicons.font,
     });
@@ -39,7 +49,19 @@ export default class App extends React.Component {
 
     return (
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            gestureEnabled: true,
+            gestureDirection: "horizontal-inverted",
+            transitionSpec: {
+              open: closeConfig,
+              close: closeConfig,
+            },
+            // cardStyleInterpolator:
+            //   CardStyleInterpolators.forScaleFromCenterAndroid,
+            // ...TransitionPresets.ScaleFromCenterAndroid,
+          }}
+        >
           <Stack.Screen
             name="Login"
             component={Login}
@@ -70,6 +92,7 @@ export default class App extends React.Component {
               headerTitleAlign: "center",
               headerTintColor: "#00203FFF",
               headerStyle: { backgroundColor: "#fff" },
+              headerShown: false,
             }}
           />
           <Stack.Screen
@@ -83,6 +106,7 @@ export default class App extends React.Component {
               headerTitleStyle: {
                 fontSize: 18,
               },
+              headerShown: false,
             }}
           />
           <Stack.Screen
@@ -96,6 +120,7 @@ export default class App extends React.Component {
               headerTitleStyle: {
                 fontSize: 18,
               },
+              headerShown: false,
             }}
           />
           <Stack.Screen
@@ -109,6 +134,7 @@ export default class App extends React.Component {
               headerTitleStyle: {
                 fontSize: 18,
               },
+              headerShown: false,
             }}
           />
         </Stack.Navigator>

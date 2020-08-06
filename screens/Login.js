@@ -7,6 +7,7 @@ import {
   ImageBackground,
   Dimensions,
   Image,
+  AsyncStorage,
 } from "react-native";
 import { Item, Label, Input, Button, Icon } from "native-base";
 import axios from "axios";
@@ -27,7 +28,21 @@ export default function Login({ navigation }) {
   const [dialogImage, setDialogImage] = useState();
   const [dialogText, setDialogText] = useState("");
 
-  useEffect(() => {});
+  useEffect(async () => {
+    //* Token Validation
+    const val = await AsyncStorage.getItem("token");
+    if (val) {
+      navigation.navigate("Home", {
+        config: {
+          headers: {
+            "auth-token": val,
+          },
+        },
+      });
+    } else {
+      navigation.navigate("Login");
+    }
+  }, []);
 
   const signIn = () => {
     let temp = {
@@ -39,6 +54,8 @@ export default function Login({ navigation }) {
       .then((res) => {
         let data = res.data;
         if (data.status === 200) {
+          AsyncStorage.setItem("token", data.token);
+          AsyncStorage.setItem("uid", data.uid);
           navigation.navigate("Home");
         } else {
           setDialogImage(require("../assets/images/error.png"));

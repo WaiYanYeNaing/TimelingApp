@@ -1,26 +1,64 @@
-import React, { useState } from "react";
-import { View, ImageBackground, StyleSheet, Dimensions } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Dimensions, AsyncStorage } from "react-native";
 import { Button } from "native-base";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import Text from "../components/TextR";
+import Axios from "axios";
+import Container from "../components/Container";
 
 const { width: screenWidth } = Dimensions.get("window");
 const parallaxImage =
   "https://images.hdqwalls.com/download/lake-cyan-calm-water-reflection-northern-lights-4k-6j-1536x864.jpg";
 
-export default function Home({ navigation }) {
+export default function Home({ navigation, config }) {
+  const [entries, setEntries] = useState([
+    {
+      id: 1,
+      name: "The Last of Us II",
+      date: "7/14/2020",
+    },
+    {
+      id: 2,
+      name: "The Last of Us II",
+      date: "7/14/2020",
+    },
+    {
+      id: 3,
+      name: "Dragon Balls",
+      date: "7/14/2020",
+    },
+    {
+      id: 4,
+      name: "Apex Legends",
+      date: "7/14/2020",
+    },
+    {
+      id: 5,
+      name: "Cyberpunk",
+      date: "7/14/2020",
+    },
+  ]);
+
+  // useEffect(async () => {
+  //   const config = {
+  //     headers: {
+  //       "auth-token": await AsyncStorage.getItem("token"),
+  //     },
+  //   };
+  //   Axios.get("https://timeling.herokuapp.com/api/letter", config).then((res) =>
+  //     console.log(res.data)
+  //   );
+  // }, []);
+
+  const logOut = async () => {
+    await AsyncStorage.removeItem("token");
+    navigation.navigate("Login");
+  };
+
+  //* Carousel Container
   const _renderItem = ({ item, index }, parallaxProps) => {
     return (
       <View style={styles.imageContainer}>
-        {/* <ImageBackground
-        source={item.image}
-        style={styles.carouselImage}
-        imageStyle={{ borderRadius: 8 }}
-      >
-        <Text>{item.name}</Text>
-      </ImageBackground> */}
-
         <ParallaxImage
           source={{
             uri: parallaxImage,
@@ -50,38 +88,12 @@ export default function Home({ navigation }) {
     );
   };
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [entries, setEntries] = useState([
-    {
-      id: 1,
-      name: "The Last of Us II",
-      date: "7/14/2020",
-    },
-    {
-      id: 2,
-      name: "The Last of Us II",
-      date: "7/14/2020",
-    },
-    {
-      id: 3,
-      name: "Dragon Balls",
-      date: "7/14/2020",
-    },
-    {
-      id: 4,
-      name: "Apex Legends",
-      date: "7/14/2020",
-    },
-    {
-      id: 5,
-      name: "Cyberpunk",
-      date: "7/14/2020",
-    },
-  ]);
-
   return (
-    <View style={{ flex: 1 }}>
+    <Container>
       <View style={{ flex: 1 }}>
+        <Button style={{ backgroundColor: "#fff" }} onPress={() => logOut()}>
+          <Text>Log out</Text>
+        </Button>
         <Button
           style={{ backgroundColor: "#fff" }}
           onPress={() => navigation.navigate("Find")}
@@ -99,7 +111,7 @@ export default function Home({ navigation }) {
           hasParallaxImages={true}
         />
       </View>
-    </View>
+    </Container>
   );
 }
 

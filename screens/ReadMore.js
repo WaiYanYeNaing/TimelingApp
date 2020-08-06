@@ -3,6 +3,7 @@ import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
 import { Card, CardItem, Body, Button, Icon } from "native-base";
 import { ScrollView } from "react-native-gesture-handler";
 import Text from "../components/TextR";
+import Container from "../components/Container";
 
 const { width: screenWidth } = Dimensions.get("window");
 const BgImage =
@@ -10,7 +11,7 @@ const BgImage =
 
 export default function ReadMore() {
   return (
-    <View style={styles.container}>
+    <Container>
       <ImageBackground
         source={{ uri: BgImage }}
         style={styles.bgImg}
@@ -70,7 +71,7 @@ export default function ReadMore() {
           </CardItem>
         </Card>
       </View>
-    </View>
+    </Container>
   );
 }
 
