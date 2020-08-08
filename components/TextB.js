@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-export default function TextR({ style, color, size, children }) {
+export default function TextB({ style, color, size, children }) {
   return (
     <View>
       <Text
@@ -20,6 +20,6 @@ export default function TextR({ style, color, size, children }) {
 
 const styles = StyleSheet.create({
   text: {
-    fontFamily: "Ubuntu",
+    fontFamily: "UbuntuB",
   },
 });

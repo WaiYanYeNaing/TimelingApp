@@ -15,7 +15,8 @@ import Find from "./screens/Find";
 import SendSuccess from "./screens/SendSuccess";
 import ReadMore from "./screens/ReadMore";
 import Register from "./screens/Register";
-import { Easing } from "react-native";
+import { Easing, AsyncStorage } from "react-native";
+import Profile from "./screens/Profile";
 
 const Stack = createStackNavigator();
 const closeConfig = {
@@ -30,6 +31,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       isReady: false,
+      // initialRoute: "Login",
     };
   }
 
@@ -37,9 +39,13 @@ export default class App extends React.Component {
     //* Load Font
     await Font.loadAsync({
       Ubuntu: require("./assets/fonts/Ubuntu-Regular.ttf"),
+      UbuntuM: require("./assets/fonts/Ubuntu-Medium.ttf"),
+      UbuntuB: require("./assets/fonts/Ubuntu-Bold.ttf"),
       ...Ionicons.font,
     });
     this.setState({ isReady: true });
+    // const val = await AsyncStorage.getItem("token");
+    // if (val) this.setState({ initialRoute: "Home" });
   }
 
   render() {
@@ -50,16 +56,17 @@ export default class App extends React.Component {
     return (
       <NavigationContainer>
         <Stack.Navigator
+          // initialRouteName={this.state.initialRoute}
           screenOptions={{
-            gestureEnabled: true,
-            gestureDirection: "horizontal-inverted",
-            transitionSpec: {
-              open: closeConfig,
-              close: closeConfig,
-            },
-            // cardStyleInterpolator:
-            //   CardStyleInterpolators.forScaleFromCenterAndroid,
-            // ...TransitionPresets.ScaleFromCenterAndroid,
+            // gestureEnabled: true,
+            // gestureDirection: "horizontal-inverted",
+            // transitionSpec: {
+            //   open: closeConfig,
+            //   close: closeConfig,
+            // },
+            cardStyleInterpolator:
+              CardStyleInterpolators.forScaleFromCenterAndroid,
+            ...TransitionPresets.ScaleFromCenterAndroid,
           }}
         >
           <Stack.Screen
@@ -126,6 +133,20 @@ export default class App extends React.Component {
           <Stack.Screen
             name="SendSuccess"
             component={SendSuccess}
+            options={{
+              title: "Timeling",
+              headerTitleAlign: "center",
+              headerTintColor: "#00203FFF",
+              headerStyle: { backgroundColor: "#fff" },
+              headerTitleStyle: {
+                fontSize: 18,
+              },
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={Profile}
             options={{
               title: "Timeling",
               headerTitleAlign: "center",

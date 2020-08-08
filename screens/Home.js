@@ -1,54 +1,48 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Dimensions, AsyncStorage } from "react-native";
-import { Button } from "native-base";
+import { Button, Icon, Thumbnail } from "native-base";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import Text from "../components/TextR";
 import Axios from "axios";
 import Container from "../components/Container";
+import TextB from "../components/TextB";
+import TextM from "../components/TextM";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { CommonActions } from "@react-navigation/native";
+import Row from "../components/Row";
 
 const { width: screenWidth } = Dimensions.get("window");
-const parallaxImage =
-  "https://images.hdqwalls.com/download/lake-cyan-calm-water-reflection-northern-lights-4k-6j-1536x864.jpg";
 
 export default function Home({ navigation, config }) {
   const [entries, setEntries] = useState([
     {
-      id: 1,
-      name: "The Last of Us II",
-      date: "7/14/2020",
-    },
-    {
-      id: 2,
-      name: "The Last of Us II",
-      date: "7/14/2020",
-    },
-    {
-      id: 3,
-      name: "Dragon Balls",
-      date: "7/14/2020",
-    },
-    {
-      id: 4,
-      name: "Apex Legends",
-      date: "7/14/2020",
-    },
-    {
-      id: 5,
-      name: "Cyberpunk",
-      date: "7/14/2020",
+      _id: "loading...",
+      createdAt: "loading...",
+      sdetails: {
+        name: "loading...",
+      },
     },
   ]);
+  const parallaxImage =
+    "https://images.hdqwalls.com/download/lake-cyan-calm-water-reflection-northern-lights-4k-6j-1536x864.jpg";
+  const uri = "https://facebook.github.io/react-native/docs/assets/favicon.png";
 
-  // useEffect(async () => {
-  //   const config = {
-  //     headers: {
-  //       "auth-token": await AsyncStorage.getItem("token"),
-  //     },
-  //   };
-  //   Axios.get("https://timeling.herokuapp.com/api/letter", config).then((res) =>
-  //     console.log(res.data)
-  //   );
-  // }, []);
+  useEffect(() => {
+    getAllLetters();
+  }, []);
+
+  const getAllLetters = async () => {
+    const config = {
+      headers: {
+        "auth-token": await AsyncStorage.getItem("token"),
+      },
+    };
+    Axios.get("https://timeling.herokuapp.com/api/letter", config).then(
+      (res) => {
+        setEntries(res.data.reverse());
+      }
+    );
+  };
 
   const logOut = async () => {
     await AsyncStorage.removeItem("token");
@@ -70,17 +64,18 @@ export default function Home({ navigation, config }) {
           parallaxFactor={2}
         />
         <Text style={styles.carouselTextName} numberOfLines={2}>
-          {item.name}
+          {item.sdetails.name}
         </Text>
         <Text style={styles.carouselTextDate} numberOfLines={2}>
-          {item.date}
+          {new Date(item.createdAt).toDateString()}
         </Text>
         <Button
           style={styles.carouselBtnReadMore}
           bordered
           rounded
           light
-          onPress={() => navigation.navigate("ReadMore")}
+          onPress={() => navigation.navigate("ReadMore", { details: item })}
+          disabled={item._id == "loading..." ? true : false}
         >
           <Text style={styles.carouselBtnText}>Read More</Text>
         </Button>
@@ -90,18 +85,41 @@ export default function Home({ navigation, config }) {
 
   return (
     <Container>
-      <View style={{ flex: 1 }}>
-        <Button style={{ backgroundColor: "#fff" }} onPress={() => logOut()}>
-          <Text>Log out</Text>
+      <Row style={styles.actionContainer}>
+        <TouchableOpacity onPress={() => logOut()}>
+          <Icon type="FontAwesome" name="sign-out" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <Thumbnail small source={{ uri: uri }} />
+        </TouchableOpacity>
+      </Row>
+      <Row style={styles.quoteContainer}>
+        <TextM style={styles.quoteText}>Lost time is never found again</TextM>
+      </Row>
+      <Row style={styles.routButtonContainer}>
+        <Button style={[styles.routeButton, styles.btn1]}>
+          <Text style={styles.routeButtonText1}>History</Text>
         </Button>
         <Button
-          style={{ backgroundColor: "#fff" }}
+          style={[styles.routeButton, styles.btn2]}
           onPress={() => navigation.navigate("Find")}
         >
-          <Text>Click Me!</Text>
+          <Text style={styles.routeButtonText2}>Create New</Text>
         </Button>
-      </View>
-      <View style={styles.carouselContainer}>
+        <Button style={[styles.routeButton, styles.btn3]}>
+          <Text style={styles.routeButtonText3}>Drafts</Text>
+        </Button>
+        <Button style={[styles.routeButton, styles.btn4]}>
+          <Text style={styles.routeButtonText4}>Settings</Text>
+        </Button>
+      </Row>
+      <Row style={styles.carouselHeaderContainer}>
+        <TextM style={styles.carouselHeader}>Recently Received</TextM>
+        <TouchableOpacity onPress={() => getAllLetters()}>
+          <Icon type="MaterialCommunityIcons" name="reload" />
+        </TouchableOpacity>
+      </Row>
+      <Row style={styles.carouselContainer}>
         <Carousel
           data={entries}
           renderItem={_renderItem}
@@ -110,16 +128,78 @@ export default function Home({ navigation, config }) {
           itemWidth={screenWidth - 160}
           hasParallaxImages={true}
         />
-      </View>
+      </Row>
     </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  carouselContainer: {
+  actionContainer: {
+    marginTop: 15,
+    marginHorizontal: 20,
+    justifyContent: "space-between",
+  },
+  // ??????????????????????????????????????????????????????
+  quoteContainer: {
+    marginVertical: 30,
+  },
+  quoteText: {
+    fontSize: 25,
+    marginHorizontal: 20,
+    width: 250,
+  },
+  // ??????????????????????????????????????????????????????
+  routButtonContainer: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
+    flexWrap: "wrap",
+    marginHorizontal: 20,
+    marginVertical: 30,
+  },
+  routeButton: {
+    height: 35,
+    paddingHorizontal: 20,
+    marginVertical: 10,
+    borderRadius: 5,
+    marginRight: 20,
+    elevation: 0,
+  },
+  btn1: {
+    backgroundColor: "#cceff9",
+  },
+  btn2: {
+    backgroundColor: "#f9e7cc",
+  },
+  btn3: {
+    backgroundColor: "#f9cdcc",
+  },
+  btn4: {
+    backgroundColor: "#7dd181",
+  },
+  routeButtonText1: {
+    color: "#157896",
+  },
+  routeButtonText2: {
+    color: "#b66e02",
+  },
+  routeButtonText3: {
+    color: "#e1350e",
+  },
+  routeButtonText4: {
+    color: "#4b7f52",
+  },
+  // ??????????????????????????????????????????????????????
+  carouselHeaderContainer: {
+    marginHorizontal: 30,
+    marginBottom: 30,
+    height: 40,
+    justifyContent: "space-between",
+  },
+  carouselHeader: {
+    fontSize: 20,
+  },
+  // ??????????????????????????????????????????????????????
+  carouselContainer: {
+    justifyContent: "flex-end",
   },
   imageContainer: {
     width: screenWidth - 160,

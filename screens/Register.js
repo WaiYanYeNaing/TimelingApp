@@ -91,23 +91,23 @@ export default function Register({ navigation }) {
               />
             </Item>
           </View>
-          <View style={styles.signUpContainer}>
+          <Row style={styles.signUpContainer}>
             <Text style={styles.textSignIn}>Sign up</Text>
             <Button style={styles.btnSignIn} onPress={() => signUp()}>
               <Icon type="Feather" name="arrow-right" />
             </Button>
-          </View>
+          </Row>
         </View>
-        <View style={styles.footerContainer}>
+        <Row style={styles.footerContainer}>
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
             <Text style={styles.gotoSignUp}>Sign in</Text>
           </TouchableOpacity>
           <TouchableOpacity>
             <Text style={styles.gotoSignUp}>Forgot Passwrod</Text>
           </TouchableOpacity>
-        </View>
+        </Row>
 
-        {/* //TODO: Dialog */}
+        {/** Dialog */}
         <Dialog
           visible={dialogVisible}
           onTouchOutside={() => {
@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
   signUpContainer: {
     marginTop: 20,
     marginBottom: 60,
-    flexDirection: "row",
     justifyContent: "space-between",
   },
   textSignIn: {
@@ -179,7 +178,6 @@ const styles = StyleSheet.create({
   footerContainer: {
     marginHorizontal: 40,
     marginBottom: 60,
-    flexDirection: "row",
     justifyContent: "space-between",
   },
   gotoSignUp: {

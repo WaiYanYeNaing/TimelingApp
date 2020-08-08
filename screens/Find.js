@@ -10,6 +10,7 @@ import { Button, Icon, Right, Left, List, ListItem } from "native-base";
 import SwipeablePanel from "react-native-sheets-bottom";
 import Text from "../components/TextR";
 import Container from "../components/Container";
+import Row from "../components/Row";
 
 export default function Find({ navigation }) {
   const users = [
@@ -82,7 +83,7 @@ export default function Find({ navigation }) {
   return (
     <Container>
       {/* Cards */}
-      <View style={styles.rowCard}>
+      <Row style={styles.rowCard}>
         <ScrollView>
           <View>
             <ScrollView
@@ -118,7 +119,7 @@ export default function Find({ navigation }) {
             </ScrollView>
           </View>
         </ScrollView>
-      </View>
+      </Row>
 
       {/* Location */}
       <View style={styles.rowLocationGender}>
@@ -244,7 +245,7 @@ export default function Find({ navigation }) {
         </Button>
       </View>
 
-      {/* //TODO: Dialog for Location and Gender */}
+      {/** Dialog for Location and Gender */}
       <Dialog
         visible={selectVisible}
         onTouchOutside={() => {
@@ -279,7 +280,7 @@ export default function Find({ navigation }) {
         </DialogContent>
       </Dialog>
 
-      {/* //TODO: Dialog for Sent Success */}
+      {/** Dialog for Sent Success */}
       <SwipeablePanel
         fullWidth
         isActive={sentSuccessVisible}
@@ -317,12 +318,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 7,
   },
-  rowReload: {
-    flexDirection: "row",
-    height: 40,
-  },
   rowCard: {
-    flexDirection: "row",
     marginBottom: 10,
   },
   cardSelected: {

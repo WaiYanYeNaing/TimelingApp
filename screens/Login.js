@@ -17,6 +17,7 @@ import Dialog, {
   SlideAnimation,
   DialogContent,
 } from "react-native-popup-dialog";
+import Row from "../components/Row";
 
 const BgImage = require("../assets/images/login-bg.jpg");
 const screenHeight = Math.round(Dimensions.get("window").height);
@@ -28,7 +29,11 @@ export default function Login({ navigation }) {
   const [dialogImage, setDialogImage] = useState();
   const [dialogText, setDialogText] = useState("");
 
-  useEffect(async () => {
+  useEffect(() => {
+    tokenValidation();
+  }, []);
+
+  const tokenValidation = async () => {
     //* Token Validation
     const val = await AsyncStorage.getItem("token");
     if (val) {
@@ -42,7 +47,7 @@ export default function Login({ navigation }) {
     } else {
       navigation.navigate("Login");
     }
-  }, []);
+  };
 
   const signIn = () => {
     let temp = {
@@ -86,23 +91,23 @@ export default function Login({ navigation }) {
               />
             </Item>
           </View>
-          <View style={styles.signInContainer}>
+          <Row style={styles.signInContainer}>
             <Text style={styles.textSignIn}>Sign in</Text>
             <Button style={styles.btnSignIn} onPress={() => signIn()}>
               <Icon type="Feather" name="arrow-right" />
             </Button>
-          </View>
+          </Row>
         </View>
-        <View style={styles.footerContainer}>
+        <Row style={styles.footerContainer}>
           <TouchableOpacity onPress={() => navigation.navigate("Register")}>
             <Text style={styles.gotoSignUp}>Sign up</Text>
           </TouchableOpacity>
           <TouchableOpacity>
             <Text style={styles.gotoSignUp}>Forgot Passwrod</Text>
           </TouchableOpacity>
-        </View>
+        </Row>
 
-        {/* //TODO: Dialog */}
+        {/** Dialog */}
         <Dialog
           visible={dialogVisible}
           onTouchOutside={() => {
@@ -155,7 +160,6 @@ const styles = StyleSheet.create({
   },
   signInContainer: {
     marginVertical: 20,
-    flexDirection: "row",
     justifyContent: "space-between",
   },
   textSignIn: {
@@ -172,7 +176,6 @@ const styles = StyleSheet.create({
   footerContainer: {
     marginHorizontal: 40,
     marginBottom: 60,
-    flexDirection: "row",
     justifyContent: "space-between",
   },
   gotoSignUp: {
