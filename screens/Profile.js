@@ -1,32 +1,95 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  AsyncStorage,
+  Dimensions,
+} from "react-native";
 import Text from "../components/TextR";
 import Container from "../components/Container";
-import { Thumbnail, Button } from "native-base";
+import { Thumbnail, Button, Icon } from "native-base";
 import TextM from "../components/TextM";
 import Progress from "../components/Progress";
 import Row from "../components/Row";
+import Loader from "../components/Loader";
+import Dialog, {
+  SlideAnimation,
+  DialogContent,
+} from "react-native-popup-dialog";
+import { ScrollView } from "react-native-gesture-handler";
 
-export default function Profile() {
+const { width: screenWidth } = Dimensions.get("window");
+
+export default function Profile({ navigation }) {
   const uri = "https://images.hdqwalls.com/download/necromancer-tn-240x240.jpg";
   const [onlineStatus, setOnlineStatus] = useState("Inactive");
-  const [friendImages, setfriendImages] = useState([
+  const [rewardImages, setRewardImages] = useState([
     {
+      name: "samurai",
+      uri:
+        "https://images.hdqwalls.com/download/cyberpunk-2077-samurai-0g-140x140.jpg",
+    },
+    {
+      name: "art",
+      uri:
+        "https://images.hdqwalls.com/download/cyberpunk-2077-art-48-140x140.jpg",
+    },
+    {
+      name: "cyberpunk-2077",
+      uri:
+        "https://images.hdqwalls.com/download/cyberpunk-2077-12k-kp-140x140.jpg",
+    },
+    {
+      name: "cosplay",
+      uri:
+        "https://images.hdqwalls.com/download/cyberpunk-2077-cosplay-4k-2020-7u-140x140.jpg",
+    },
+  ]);
+  const [friendImages, setFriendImages] = useState([
+    {
+      name: "sneaker",
       uri: "https://images.hdqwalls.com/download/sneaker-guy-4k-4y-140x140.jpg",
     },
     {
+      name: "purple",
       uri:
         "https://images.hdqwalls.com/download/anime-girl-face-mask-purple-eyes-twintails-hate-5k-79-140x140.jpg",
     },
     {
+      name: "alexander",
       uri:
         "https://images.hdqwalls.com/download/trent-alexander-arnold-fifa-21-oy-140x140.jpg",
     },
     {
+      name: "valorant",
       uri:
         "https://images.hdqwalls.com/download/viper-valorant-2020-game-sk-140x140.jpg",
     },
+    {
+      name: "cosplay",
+      uri:
+        "https://images.hdqwalls.com/download/cyberpunk-2077-cosplay-4k-2020-7u-140x140.jpg",
+    },
+    {
+      name: "art",
+      uri:
+        "https://images.hdqwalls.com/download/cyberpunk-2077-art-48-140x140.jpg",
+    },
+    {
+      name: "cyberpunk",
+      uri:
+        "https://images.hdqwalls.com/download/cyberpunk-2077-12k-kp-140x140.jpg",
+    },
   ]);
+  const [dialogRewardVisible, setDialogRewardVisible] = useState(false);
+  const [dialogFriendVisible, setDialogFriendVisible] = useState(false);
+
+  const logOut = async () => {
+    await AsyncStorage.removeItem("token");
+    navigation.navigate("Login");
+  };
 
   //   TODO: Make Progress Bar Dynamic
   const calProgress = (v) => {
@@ -38,10 +101,18 @@ export default function Profile() {
 
   return (
     <Container style={styles.container}>
+      <Row style={styles.actionContainer}>
+        <TouchableOpacity>
+          <Icon type="Octicons" name="settings" style={styles.actionIcon} />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon type="Feather" name="edit" style={styles.actionIcon} />
+        </TouchableOpacity>
+      </Row>
       <View style={styles.thumbnailContainer}>
         <Thumbnail style={styles.thumbnail} source={{ uri: uri }} />
         <View style={styles.level}>
-          <Text style={styles.levelText}>Lvl. 1</Text>
+          <Text style={styles.levelText}>Lvl. 3</Text>
         </View>
       </View>
       <View style={styles.nameContainer}>
@@ -84,6 +155,41 @@ export default function Profile() {
           <Text>{onlineStatus}</Text>
         </Row>
       </Row>
+      <View style={styles.rewardContainer}>
+        <Row>
+          <Text size={17}>Rewards </Text>
+          <Text color="#a2a3a5" size={16}>
+            (9)
+          </Text>
+        </Row>
+        <Row>
+          {rewardImages.slice(0, 4).map((v, i) => {
+            return (
+              <Image
+                source={{ uri: v.uri }}
+                key={i}
+                style={styles.rewardImage}
+              />
+            );
+          })}
+          <TouchableOpacity onPress={() => setDialogRewardVisible(true)}>
+            <View
+              style={[
+                styles.friendImage,
+                {
+                  borderWidth: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
+              ]}
+            >
+              <Text size={16} color="#a2a3a5">
+                +5
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </Row>
+      </View>
       <View style={styles.friendContainer}>
         <Row>
           <Text size={17}>Friends </Text>
@@ -92,7 +198,7 @@ export default function Profile() {
           </Text>
         </Row>
         <Row>
-          {friendImages.map((v, i) => {
+          {friendImages.slice(0, 4).map((v, i) => {
             return (
               <Image
                 source={{ uri: v.uri }}
@@ -101,30 +207,113 @@ export default function Profile() {
               />
             );
           })}
-          <View
-            style={[
-              styles.friendImage,
-              {
-                borderWidth: 1,
-                justifyContent: "center",
-                alignItems: "center",
-              },
-            ]}
-          >
-            <Text size={16} color="#a2a3a5">
-              +52
-            </Text>
-          </View>
+          <TouchableOpacity onPress={() => setDialogFriendVisible(true)}>
+            <View
+              style={[
+                styles.friendImage,
+                {
+                  borderWidth: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
+              ]}
+            >
+              <Text size={16} color="#a2a3a5">
+                +52
+              </Text>
+            </View>
+          </TouchableOpacity>
         </Row>
+        <Loader />
       </View>
+      <View style={styles.logoutBtnContainer}>
+        <Button bordered style={styles.logoutBtn} onPress={() => logOut()}>
+          <Text size={16}>Log out</Text>
+          <Icon
+            type="MaterialCommunityIcons"
+            name="logout-variant"
+            style={styles.logoutBtnIcon}
+          />
+        </Button>
+      </View>
+
+      {/** Dialog Reward */}
+      <Dialog
+        visible={dialogRewardVisible}
+        onTouchOutside={() => {
+          setDialogRewardVisible(false);
+        }}
+        dialogAnimation={
+          new SlideAnimation({
+            slideFrom: "bottom",
+          })
+        }
+      >
+        <DialogContent style={styles.dialogFriend}>
+          <ScrollView>
+            <Row style={styles.dialogFriendImageRow}>
+              {rewardImages.map((v, i) => {
+                return (
+                  <View key={i} style={{ width: 115 }}>
+                    <Image
+                      source={{ uri: v.uri }}
+                      style={styles.dialogFriendImage}
+                    />
+                    <Text style={{ marginHorizontal: 10 }}>{v.name}</Text>
+                  </View>
+                );
+              })}
+            </Row>
+          </ScrollView>
+        </DialogContent>
+      </Dialog>
+
+      {/** Dialog Friend */}
+      <Dialog
+        visible={dialogFriendVisible}
+        onTouchOutside={() => {
+          setDialogFriendVisible(false);
+        }}
+        dialogAnimation={
+          new SlideAnimation({
+            slideFrom: "bottom",
+          })
+        }
+      >
+        <DialogContent style={styles.dialogFriend}>
+          <ScrollView>
+            <Row style={styles.dialogFriendImageRow}>
+              {friendImages.map((v, i) => {
+                return (
+                  <View key={i} style={{ width: 115 }}>
+                    <Image
+                      source={{ uri: v.uri }}
+                      style={styles.dialogFriendImage}
+                    />
+                    <Text style={{ marginHorizontal: 10 }}>{v.name}</Text>
+                  </View>
+                );
+              })}
+            </Row>
+          </ScrollView>
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
+    paddingTop: 40,
     justifyContent: "flex-start",
+  },
+  // ??????????????????????????????????????????????????????
+  actionContainer: {
+    justifyContent: "space-between",
+    marginHorizontal: 30,
+  },
+  actionIcon: {
+    color: "#848587",
   },
   // ??????????????????????????????????????????????????????
   thumbnailContainer: {
@@ -151,7 +340,7 @@ const styles = StyleSheet.create({
   // ??????????????????????????????????????????????????????
   nameContainer: {
     alignItems: "center",
-    marginTop: 15,
+    marginTop: 10,
   },
   nameText: {
     fontSize: 20,
@@ -159,7 +348,7 @@ const styles = StyleSheet.create({
   // ??????????????????????????????????????????????????????
   emailContainer: {
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 5,
   },
   email: {
     backgroundColor: "#F1F2F4",
@@ -176,7 +365,7 @@ const styles = StyleSheet.create({
   // ??????????????????????????????????????????????????????
   progressBarContainer: {
     alignItems: "center",
-    marginTop: 30,
+    marginTop: 25,
     paddingTop: 10,
     borderTopWidth: 1,
     borderColor: "#F1F2F4",
@@ -190,7 +379,7 @@ const styles = StyleSheet.create({
   },
   // ??????????????????????????????????????????????????????
   userOnlineStatus: {
-    marginTop: 20,
+    marginTop: 15,
     paddingTop: 20,
     borderTopWidth: 1,
     borderColor: "#F1F2F4",
@@ -205,8 +394,23 @@ const styles = StyleSheet.create({
     marginRight: 7,
   },
   // ??????????????????????????????????????????????????????
-  friendContainer: {
+  rewardContainer: {
+    marginTop: 15,
+    paddingTop: 20,
+    borderTopWidth: 1,
+    borderColor: "#F1F2F4",
+    paddingHorizontal: 35,
+  },
+  rewardImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 15,
     marginTop: 20,
+    marginRight: 20,
+  },
+  // ??????????????????????????????????????????????????????
+  friendContainer: {
+    marginTop: 15,
     paddingTop: 20,
     borderTopWidth: 1,
     borderColor: "#F1F2F4",
@@ -218,5 +422,37 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginTop: 20,
     marginRight: 20,
+  },
+  dialogFriend: {
+    height: 400,
+    width: screenWidth - 90,
+    marginTop: 15,
+  },
+  dialogFriendImageRow: {
+    marginLeft: 20,
+    flex: 1,
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  dialogFriendImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 15,
+    marginTop: 20,
+    marginRight: 20,
+  },
+  // ??????????????????????????????????????????????????????
+  logoutBtnContainer: {
+    marginTop: 15,
+    paddingTop: 20,
+    paddingHorizontal: 35,
+  },
+  logoutBtn: {
+    borderColor: "#4c4c4c",
+    borderRadius: 30,
+    justifyContent: "center",
+  },
+  logoutBtnIcon: {
+    color: "#a2a3a5",
   },
 });

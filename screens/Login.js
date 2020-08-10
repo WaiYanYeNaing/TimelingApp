@@ -18,6 +18,7 @@ import Dialog, {
   DialogContent,
 } from "react-native-popup-dialog";
 import Row from "../components/Row";
+import Loader from "../components/Loader";
 
 const BgImage = require("../assets/images/login-bg.jpg");
 const screenHeight = Math.round(Dimensions.get("window").height);
@@ -28,6 +29,7 @@ export default function Login({ navigation }) {
   const [dialogVisible, setDialogVisible] = useState(false);
   const [dialogImage, setDialogImage] = useState();
   const [dialogText, setDialogText] = useState("");
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     tokenValidation();
@@ -54,9 +56,11 @@ export default function Login({ navigation }) {
       email,
       password,
     };
+    setLoader(true);
     axios
       .post("https://timeling.herokuapp.com/api/user/login", temp)
       .then((res) => {
+        setLoader(false);
         let data = res.data;
         if (data.status === 200) {
           AsyncStorage.setItem("token", data.token);
@@ -130,6 +134,9 @@ export default function Login({ navigation }) {
             </Button>
           </DialogContent>
         </Dialog>
+
+        {/** Loading..  */}
+        <Loader visible={loader} />
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
@@ -184,6 +191,7 @@ const styles = StyleSheet.create({
   },
   dialog: {
     paddingTop: 20,
+    minWidth: 250,
     alignItems: "center",
   },
   dialogImage: {

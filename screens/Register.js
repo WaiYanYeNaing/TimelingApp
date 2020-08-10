@@ -18,6 +18,8 @@ import Dialog, {
   DialogContent,
   SlideAnimation,
 } from "react-native-popup-dialog";
+import Row from "../components/Row";
+import Loader from "../components/Loader";
 
 const BgImage = require("../assets/images/login-bg.jpg");
 const screenHeight = Math.round(Dimensions.get("window").height);
@@ -30,6 +32,7 @@ export default function Register({ navigation }) {
   const [dialogImage, setDialogImage] = useState();
   const [dialogText, setDialogText] = useState("");
   const [status, setStatus] = useState();
+  const [loader, setLoader] = useState(false);
 
   const signUp = () => {
     let temp = {
@@ -37,9 +40,11 @@ export default function Register({ navigation }) {
       email,
       password,
     };
+    setLoader(true);
     axios
       .post("https://timeling.herokuapp.com/api/user/register", temp)
       .then((res) => {
+        setLoader(false);
         let data = res.data;
         console.log(data);
         if (data.status === 200) {
@@ -127,6 +132,9 @@ export default function Register({ navigation }) {
             </Button>
           </DialogContent>
         </Dialog>
+
+        {/** Loading..  */}
+        <Loader visible={loader} />
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
@@ -186,6 +194,7 @@ const styles = StyleSheet.create({
   },
   dialog: {
     paddingTop: 20,
+    minWidth: 250,
     alignItems: "center",
   },
   dialogImage: {

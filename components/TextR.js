@@ -21,5 +21,7 @@ export default function TextR({ style, color, size, children }) {
 const styles = StyleSheet.create({
   text: {
     fontFamily: "Ubuntu",
+    lineHeight: 20,
+    letterSpacing: 0.2,
   },
 });
