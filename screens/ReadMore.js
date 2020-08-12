@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
-import { Card, CardItem, Body, Button, Icon } from "native-base";
+import { Card, CardItem, Body, Button, Icon, Thumbnail } from "native-base";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Text from "../components/TextR";
 import Container from "../components/Container";
@@ -11,12 +11,15 @@ import Dialog, {
   SlideAnimation,
   DialogContent,
 } from "react-native-popup-dialog";
+import moment from "moment";
+import Header from "../components/Header";
 
 const { width: screenWidth } = Dimensions.get("window");
 
-export default function ReadMore({ route }) {
+export default function ReadMore({ route, navigation }) {
+  const uri = "https://images.hdqwalls.com/download/necromancer-tn-240x240.jpg";
   const BgImage =
-    "https://images.hdqwalls.com/download/lake-cyan-calm-water-reflection-northern-lights-4k-6j-1536x864.jpg";
+    "https://images.hdqwalls.com/download/minimal-morning-landscape-8k-gx-1000x900.jpg";
   const date = new Date(route.params.details.createdAt);
   const reviewLevel = [
     "Terrible",
@@ -41,22 +44,39 @@ export default function ReadMore({ route }) {
 
   return (
     <Container>
-      <ImageBackground
-        source={{ uri: BgImage }}
-        style={styles.bgImg}
-      ></ImageBackground>
+      <ImageBackground source={{ uri: BgImage }} style={styles.bgImg}>
+        <Header style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon
+              type="MaterialCommunityIcons"
+              name="backburger"
+              style={{ color: "#fff", fontSize: 30 }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Icon
+              type="MaterialIcons"
+              name="more-horiz"
+              style={{ color: "#fff", fontSize: 30 }}
+            />
+          </TouchableOpacity>
+        </Header>
+      </ImageBackground>
       <View style={styles.cardContainer}>
         <Card style={styles.card}>
-          <CardItem header style={styles.header}>
+          <CardItem header style={styles.title}>
             <TextM size={24}>The Startup's Guid to Working Remotely</TextM>
           </CardItem>
-          <CardItem>
+          <CardItem style={styles.subTitle}>
             <Row>
+              <Thumbnail style={styles.thumbnail} source={{ uri: uri }} />
               <Text size={14} color={"#a2a3a5"}>
+                {"  "}
                 by {route.params.details.sdetails.name},
               </Text>
               <Text size={14} color={"#a2a3a5"} style={{ marginBottom: 10 }}>
-                {` ${date.toDateString()}, ${date.toLocaleTimeString()}`}
+                {/* {` ${date.toDateString()}, ${date.toLocaleTimeString()}`} */}
+                {` ${moment(date).format("LL")}, ${moment(date).fromNow()}`}
               </Text>
             </Row>
           </CardItem>
@@ -74,42 +94,37 @@ export default function ReadMore({ route }) {
             </Body>
           </CardItem>
           <CardItem style={styles.action}>
-            <TouchableOpacity>
-              <View style={styles.iconWrap}>
-                <Icon
-                  type="MaterialIcons"
-                  name="report"
-                  style={{ color: "#ff6060" }}
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setDialogVisible(true)}>
-              <View style={styles.iconWrap}>
-                <Icon
-                  type="FontAwesome"
-                  name="star-o"
-                  style={{ color: "#feab4c", fontSize: 23 }}
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.iconWrap}>
-                <Icon
-                  type="MaterialCommunityIcons"
-                  name="reply-all-outline"
-                  style={{ color: "#878787", fontSize: 28 }}
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.iconWrap}>
-                <Icon
-                  type="MaterialIcons"
-                  name="more-horiz"
-                  style={{ color: "#878787", fontSize: 30 }}
-                />
-              </View>
-            </TouchableOpacity>
+            <Button style={styles.actionBtn}>
+              <Icon
+                type="MaterialIcons"
+                name="report"
+                style={{ color: "#ff6060" }}
+              />
+            </Button>
+            <Button
+              style={styles.actionBtn}
+              onPress={() => setDialogVisible(true)}
+            >
+              <Icon
+                type="FontAwesome"
+                name="star-o"
+                style={{ color: "#feab4c", fontSize: 23 }}
+              />
+            </Button>
+            <Button style={styles.actionBtn}>
+              <Icon
+                type="MaterialCommunityIcons"
+                name="reply-all-outline"
+                style={{ color: "#547FF0", fontSize: 28 }}
+              />
+            </Button>
+            <Button style={styles.actionBtn}>
+              <Icon
+                type="MaterialIcons"
+                name="more-horiz"
+                style={{ color: "#91D276", fontSize: 30 }}
+              />
+            </Button>
           </CardItem>
         </Card>
       </View>
@@ -127,6 +142,9 @@ export default function ReadMore({ route }) {
         }
       >
         <DialogContent style={styles.dialog}>
+          <Row style={styles.dialogHeaderContainer}>
+            <Text size={18}>How was your experience?</Text>
+          </Row>
           <Row>
             <AirbnbRating
               count={11}
@@ -136,6 +154,13 @@ export default function ReadMore({ route }) {
               defaultRating={11}
               size={20}
             />
+          </Row>
+          <Row style={styles.dialogButtonContainer}>
+            <Button style={styles.dialogButton}>
+              <Text color={"#fff"} size={16}>
+                Rate
+              </Text>
+            </Button>
           </Row>
         </DialogContent>
       </Dialog>
@@ -156,41 +181,73 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   // ??????????????????????????????????????????????????????
+  header: {},
+  // ??????????????????????????????????????????????????????
   cardContainer: {
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-end",
+    backgroundColor: "#fff",
   },
   card: {
     width: screenWidth,
     borderRadius: 12,
     padding: 10,
     elevation: 0,
+    backgroundColor: "#fff",
   },
   // ??????????????????????????????????????????????????????
-  header: {
+  title: {
+    backgroundColor: "transparent",
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     flexDirection: "row",
   },
+  subTitle: {
+    backgroundColor: "transparent",
+  },
+  thumbnail: {
+    width: 22,
+    height: 22,
+    borderRadius: 100,
+  },
   detail: {
+    backgroundColor: "transparent",
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
   },
   action: {
     borderTopWidth: 0.4,
     borderTopColor: "#a2a3a5",
+    backgroundColor: "transparent",
     marginTop: 10,
-    marginHorizontal: 10,
+    marginHorizontal: 20,
     justifyContent: "space-between",
   },
-  iconWrap: {
-    width: 45,
+  actionBtn: {
+    width: 60,
+    height: 60,
+    justifyContent: "center",
+    backgroundColor: "#fff",
+    borderRadius: 100,
+    elevation: 4,
   },
   // ??????????????????????????????????????????????????????
   dialog: {
     paddingTop: 20,
     minWidth: 250,
     alignItems: "center",
+  },
+  dialogHeaderContainer: {
+    marginBottom: 10,
+  },
+  dialogButtonContainer: {
+    marginTop: 30,
+  },
+  dialogButton: {
+    width: 100,
+    borderRadius: 20,
+    backgroundColor: "#606bff",
+    justifyContent: "center",
   },
 });

@@ -10,6 +10,8 @@ import TextM from "../components/TextM";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { CommonActions } from "@react-navigation/native";
 import Row from "../components/Row";
+import Header from "../components/Header";
+import moment from "moment";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -37,9 +39,22 @@ export default function Home({ navigation, config }) {
         "auth-token": await AsyncStorage.getItem("token"),
       },
     };
-    Axios.get("https://timeling.herokuapp.com/api/letter", config).then(
+    const uid = await AsyncStorage.getItem("uid");
+    Axios.get(`https://timeling.herokuapp.com/api/letter/${uid}`, config).then(
       (res) => {
-        setEntries(res.data.reverse());
+        if (res.data.length) {
+          setEntries(res.data.reverse());
+        } else {
+          setEntries([
+            {
+              _id: "No data available",
+              createdAt: "No data available",
+              sdetails: {
+                name: "No data available",
+              },
+            },
+          ]);
+        }
       }
     );
   };
@@ -67,7 +82,7 @@ export default function Home({ navigation, config }) {
           {item.sdetails.name}
         </Text>
         <Text style={styles.carouselTextDate} numberOfLines={2}>
-          {new Date(item.createdAt).toDateString()}
+          {moment(new Date(item.createdAt)).format("LL")}
         </Text>
         <Button
           style={styles.carouselBtnReadMore}
@@ -85,14 +100,14 @@ export default function Home({ navigation, config }) {
 
   return (
     <Container>
-      <Row style={styles.actionContainer}>
+      <Header style={styles.header}>
         <TouchableOpacity onPress={() => logOut()}>
           <Icon type="FontAwesome" name="sign-out" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
           <Thumbnail small source={{ uri: uri }} />
         </TouchableOpacity>
-      </Row>
+      </Header>
       <Row style={styles.quoteContainer}>
         <TextM style={styles.quoteText}>Lost time is never found again</TextM>
       </Row>
@@ -134,11 +149,7 @@ export default function Home({ navigation, config }) {
 }
 
 const styles = StyleSheet.create({
-  actionContainer: {
-    marginTop: 15,
-    marginHorizontal: 20,
-    justifyContent: "space-between",
-  },
+  header: {},
   // ??????????????????????????????????????????????????????
   quoteContainer: {
     marginVertical: 30,

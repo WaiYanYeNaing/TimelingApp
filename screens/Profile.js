@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -19,11 +19,16 @@ import Dialog, {
   DialogContent,
 } from "react-native-popup-dialog";
 import { ScrollView } from "react-native-gesture-handler";
+import Axios from "axios";
 
 const { width: screenWidth } = Dimensions.get("window");
 
 export default function Profile({ navigation }) {
   const uri = "https://images.hdqwalls.com/download/necromancer-tn-240x240.jpg";
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [exp, setExp] = useState(0);
+  const expStage = [0, 20, 60, 180, 540, 1620];
   const [onlineStatus, setOnlineStatus] = useState("Inactive");
   const [rewardImages, setRewardImages] = useState([
     {
@@ -86,14 +91,54 @@ export default function Profile({ navigation }) {
   const [dialogRewardVisible, setDialogRewardVisible] = useState(false);
   const [dialogFriendVisible, setDialogFriendVisible] = useState(false);
 
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const getProfile = async () => {
+    const config = {
+      headers: {
+        "auth-token": await AsyncStorage.getItem("token"),
+      },
+    };
+    const uid = await AsyncStorage.getItem("uid");
+    Axios.get(`https://timeling.herokuapp.com/api/user/${uid}`, config).then(
+      (res) => {
+        setName(res.data.name);
+        setEmail(res.data.email);
+        setExp(res.data.exp);
+      }
+    );
+  };
+
   const logOut = async () => {
     await AsyncStorage.removeItem("token");
     navigation.navigate("Login");
   };
 
-  //   TODO: Make Progress Bar Dynamic
   const calProgress = (v) => {
-    return ((v / 800) * 100).toFixed(0);
+    let usedExp = v;
+    for (let i = 0; i < expStage.length; i++) {
+      usedExp -= expStage[i];
+      if (usedExp <= expStage[i + 1])
+        return ((usedExp / expStage[i + 1]) * 100).toFixed(0);
+    }
+  };
+  const calXP = (v) => {
+    let usedExp = v;
+    for (let i = 0; i < expStage.length; i++) {
+      usedExp -= expStage[i];
+      if (usedExp <= expStage[i + 1]) {
+        return usedExp;
+      }
+    }
+  };
+  const curMaxExp = (v) => {
+    let usedExp = v;
+    for (let i = 0; i < expStage.length; i++) {
+      usedExp -= expStage[i];
+      if (usedExp <= expStage[i + 1]) return expStage[i + 1];
+    }
   };
 
   //   TODO: Check User Active or Inactive
@@ -116,26 +161,26 @@ export default function Profile({ navigation }) {
         </View>
       </View>
       <View style={styles.nameContainer}>
-        <TextM style={styles.nameText}>Magic</TextM>
+        <TextM style={styles.nameText}>{name}</TextM>
       </View>
       <View style={styles.emailContainer}>
         <View style={styles.email}>
-          <TextM style={styles.emailText}>magic@gmail.com</TextM>
+          <TextM style={styles.emailText}>{email}</TextM>
         </View>
       </View>
       <View style={styles.progressBarContainer}>
         <Progress
           style={styles.progressBar}
-          done={calProgress(768)}
-          level={calProgress(768)}
+          done={calProgress(exp)}
+          level={calProgress(exp)}
         />
         <Row style={styles.progressBarText}>
           <Row>
-            <Text>XP 768/</Text>
-            <Text color="#a2a3a5">800</Text>
+            <Text>XP {calXP(exp)}/</Text>
+            <Text color="#a2a3a5">{curMaxExp(exp)}</Text>
           </Row>
           <Row>
-            <Text>32 XP </Text>
+            <Text>{curMaxExp(exp) - calXP(exp)} XP </Text>
             <Text color="#a2a3a5">to level up</Text>
           </Row>
         </Row>
