@@ -19,7 +19,7 @@ const { width: screenWidth } = Dimensions.get("window");
 export default function ReadMore({ route, navigation }) {
   const uri = "https://images.hdqwalls.com/download/necromancer-tn-240x240.jpg";
   const BgImage =
-    "https://images.hdqwalls.com/download/minimal-morning-landscape-8k-gx-1000x900.jpg";
+    "https://images.hdqwalls.com/download/blue-lake-star-trails-4k-5u-1000x900.jpg";
   const date = new Date(route.params.details.createdAt);
   const reviewLevel = [
     "Terrible",
@@ -69,11 +69,15 @@ export default function ReadMore({ route, navigation }) {
           </CardItem>
           <CardItem style={styles.subTitle}>
             <Row>
-              <Thumbnail style={styles.thumbnail} source={{ uri: uri }} />
-              <Text size={14} color={"#a2a3a5"}>
-                {"  "}
-                by {route.params.details.sdetails.name},
-              </Text>
+              <TouchableOpacity>
+                <Row>
+                  <Thumbnail style={styles.thumbnail} source={{ uri: uri }} />
+                  <Text size={14} color={"#a2a3a5"}>
+                    {"  "}
+                    by {route.params.details.sdetails.name},
+                  </Text>
+                </Row>
+              </TouchableOpacity>
               <Text size={14} color={"#a2a3a5"} style={{ marginBottom: 10 }}>
                 {/* {` ${date.toDateString()}, ${date.toLocaleTimeString()}`} */}
                 {` ${moment(date).format("LL")}, ${moment(date).fromNow()}`}
@@ -94,14 +98,14 @@ export default function ReadMore({ route, navigation }) {
             </Body>
           </CardItem>
           <CardItem style={styles.action}>
-            <Button style={styles.actionBtn}>
+            <TouchableOpacity style={styles.actionTouchable}>
               <Icon
-                type="MaterialIcons"
-                name="report"
-                style={{ color: "#ff6060" }}
+                type="Ionicons"
+                name="home"
+                style={{ color: "#f87470", fontSize: 35 }}
               />
-            </Button>
-            <Button
+            </TouchableOpacity>
+            {/* <Button
               style={styles.actionBtn}
               onPress={() => setDialogVisible(true)}
             >
@@ -110,21 +114,24 @@ export default function ReadMore({ route, navigation }) {
                 name="star-o"
                 style={{ color: "#feab4c", fontSize: 23 }}
               />
-            </Button>
+            </Button> */}
             <Button style={styles.actionBtn}>
               <Icon
                 type="MaterialCommunityIcons"
-                name="reply-all-outline"
-                style={{ color: "#547FF0", fontSize: 28 }}
+                name="feather"
+                style={{ color: "#fff", fontSize: 34 }}
               />
             </Button>
-            <Button style={styles.actionBtn}>
+            <TouchableOpacity
+              onPress={() => setDialogVisible(true)}
+              style={styles.actionTouchable}
+            >
               <Icon
-                type="MaterialIcons"
-                name="more-horiz"
-                style={{ color: "#91D276", fontSize: 30 }}
+                type="MaterialCommunityIcons"
+                name="star-face"
+                style={{ color: "#91D276", fontSize: 35 }}
               />
-            </Button>
+            </TouchableOpacity>
           </CardItem>
         </Card>
       </View>
@@ -217,21 +224,19 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 12,
   },
   action: {
-    borderTopWidth: 0.4,
-    borderTopColor: "#a2a3a5",
     backgroundColor: "transparent",
     marginTop: 10,
     marginHorizontal: 20,
     justifyContent: "space-between",
   },
   actionBtn: {
-    width: 60,
-    height: 60,
+    width: 80,
+    height: 80,
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#f77374",
     borderRadius: 100,
-    elevation: 4,
   },
+  actionTouchable: {},
   // ??????????????????????????????????????????????????????
   dialog: {
     paddingTop: 20,

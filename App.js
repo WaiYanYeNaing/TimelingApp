@@ -17,6 +17,7 @@ import ReadMore from "./screens/ReadMore";
 import Register from "./screens/Register";
 import { Easing, AsyncStorage } from "react-native";
 import Profile from "./screens/Profile";
+import SendLetter from "./screens/SendLetter";
 
 const Stack = createStackNavigator();
 const closeConfig = {
@@ -99,6 +100,20 @@ export default class App extends React.Component {
               headerTitleAlign: "center",
               headerTintColor: "#00203FFF",
               headerStyle: { backgroundColor: "#fff" },
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="SendLetter"
+            component={SendLetter}
+            options={{
+              title: "Timeling",
+              headerTitleAlign: "center",
+              headerTintColor: "#00203FFF",
+              headerStyle: { backgroundColor: "#fff" },
+              headerTitleStyle: {
+                fontSize: 18,
+              },
               headerShown: false,
             }}
           />

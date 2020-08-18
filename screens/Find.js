@@ -11,6 +11,7 @@ import SwipeablePanel from "react-native-sheets-bottom";
 import Text from "../components/TextR";
 import Container from "../components/Container";
 import Row from "../components/Row";
+import Header from "../components/Header";
 
 export default function Find({ navigation }) {
   const users = [
@@ -63,7 +64,6 @@ export default function Find({ navigation }) {
   ];
   const [selectedCard, setSelectedCard] = useState([]);
   const [selectVisible, setSelectVisible] = useState(false);
-  const [sentSuccessVisible, setSentSuccessVisible] = useState(false);
   const [dialogData, setDialogData] = useState([]);
   const [minAge, setMinAge] = useState(20);
   const [maxAge, setMaxAge] = useState(40);
@@ -81,7 +81,24 @@ export default function Find({ navigation }) {
   };
 
   return (
-    <Container>
+    <Container style={styles.container}>
+      <Header style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon
+            type="MaterialCommunityIcons"
+            name="backburger"
+            style={{ color: "black", fontSize: 30 }}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon
+            type="MaterialIcons"
+            name="more-horiz"
+            style={{ color: "black", fontSize: 30 }}
+          />
+        </TouchableOpacity>
+      </Header>
+
       {/* Cards */}
       <Row style={styles.rowCard}>
         <ScrollView>
@@ -95,14 +112,10 @@ export default function Find({ navigation }) {
                   <View
                     key={value.id}
                     style={{
-                      ...styles.cardSelected,
-                      ...{
-                        borderColor: selectedCard.includes(
-                          JSON.stringify(value.id)
-                        )
-                          ? "rgba(26, 59, 202, .8)"
-                          : "transparent",
-                      },
+                      ...styles.cardContainer,
+                      ...(selectedCard.includes(JSON.stringify(value.id))
+                        ? styles.cardSelected
+                        : styles.cardUnSelected),
                     }}
                   >
                     <Category
@@ -113,6 +126,16 @@ export default function Find({ navigation }) {
                       image={value.image}
                       selected={(id) => selectedCardHandler(id)}
                     />
+                    <Row>
+                      <Text color={"#fff"} size={13}>
+                        Selected{" "}
+                      </Text>
+                      <Icon
+                        type="MaterialCommunityIcons"
+                        name="account-check"
+                        style={{ color: "#fff", fontSize: 18 }}
+                      />
+                    </Row>
                   </View>
                 );
               })}
@@ -122,13 +145,14 @@ export default function Find({ navigation }) {
       </Row>
 
       {/* Location */}
-      <View style={styles.rowLocationGender}>
-        <Text style={{ flexDirection: "row", fontSize: 14 }}>Location</Text>
+      <View style={styles.rowLocation}>
+        <Text size={14}>Location</Text>
         <TouchableOpacity
           onPress={() => {
             setSelectVisible(true);
             setDialogData(dialogDataLocation);
           }}
+          style={styles.selectLocation}
         >
           <View style={{ flexDirection: "row" }}>
             <Left>
@@ -153,95 +177,80 @@ export default function Find({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      {/* Min Age */}
+      {/* Age Range */}
       <View style={styles.rowAge}>
-        <Text style={{ flexDirection: "row", fontSize: 14 }}>
-          Min Age : {minAge}
-        </Text>
-        <View style={{ flexDirection: "row" }}>
-          <Slider
-            style={{ width: "100%", height: 40 }}
-            minimumValue={10}
-            maximumValue={60}
-            value={minAge}
-            minimumTrackTintColor="#1A3BCA"
-            maximumTrackTintColor="#1A3BCA"
-            thumbTintColor="#1A3BCA"
-            step={1}
-            onValueChange={(v) => setMinAge(v)}
-          />
-        </View>
-      </View>
-
-      {/* Max Age */}
-      <View style={styles.rowAge}>
-        <Text style={{ flexDirection: "row", fontSize: 14 }}>
-          Max Age : {maxAge}
-        </Text>
-        <View style={{ flexDirection: "row" }}>
-          <Slider
-            style={{ width: "100%", height: 40 }}
-            minimumValue={5}
-            maximumValue={60}
-            value={maxAge}
-            minimumTrackTintColor="#1A3BCA"
-            maximumTrackTintColor="#1A3BCA"
-            thumbTintColor="#1A3BCA"
-            step={1}
-            onValueChange={(v) => setMaxAge(v)}
-          />
-        </View>
+        <Text size={14}>Age</Text>
+        <Row style={{ flexWrap: "wrap" }}>
+          <TouchableOpacity activeOpacity={0.4}>
+            <View style={styles.item}>
+              <Text color={"#a2a3a5"}>11~20</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={[
+                styles.item,
+                { backgroundColor: "#30C08E", borderColor: "#30C08E" },
+              ]}
+            >
+              <Text color={"#fff"}>21~30</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.item}>
+              <Text color={"#a2a3a5"}>31~40</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.item}>
+              <Text color={"#a2a3a5"}>Any</Text>
+            </View>
+          </TouchableOpacity>
+        </Row>
       </View>
 
       {/* Gender */}
-      <View style={styles.rowLocationGender}>
-        <Text style={{ flexDirection: "row", fontSize: 14 }}>Gender</Text>
-        <TouchableOpacity
-          onPress={() => {
-            setSelectVisible(true);
-            setDialogData(dialogDataGender);
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <Left>
-              <Text style={{ color: "grey", paddingLeft: 5, fontSize: 14 }}>
-                {selectedGender}
-              </Text>
-            </Left>
-            <Right>
-              <Button transparent>
-                <Icon
-                  type="Entypo"
-                  name="chevron-right"
-                  onPress={() => {
-                    setSelectVisible(true);
-                    setDialogData(dialogDataGender);
-                  }}
-                  style={{ color: "grey" }}
-                />
-              </Button>
-            </Right>
-          </View>
-        </TouchableOpacity>
+      <View style={styles.rowGender}>
+        <Text size={14}>Gender</Text>
+        <Row style={{ flexWrap: "wrap" }}>
+          <TouchableOpacity activeOpacity={0.4}>
+            <View style={styles.item}>
+              <Text color={"#a2a3a5"}>Male</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={[
+                styles.item,
+                { backgroundColor: "#30C08E", borderColor: "#30C08E" },
+              ]}
+            >
+              <Text color={"#fff"}>Female</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.item}>
+              <Text color={"#a2a3a5"}>Any</Text>
+            </View>
+          </TouchableOpacity>
+        </Row>
       </View>
 
       {/* Btn Apply */}
-      <View style={styles.rowBtnApply}>
-        <TouchableOpacity>
-          <Button block style={styles.btnApply}>
-            <Text style={{ color: "#1A3BCA" }}>Apply</Text>
-          </Button>
-        </TouchableOpacity>
+      <View style={styles.rowBtn}>
+        <Button block style={styles.btnApply}>
+          <Text style={{ color: "#1A3BCA" }}>Apply</Text>
+        </Button>
       </View>
 
-      {/* Btn Sent */}
-      <View style={styles.rowBtnApply}>
+      {/* Btn Next */}
+      <View style={styles.rowBtn}>
         <Button
           block
-          style={styles.btnSent}
-          onPress={() => setSentSuccessVisible(true)}
+          style={styles.btnNext}
+          onPress={() => navigation.navigate("SendLetter")}
         >
-          <Text style={{ color: "#fff" }}>Sent</Text>
+          <Text style={{ color: "#fff" }}>Next</Text>
         </Button>
       </View>
 
@@ -279,66 +288,67 @@ export default function Find({ navigation }) {
           </List>
         </DialogContent>
       </Dialog>
-
-      {/** Dialog for Sent Success */}
-      <SwipeablePanel
-        fullWidth
-        isActive={sentSuccessVisible}
-        onClose={() => setSentSuccessVisible(false)}
-        onPressCloseButton={() => setSentSuccessVisible(true)}
-        style={{ elevation: 5 }}
-        closeOnTouchOutside={false}
-        barStyle={{ width: 40 }}
-        style={{ zIndex: 111231232 }}
-      >
-        <View style={styles.sentSuccessContainer}>
-          <Image
-            source={require("../assets/images/sent.png")}
-            style={styles.sentSuccessImage}
-          />
-          <Text style={styles.sentSuccessText}>Sent Success!</Text>
-          <Button
-            style={styles.btnDone}
-            onPress={() => setSentSuccessVisible(false)}
-          >
-            <Text style={{ color: "#fff", width: 120, textAlign: "center" }}>
-              Done
-            </Text>
-          </Button>
-        </View>
-      </SwipeablePanel>
     </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingHorizontal: 10,
-    paddingVertical: 7,
-  },
+  container: {},
   rowCard: {
-    marginBottom: 10,
+    marginBottom: 20,
+    marginLeft: 10,
   },
-  cardSelected: {
+  cardContainer: {
     borderWidth: 3,
     borderRadius: 8,
     marginHorizontal: 5,
     marginVertical: 10,
+    height: 280,
+    alignItems: "center",
   },
-  rowLocationGender: {
+  cardSelected: {
+    borderColor: "rgba(26, 59, 202, .8)",
+    borderBottomWidth: 30,
+    borderBottomEndRadius: 15,
+    borderBottomStartRadius: 15,
+  },
+  cardUnSelected: {
+    borderColor: "transparent",
+  },
+  // ??????????????????????????????????????????????????????
+  rowLocation: {
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  selectLocation: {
+    marginTop: 4,
+    left: -3,
+  },
+  // ??????????????????????????????????????????????????????
+  rowAge: {
+    paddingHorizontal: 10,
+    marginBottom: 5,
+  },
+  item: {
+    paddingHorizontal: 17,
+    borderRadius: 30,
+    height: 40,
+    borderWidth: 1,
+    borderColor: "#898989",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+    marginVertical: 20,
+  },
+  // ??????????????????????????????????????????????????????
+  rowGender: {
     flex: 1,
     paddingHorizontal: 10,
     marginBottom: 5,
   },
-  rowAge: {
-    flex: 1,
-    paddingHorizontal: 10,
-  },
-  rowBtnApply: {
-    flex: 1,
-    marginTop: 5,
+  // ??????????????????????????????????????????????????????
+  rowBtn: {
+    marginTop: 15,
     paddingHorizontal: 10,
     height: 60,
   },
@@ -346,54 +356,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderWidth: 1.5,
     borderRadius: 20,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
     elevation: 0,
   },
-  btnSent: {
+  btnNext: {
     backgroundColor: "#1A3BCA",
     borderRadius: 20,
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 0,
-  },
-  sentSuccessContainer: {
-    flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  sentSuccessImage: {
-    marginTop: 10,
-    width: 100,
-    height: 100,
-  },
-  sentSuccessText: {
-    marginTop: 10,
-    fontSize: 24,
-    fontWeight: "900",
-  },
-  btnDone: {
-    marginTop: 20,
-    backgroundColor: "#1A3BCA",
-    borderRadius: 30,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
     elevation: 0,
   },
 });

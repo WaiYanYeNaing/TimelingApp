@@ -15,6 +15,7 @@ export default function Category(props) {
     <View style={styles.container}>
       <Body>
         <TouchableOpacity
+          activeOpacity={0.7}
           onPress={() => {
             props.selected(props.id);
           }}
@@ -48,7 +49,7 @@ export default function Category(props) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 270,
+    height: 250,
     width: 149,
   },
   image: {

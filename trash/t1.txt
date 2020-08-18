@@ -1,0 +1,61 @@
+
+      {/** Dialog for Sent Success */}
+      <SwipeablePanel
+        fullWidth
+        isActive={sentSuccessVisible}
+        onClose={() => setSentSuccessVisible(false)}
+        onPressCloseButton={() => setSentSuccessVisible(true)}
+        style={{ elevation: 5 }}
+        closeOnTouchOutside={false}
+        barStyle={{ width: 40 }}
+        style={{ zIndex: 111231232 }}
+      >
+        <View style={styles.sentSuccessContainer}>
+          <Image
+            source={require("../assets/images/sent.png")}
+            style={styles.sentSuccessImage}
+          />
+          <Text style={styles.sentSuccessText}>Sent Success!</Text>
+          <Button
+            style={styles.btnDone}
+            onPress={() => setSentSuccessVisible(false)}
+          >
+            <Text style={{ color: "#fff", width: 120, textAlign: "center" }}>
+              Done
+            </Text>
+          </Button>
+        </View>
+      </SwipeablePanel>
+
+
+
+      
+  sentSuccessContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  sentSuccessImage: {
+    marginTop: 10,
+    width: 100,
+    height: 100,
+  },
+  sentSuccessText: {
+    marginTop: 10,
+    fontSize: 24,
+    fontWeight: "900",
+  },
+  btnDone: {
+    marginTop: 20,
+    backgroundColor: "#1A3BCA",
+    borderRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 0,
+  },
