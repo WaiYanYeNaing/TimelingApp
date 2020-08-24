@@ -105,17 +105,10 @@ export default function ReadMore({ route, navigation }) {
                 style={{ color: "#f87470", fontSize: 35 }}
               />
             </TouchableOpacity>
-            {/* <Button
+            <Button
               style={styles.actionBtn}
-              onPress={() => setDialogVisible(true)}
+              onPress={() => navigation.navigate("SendLetter")}
             >
-              <Icon
-                type="FontAwesome"
-                name="star-o"
-                style={{ color: "#feab4c", fontSize: 23 }}
-              />
-            </Button> */}
-            <Button style={styles.actionBtn}>
               <Icon
                 type="MaterialCommunityIcons"
                 name="feather"
@@ -233,7 +226,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     justifyContent: "center",
-    backgroundColor: "#f77374",
+    backgroundColor: "#4393ff",
     borderRadius: 100,
   },
   actionTouchable: {},
