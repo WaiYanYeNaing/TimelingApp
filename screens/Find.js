@@ -20,24 +20,32 @@ export default function Find({ navigation }) {
       name: "The Last of Us II",
       interest: "Dark",
       image: require("../assets/images/1.jpg"),
+      uri:
+        "https://images.hdqwalls.com/download/anonmyus-boy-yellow-minimal-4k-pw-500x500.jpg",
     },
     {
       id: 2,
       name: "The Last of Us II",
       interest: "Light",
       image: require("../assets/images/2.jpg"),
+      uri:
+        "https://images.hdqwalls.com/download/viper-valorant-2020-game-sk-500x500.jpg",
     },
     {
       id: 3,
       name: "Dragon Balls",
       interest: "Dark",
       image: require("../assets/images/3.jpg"),
+      uri:
+        "https://images.hdqwalls.com/download/cyberpunk-2077-12k-kp-500x500.jpg",
     },
     {
       id: 4,
       name: "Apex Legends",
       interest: "Dark",
       image: require("../assets/images/apexlegends.gif"),
+      uri:
+        "https://images.hdqwalls.com/download/2020-4k-cyberpunk-2077-81-500x500.jpg",
     },
   ];
   const dialogDataLocation = [
@@ -63,6 +71,7 @@ export default function Find({ navigation }) {
     },
   ];
   const [selectedCard, setSelectedCard] = useState([]);
+  const [SU, setSU] = useState([]);
   const [selectVisible, setSelectVisible] = useState(false);
   const [dialogData, setDialogData] = useState([]);
   const [minAge, setMinAge] = useState(20);
@@ -70,14 +79,22 @@ export default function Find({ navigation }) {
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedGender, setSelectedGender] = useState("All");
 
-  const selectedCardHandler = (id) => {
+  const selectedCardHandler = (v) => {
+    // * Selected User ID
     let temp = [...selectedCard];
-    if (temp.includes(JSON.stringify(id))) {
-      temp = temp.filter((v) => v != JSON.stringify(id));
+    if (temp.includes(JSON.stringify(v.id))) {
+      temp = temp.filter((f) => f != JSON.stringify(v.id));
     } else {
-      temp.push(JSON.stringify(id));
+      if (temp.length < 3) temp.push(JSON.stringify(v.id));
     }
-    setSelectedCard(temp);
+    setSelectedCard(temp); // eg ["1", "3"]
+
+    // * Selected User Data
+    let tempSU = [];
+    temp.forEach((e) => {
+      tempSU.push(users.filter((f) => f.id == e)[0]);
+    });
+    setSU(tempSU);
   };
 
   return (
@@ -123,8 +140,8 @@ export default function Find({ navigation }) {
                       id={value.id}
                       name={value.name}
                       interest={value.interest}
-                      image={value.image}
-                      selected={(id) => selectedCardHandler(id)}
+                      image={value.uri}
+                      selected={(v) => selectedCardHandler(v)}
                     />
                     <Row>
                       <Text color={"#fff"} size={13}>
@@ -248,7 +265,7 @@ export default function Find({ navigation }) {
         <Button
           block
           style={styles.btnNext}
-          onPress={() => navigation.navigate("SendLetter")}
+          onPress={() => navigation.navigate("SendLetter", { SU })}
         >
           <Text style={{ color: "#fff" }}>Next</Text>
         </Button>

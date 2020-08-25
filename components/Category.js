@@ -17,7 +17,7 @@ export default function Category(props) {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => {
-            props.selected(props.id);
+            props.selected(props);
           }}
           //   onPress={() => {
           //     this.props.navigation.navigate("Read", {
@@ -28,7 +28,7 @@ export default function Category(props) {
           {/* <Image source={this.props.image} style={styles.image} /> */}
 
           <ImageBackground
-            source={props.image}
+            source={{ uri: props.image }}
             style={styles.image}
             imageStyle={{ borderRadius: 5 }}
           >

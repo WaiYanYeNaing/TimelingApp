@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -19,6 +19,9 @@ import {
   Label,
   Button,
   Thumbnail,
+  Root,
+  Toast,
+  Content,
 } from "native-base";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import Text from "../components/TextR";
@@ -26,29 +29,19 @@ import TextM from "../components/TextM";
 
 const { width } = Dimensions.get("window");
 
-export default function SendLetter({ navigation }) {
+export default function SendLetter({ route, navigation }) {
   const [curTab, setCurTab] = useState(1);
   const [newLetterColor, setNewLetterColor] = useState("#4393ff");
   const [draftLetterColor, setDraftLetterColor] = useState("#d5dce3");
   const [title, setTitle] = useState("");
-  const [selectedUser, setSelectedUser] = useState([
-    {
-      id: 1,
-      uri: "https://images.hdqwalls.com/download/necromancer-tn-240x240.jpg",
-    },
-    {
-      id: 2,
-      uri:
-        "https://images.hdqwalls.com/download/viper-valorant-2020-game-sk-140x140.jpg",
-    },
-    {
-      id: 3,
-      uri:
-        "https://images.hdqwalls.com/download/cyberpunk-2077-12k-kp-140x140.jpg",
-    },
-  ]);
+  const [selectedUser, setSelectedUser] = useState([]);
   const [tempSU, setTempSU] = useState([]);
   const [curActionBtn, setCurActionBtn] = useState(1);
+
+  useEffect(() => {
+    setSelectedUser(route.params.SU);
+    console.log(selectedUser);
+  }, []);
 
   const switchTab = (v) => {
     if (v === 1) {
@@ -206,7 +199,6 @@ export default function SendLetter({ navigation }) {
           />
         </TouchableOpacity>
       </Row>
-
       <Row style={styles.titleText}>
         <TextM size={18}>Create a letter</TextM>
       </Row>
