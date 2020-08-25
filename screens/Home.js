@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Dimensions, AsyncStorage } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  AsyncStorage,
+  Image,
+} from "react-native";
 import { Button, Icon, Thumbnail } from "native-base";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import Text from "../components/TextR";
@@ -99,39 +105,30 @@ export default function Home({ navigation, config }) {
   };
 
   return (
-    <Container>
+    <Container style={styles.container}>
       <Header style={styles.header}>
         <TouchableOpacity onPress={() => logOut()}>
-          <Icon type="FontAwesome" name="sign-out" />
+          <Icon type="FontAwesome" name="sign-out" style={{ color: "#fff" }} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
           <Thumbnail small source={{ uri: uri }} />
         </TouchableOpacity>
       </Header>
       <Row style={styles.quoteContainer}>
-        <TextM style={styles.quoteText}>Lost time is never found again</TextM>
-      </Row>
-      <Row style={styles.routButtonContainer}>
-        <Button style={[styles.routeButton, styles.btn1]}>
-          <Text style={styles.routeButtonText1}>History</Text>
-        </Button>
-        <Button
-          style={[styles.routeButton, styles.btn2]}
-          onPress={() => navigation.navigate("Find")}
-        >
-          <Text style={styles.routeButtonText2}>Create New</Text>
-        </Button>
-        <Button style={[styles.routeButton, styles.btn3]}>
-          <Text style={styles.routeButtonText3}>Drafts</Text>
-        </Button>
-        <Button style={[styles.routeButton, styles.btn4]}>
-          <Text style={styles.routeButtonText4}>Settings</Text>
-        </Button>
+        <TextM style={styles.quoteText} color={"#fff"}>
+          Lost time is never found again
+        </TextM>
       </Row>
       <Row style={styles.carouselHeaderContainer}>
-        <TextM style={styles.carouselHeader}>Recently Received</TextM>
+        <TextM style={styles.carouselHeader} color={"#fff"}>
+          Recently Received
+        </TextM>
         <TouchableOpacity onPress={() => getAllLetters()}>
-          <Icon type="MaterialCommunityIcons" name="reload" />
+          <Icon
+            type="MaterialCommunityIcons"
+            name="reload"
+            style={{ color: "#fff" }}
+          />
         </TouchableOpacity>
       </Row>
       <Row style={styles.carouselContainer}>
@@ -144,11 +141,55 @@ export default function Home({ navigation, config }) {
           hasParallaxImages={true}
         />
       </Row>
+      <View style={styles.routButtonContainer}>
+        <Row>
+          <Text color={"#fff"} size={20} style={styles.routeBtnHeader}>
+            Services
+          </Text>
+        </Row>
+        <Row>
+          <Button style={[styles.routeButton, styles.btn1]}>
+            <Image
+              source={require("../assets/images/history.png")}
+              style={styles.routeBtnImg}
+            />
+            <Text style={styles.routeButtonText1}>History</Text>
+          </Button>
+          <Button
+            style={[styles.routeButton, styles.btn2]}
+            onPress={() => navigation.navigate("Find")}
+          >
+            <Image
+              source={require("../assets/images/plus.png")}
+              style={styles.routeBtnImg}
+            />
+            <Text style={styles.routeButtonText2}>Create</Text>
+          </Button>
+          <Button style={[styles.routeButton, styles.btn3]}>
+            <Image
+              source={require("../assets/images/draft.png")}
+              style={styles.routeBtnImg}
+            />
+            <Text style={styles.routeButtonText3}>Drafts</Text>
+          </Button>
+          <Button style={[styles.routeButton, styles.btn4]}>
+            <Image
+              source={require("../assets/images/settings.png")}
+              style={styles.routeBtnImg}
+            />
+            <Text style={styles.routeButtonText4}>Settings</Text>
+          </Button>
+        </Row>
+      </View>
     </Container>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#0d0630",
+  },
+  // ??????????????????????????????????????????????????????
   header: {},
   // ??????????????????????????????????????????????????????
   quoteContainer: {
@@ -160,46 +201,8 @@ const styles = StyleSheet.create({
     width: 250,
   },
   // ??????????????????????????????????????????????????????
-  routButtonContainer: {
-    flex: 1,
-    flexWrap: "wrap",
-    marginHorizontal: 20,
-    marginVertical: 30,
-  },
-  routeButton: {
-    height: 35,
-    paddingHorizontal: 20,
-    marginVertical: 10,
-    borderRadius: 5,
-    marginRight: 20,
-    elevation: 0,
-  },
-  btn1: {
-    backgroundColor: "#cceff9",
-  },
-  btn2: {
-    backgroundColor: "#f9e7cc",
-  },
-  btn3: {
-    backgroundColor: "#f9cdcc",
-  },
-  btn4: {
-    backgroundColor: "#7dd181",
-  },
-  routeButtonText1: {
-    color: "#157896",
-  },
-  routeButtonText2: {
-    color: "#b66e02",
-  },
-  routeButtonText3: {
-    color: "#e1350e",
-  },
-  routeButtonText4: {
-    color: "#4b7f52",
-  },
-  // ??????????????????????????????????????????????????????
   carouselHeaderContainer: {
+    alignItems: "flex-end",
     marginHorizontal: 30,
     marginBottom: 30,
     height: 40,
@@ -209,9 +212,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   // ??????????????????????????????????????????????????????
-  carouselContainer: {
-    justifyContent: "flex-end",
-  },
+  carouselContainer: {},
   imageContainer: {
     width: screenWidth - 160,
     height: screenWidth - 10,
@@ -247,5 +248,58 @@ const styles = StyleSheet.create({
   carouselBtnText: {
     fontSize: 13,
     color: "#ededed",
+  },
+  // ??????????????????????????????????????????????????????
+  routButtonContainer: {
+    justifyContent: "flex-end",
+    backgroundColor: "#623CEA",
+    borderTopStartRadius: 30,
+    borderTopEndRadius: 30,
+    flex: 1,
+    alignItems: "center",
+    paddingBottom: 20,
+  },
+  routeBtnHeader: {
+    marginVertical: 20,
+    width: screenWidth - 40,
+  },
+  routeButton: {
+    height: 90,
+    width: 80,
+    flexDirection: "column",
+    justifyContent: "center",
+    marginVertical: 6,
+    borderRadius: 5,
+    marginHorizontal: 5,
+    elevation: 0,
+  },
+  btn1: {
+    backgroundColor: "#cceff9",
+  },
+  btn2: {
+    backgroundColor: "#f9e7cc",
+  },
+  btn3: {
+    backgroundColor: "#f9cdcc",
+  },
+  btn4: {
+    backgroundColor: "#7dd181",
+  },
+  routeButtonText1: {
+    color: "#157896",
+  },
+  routeButtonText2: {
+    color: "#b66e02",
+  },
+  routeButtonText3: {
+    color: "#e1350e",
+  },
+  routeButtonText4: {
+    color: "#4b7f52",
+  },
+  routeBtnImg: {
+    width: 40,
+    height: 40,
+    marginBottom: 5,
   },
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
 import { Card, CardItem, Body, Button, Icon, Thumbnail } from "native-base";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
@@ -17,7 +17,9 @@ import Header from "../components/Header";
 const { width: screenWidth } = Dimensions.get("window");
 
 export default function ReadMore({ route, navigation }) {
-  const uri = "https://images.hdqwalls.com/download/necromancer-tn-240x240.jpg";
+  console.log(route.params.details);
+  const uri =
+    "https://images.hdqwalls.com/download/razer-logo-dark-4k-c6-240x240.jpg";
   const BgImage =
     "https://images.hdqwalls.com/download/blue-lake-star-trails-4k-5u-1000x900.jpg";
   const date = new Date(route.params.details.createdAt);
@@ -36,6 +38,13 @@ export default function ReadMore({ route, navigation }) {
   ];
   const [dialogVisible, setDialogVisible] = useState(false);
   const [rating, setRating] = useState(0);
+  const [SU, setSU] = useState([]);
+
+  useEffect(() => {
+    let temp = [{ ...route.params.details, uri: uri }];
+    setSU(temp);
+    console.log(temp);
+  }, []);
 
   const ratingCompleted = (rating) => {
     setRating(rating);
@@ -107,7 +116,7 @@ export default function ReadMore({ route, navigation }) {
             </TouchableOpacity>
             <Button
               style={styles.actionBtn}
-              onPress={() => navigation.navigate("SendLetter")}
+              onPress={() => navigation.navigate("SendLetter", { SU })}
             >
               <Icon
                 type="MaterialCommunityIcons"
