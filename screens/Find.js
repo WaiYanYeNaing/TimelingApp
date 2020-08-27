@@ -12,6 +12,7 @@ import Text from "../components/TextR";
 import Container from "../components/Container";
 import Row from "../components/Row";
 import Header from "../components/Header";
+import TextM from "../components/TextM";
 
 export default function Find({ navigation }) {
   const users = [
@@ -99,19 +100,20 @@ export default function Find({ navigation }) {
 
   return (
     <Container style={styles.container}>
+      {/* Header Action btn */}
       <Header style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon
             type="MaterialCommunityIcons"
             name="backburger"
-            style={{ color: "black", fontSize: 30 }}
+            style={{ color: "#fff", fontSize: 30 }}
           />
         </TouchableOpacity>
         <TouchableOpacity>
           <Icon
             type="MaterialIcons"
             name="more-horiz"
-            style={{ color: "black", fontSize: 30 }}
+            style={{ color: "#fff", fontSize: 30 }}
           />
         </TouchableOpacity>
       </Header>
@@ -143,16 +145,18 @@ export default function Find({ navigation }) {
                       image={value.uri}
                       selected={(v) => selectedCardHandler(v)}
                     />
-                    <Row>
-                      <Text color={"#fff"} size={13}>
-                        Selected{" "}
-                      </Text>
-                      <Icon
-                        type="MaterialCommunityIcons"
-                        name="account-check"
-                        style={{ color: "#fff", fontSize: 18 }}
-                      />
-                    </Row>
+                    {selectedCard.includes(JSON.stringify(value.id)) ? (
+                      <Row>
+                        <Text color={"#fff"} size={13}>
+                          Selected{" "}
+                        </Text>
+                        <Icon
+                          type="MaterialCommunityIcons"
+                          name="account-check"
+                          style={{ color: "#fff", fontSize: 18 }}
+                        />
+                      </Row>
+                    ) : null}
                   </View>
                 );
               })}
@@ -161,107 +165,114 @@ export default function Find({ navigation }) {
         </ScrollView>
       </Row>
 
-      {/* Location */}
-      <View style={styles.rowLocation}>
-        <Text size={14}>Location</Text>
-        <TouchableOpacity
-          onPress={() => {
-            setSelectVisible(true);
-            setDialogData(dialogDataLocation);
-          }}
-          style={styles.selectLocation}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <Left>
-              <Text style={{ color: "grey", paddingLeft: 5, fontSize: 14 }}>
-                {selectedLocation}
-              </Text>
-            </Left>
-            <Right>
-              <Button transparent>
-                <Icon
-                  type="Entypo"
-                  name="chevron-right"
-                  onPress={() => {
-                    setSelectVisible(true);
-                    setDialogData(dialogDataLocation);
-                  }}
-                  style={{ color: "grey" }}
-                />
-              </Button>
-            </Right>
-          </View>
-        </TouchableOpacity>
-      </View>
+      {/* Filter Header */}
+      <Row style={styles.filterHeader}>
+        <TextM size={17}>Select Manually</TextM>
+      </Row>
 
-      {/* Age Range */}
-      <View style={styles.rowAge}>
-        <Text size={14}>Age</Text>
-        <Row style={{ flexWrap: "wrap" }}>
-          <TouchableOpacity activeOpacity={0.4}>
-            <View style={styles.item}>
-              <Text color={"#a2a3a5"}>11~20</Text>
+      <ScrollView>
+        {/* Location */}
+        <View style={styles.rowLocation}>
+          <Text size={14}>Location</Text>
+          <TouchableOpacity
+            onPress={() => {
+              setSelectVisible(true);
+              setDialogData(dialogDataLocation);
+            }}
+            style={styles.selectLocation}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <Left>
+                <Text style={{ color: "grey", paddingLeft: 5, fontSize: 14 }}>
+                  {selectedLocation}
+                </Text>
+              </Left>
+              <Right>
+                <Button transparent>
+                  <Icon
+                    type="Entypo"
+                    name="chevron-right"
+                    onPress={() => {
+                      setSelectVisible(true);
+                      setDialogData(dialogDataLocation);
+                    }}
+                    style={{ color: "grey" }}
+                  />
+                </Button>
+              </Right>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <View
-              style={[
-                styles.item,
-                { backgroundColor: "#30C08E", borderColor: "#30C08E" },
-              ]}
-            >
-              <Text color={"#fff"}>21~30</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.item}>
-              <Text color={"#a2a3a5"}>31~40</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.item}>
-              <Text color={"#a2a3a5"}>Any</Text>
-            </View>
-          </TouchableOpacity>
-        </Row>
-      </View>
+        </View>
 
-      {/* Gender */}
-      <View style={styles.rowGender}>
-        <Text size={14}>Gender</Text>
-        <Row style={{ flexWrap: "wrap" }}>
-          <TouchableOpacity activeOpacity={0.4}>
-            <View style={styles.item}>
-              <Text color={"#a2a3a5"}>Male</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View
-              style={[
-                styles.item,
-                { backgroundColor: "#30C08E", borderColor: "#30C08E" },
-              ]}
-            >
-              <Text color={"#fff"}>Female</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.item}>
-              <Text color={"#a2a3a5"}>Any</Text>
-            </View>
-          </TouchableOpacity>
-        </Row>
-      </View>
+        {/* Age Range */}
+        <View style={styles.rowAge}>
+          <Text size={14}>Age</Text>
+          <Row style={{ flexWrap: "wrap" }}>
+            <TouchableOpacity activeOpacity={0.4}>
+              <View style={styles.item}>
+                <Text color={"#a2a3a5"}>11~20</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View
+                style={[
+                  styles.item,
+                  { backgroundColor: "#1A3BCA", borderColor: "#1A3BCA" },
+                ]}
+              >
+                <Text color={"#fff"}>21~30</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.item}>
+                <Text color={"#a2a3a5"}>31~40</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.item}>
+                <Text color={"#a2a3a5"}>Any</Text>
+              </View>
+            </TouchableOpacity>
+          </Row>
+        </View>
+
+        {/* Gender */}
+        <View style={styles.rowGender}>
+          <Text size={14}>Gender</Text>
+          <Row style={{ flexWrap: "wrap" }}>
+            <TouchableOpacity activeOpacity={0.4}>
+              <View style={styles.item}>
+                <Text color={"#a2a3a5"}>Male</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View
+                style={[
+                  styles.item,
+                  { backgroundColor: "#1A3BCA", borderColor: "#1A3BCA" },
+                ]}
+              >
+                <Text color={"#fff"}>Female</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.item}>
+                <Text color={"#a2a3a5"}>Any</Text>
+              </View>
+            </TouchableOpacity>
+          </Row>
+        </View>
+      </ScrollView>
 
       {/* Btn Apply */}
-      <View style={styles.rowBtn}>
+      <View style={styles.rowBtnApply}>
         <Button block style={styles.btnApply}>
           <Text style={{ color: "#1A3BCA" }}>Apply</Text>
         </Button>
       </View>
 
       {/* Btn Next */}
-      <View style={styles.rowBtn}>
+      <View style={styles.rowBtnNext}>
         <Button
           block
           style={styles.btnNext}
@@ -310,7 +321,9 @@ export default function Find({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: "#0d0630",
+  },
   rowCard: {
     marginBottom: 20,
     marginLeft: 10,
@@ -333,9 +346,18 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
   },
   // ??????????????????????????????????????????????????????
+  filterHeader: {
+    marginHorizontal: 20,
+    marginBottom: 10,
+  },
+  // ??????????????????????????????????????????????????????
   rowLocation: {
-    paddingHorizontal: 10,
-    marginBottom: 20,
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    marginBottom: 2,
+    backgroundColor: "#0d0630",
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
   },
   selectLocation: {
     marginTop: 4,
@@ -343,12 +365,14 @@ const styles = StyleSheet.create({
   },
   // ??????????????????????????????????????????????????????
   rowAge: {
-    paddingHorizontal: 10,
-    marginBottom: 5,
+    paddingHorizontal: 20,
+    marginBottom: 2,
+    paddingTop: 10,
+    backgroundColor: "#0d0630",
   },
   item: {
     paddingHorizontal: 17,
-    borderRadius: 30,
+    borderRadius: 10,
     height: 40,
     borderWidth: 1,
     borderColor: "#898989",
@@ -359,25 +383,37 @@ const styles = StyleSheet.create({
   },
   // ??????????????????????????????????????????????????????
   rowGender: {
-    flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     marginBottom: 5,
+    paddingTop: 10,
+    backgroundColor: "#0d0630",
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
   },
   // ??????????????????????????????????????????????????????
-  rowBtn: {
-    marginTop: 15,
+  rowBtnApply: {
+    paddingTop: 30,
     paddingHorizontal: 10,
-    height: 60,
+    height: 80,
+    backgroundColor: "#623CEA",
+    borderTopStartRadius: 30,
+    borderTopEndRadius: 30,
+  },
+  rowBtnNext: {
+    paddingTop: 10,
+    paddingHorizontal: 10,
+    height: 75,
+    backgroundColor: "#623CEA",
   },
   btnApply: {
     backgroundColor: "#fff",
     borderWidth: 1.5,
-    borderRadius: 20,
+    borderRadius: 10,
     elevation: 0,
   },
   btnNext: {
     backgroundColor: "#1A3BCA",
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: "#000",
     elevation: 0,
   },
