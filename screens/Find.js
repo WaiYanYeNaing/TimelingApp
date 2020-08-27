@@ -23,6 +23,7 @@ export default function Find({ navigation }) {
       image: require("../assets/images/1.jpg"),
       uri:
         "https://images.hdqwalls.com/download/anonmyus-boy-yellow-minimal-4k-pw-500x500.jpg",
+      gender: "male",
     },
     {
       id: 2,
@@ -31,6 +32,7 @@ export default function Find({ navigation }) {
       image: require("../assets/images/2.jpg"),
       uri:
         "https://images.hdqwalls.com/download/viper-valorant-2020-game-sk-500x500.jpg",
+      gender: "any",
     },
     {
       id: 3,
@@ -39,6 +41,7 @@ export default function Find({ navigation }) {
       image: require("../assets/images/3.jpg"),
       uri:
         "https://images.hdqwalls.com/download/cyberpunk-2077-12k-kp-500x500.jpg",
+      gender: "male",
     },
     {
       id: 4,
@@ -47,6 +50,7 @@ export default function Find({ navigation }) {
       image: require("../assets/images/apexlegends.gif"),
       uri:
         "https://images.hdqwalls.com/download/2020-4k-cyberpunk-2077-81-500x500.jpg",
+      gender: "female",
     },
   ];
   const dialogDataLocation = [
@@ -141,7 +145,7 @@ export default function Find({ navigation }) {
                       value={value}
                       id={value.id}
                       name={value.name}
-                      interest={value.interest}
+                      gender={value.gender}
                       image={value.uri}
                       selected={(v) => selectedCardHandler(v)}
                     />
@@ -395,7 +399,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingHorizontal: 10,
     height: 80,
-    backgroundColor: "#623CEA",
+    backgroundColor: "#3f259e",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
   },
@@ -403,7 +407,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingHorizontal: 10,
     height: 75,
-    backgroundColor: "#623CEA",
+    backgroundColor: "#3f259e",
   },
   btnApply: {
     backgroundColor: "#fff",

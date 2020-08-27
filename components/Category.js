@@ -9,6 +9,43 @@ import {
 import { Card, CardItem, Body, Icon, Right, CheckBox } from "native-base";
 import Text from "../components/TextR";
 
+const Gender = ({ gender }) => {
+  console.log(gender);
+  if (gender == "male") {
+    return (
+      <View style={styles.genderIconContainer}>
+        <Icon
+          type="Ionicons"
+          name="male"
+          style={[styles.genderIcon, { color: "blue" }]}
+        />
+      </View>
+    );
+  }
+  if (gender == "female") {
+    return (
+      <View style={styles.genderIconContainer}>
+        <Icon
+          type="Ionicons"
+          name="female"
+          style={[styles.genderIcon, { color: "pink" }]}
+        />
+      </View>
+    );
+  }
+  if (gender == "any") {
+    return (
+      <View style={styles.genderIconContainer}>
+        <Icon
+          type="AntDesign"
+          name="question"
+          style={[styles.genderIcon, { color: "black" }]}
+        />
+      </View>
+    );
+  }
+};
+
 export default function Category(props) {
   const [checked, setChecked] = useState(false);
   return (
@@ -33,7 +70,7 @@ export default function Category(props) {
             imageStyle={{ borderRadius: 5 }}
           >
             <Text style={styles.text_name}>{props.name}</Text>
-            <Text style={styles.text_interest}>{props.interest}</Text>
+            <Gender gender={props.gender} />
             {/* <CheckBox
               style={styles.checkBox}
               checked={checked}
@@ -60,19 +97,24 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     fontSize: 13,
-    position: "absolute",
-    bottom: 35,
     left: 10,
-    marginHorizontal: 10,
+    marginHorizontal: 5,
+    marginTop: 5,
   },
-  text_interest: {
-    color: "white",
+  genderIconContainer: {
+    backgroundColor: "#fff",
+    width: 20,
+    height: 20,
+    left: 10,
+    marginHorizontal: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 20,
+  },
+  genderIcon: {
+    borderRadius: 20,
     fontWeight: "bold",
     fontSize: 13,
-    position: "absolute",
-    bottom: 15,
-    left: 10,
-    marginHorizontal: 10,
   },
   // checkBox: {
   //   position: "absolute",
