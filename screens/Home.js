@@ -17,7 +17,10 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { CommonActions } from "@react-navigation/native";
 import Row from "../components/Row";
 import Header from "../components/Header";
+import BannerAD from "../components/BannerAD";
+import { RewardAD } from "../components/RewardAD";
 import moment from "moment";
+import { AdMobRewarded } from "expo-ads-admob";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -70,6 +73,10 @@ export default function Home({ navigation, config }) {
     navigation.navigate("Login");
   };
 
+  const rewardAdHandler = async () => {
+    RewardAD();
+  };
+
   //* Carousel Container
   const _renderItem = ({ item, index }, parallaxProps) => {
     return (
@@ -114,6 +121,9 @@ export default function Home({ navigation, config }) {
           <Thumbnail small source={{ uri: uri }} />
         </TouchableOpacity>
       </Header>
+      <Row style={{ flex: 1 }}>
+        <BannerAD />
+      </Row>
       <Row style={styles.quoteContainer}>
         <TextM style={styles.quoteText} color={"#fff"}>
           Lost time is never found again
@@ -172,7 +182,10 @@ export default function Home({ navigation, config }) {
             />
             <Text style={styles.routeButtonText3}>Drafts</Text>
           </Button>
-          <Button style={[styles.routeButton, styles.btn4]}>
+          <Button
+            style={[styles.routeButton, styles.btn4]}
+            onPress={() => RewardAD()}
+          >
             <Image
               source={require("../assets/images/settings.png")}
               style={styles.routeBtnImg}
@@ -190,9 +203,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#0d0630",
   },
   // ??????????????????????????????????????????????????????
-  header: {},
+  header: {
+    flex: 1,
+    marginHorizontal: 30,
+  },
   // ??????????????????????????????????????????????????????
   quoteContainer: {
+    flex: 1,
     marginVertical: 30,
   },
   quoteText: {
@@ -202,6 +219,7 @@ const styles = StyleSheet.create({
   },
   // ??????????????????????????????????????????????????????
   carouselHeaderContainer: {
+    flex: 1,
     alignItems: "flex-end",
     marginHorizontal: 30,
     marginBottom: 30,
@@ -255,7 +273,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#623CEA",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    flex: 1,
     alignItems: "center",
     paddingBottom: 20,
   },

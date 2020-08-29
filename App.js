@@ -18,6 +18,7 @@ import Register from "./screens/Register";
 import { Easing, AsyncStorage } from "react-native";
 import Profile from "./screens/Profile";
 import SendLetter from "./screens/SendLetter";
+import Test from "./screens/Test";
 
 const Stack = createStackNavigator();
 const closeConfig = {

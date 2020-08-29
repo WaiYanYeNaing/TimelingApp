@@ -15,10 +15,16 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-1101099705395721~9625449323"
+      }
     },
     "android": {
       "package": "com.waiyanyenaing.Timeling",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-1101099705395721~9625449323"
+      },
       "versionCode": 1
     },
     "web": {
