@@ -166,7 +166,7 @@ export default function Home({ navigation, config }) {
           </Button>
           <Button
             style={[styles.routeButton, styles.btn2]}
-            onPress={() => navigation.navigate("Find")}
+            onPress={() => navigation.navigate("AddFriend")}
           >
             <Image
               source={require("../assets/images/plus.png")}

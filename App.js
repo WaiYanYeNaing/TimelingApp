@@ -19,6 +19,7 @@ import { Easing, AsyncStorage } from "react-native";
 import Profile from "./screens/Profile";
 import SendLetter from "./screens/SendLetter";
 import Test from "./screens/Test";
+import AddFriend from "./screens/AddFriend"
 
 const Stack = createStackNavigator();
 const closeConfig = {
@@ -163,6 +164,20 @@ export default class App extends React.Component {
           <Stack.Screen
             name="Profile"
             component={Profile}
+            options={{
+              title: "Timeling",
+              headerTitleAlign: "center",
+              headerTintColor: "#00203FFF",
+              headerStyle: { backgroundColor: "#fff" },
+              headerTitleStyle: {
+                fontSize: 18,
+              },
+              headerShown: false,
+            }}
+          />
+           <Stack.Screen
+            name="AddFriend"
+            component={AddFriend}
             options={{
               title: "Timeling",
               headerTitleAlign: "center",
