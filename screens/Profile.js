@@ -20,7 +20,6 @@ import Dialog, {
 } from "react-native-popup-dialog";
 import { ScrollView } from "react-native-gesture-handler";
 import Axios from "axios";
-import style from "./Profile/style";
 
 const { width: screenWidth } = Dimensions.get("window");
 export default function Profile({ navigation }) {
