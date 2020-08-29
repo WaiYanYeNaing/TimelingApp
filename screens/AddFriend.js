@@ -57,13 +57,13 @@ export default function AddFriend({ navigation }) {
 const styles = StyleSheet.create({
   autobtn: {
     top: 20,
-    width: 350,
+    width: 370,
     height: 55,
   },
   manualbtn: {
     height: 55,
     top: 40,
-    width: 350,
+    width: 370,
     backgroundColor: c2,
   },
   image: {
