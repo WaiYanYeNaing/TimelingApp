@@ -21,8 +21,7 @@ const Gender = ({ gender }) => {
         />
       </View>
     );
-  }
-  if (gender == "female") {
+  } else if (gender == "female") {
     return (
       <View style={styles.genderIconContainer}>
         <Icon
@@ -32,17 +31,8 @@ const Gender = ({ gender }) => {
         />
       </View>
     );
-  }
-  if (gender == "any") {
-    return (
-      <View style={styles.genderIconContainer}>
-        <Icon
-          type="AntDesign"
-          name="question"
-          style={[styles.genderIcon, { color: "black" }]}
-        />
-      </View>
-    );
+  } else {
+    return null;
   }
 };
 
@@ -86,7 +76,7 @@ export default function Category(props) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 250,
+    height: 210,
     width: 149,
   },
   image: {
@@ -112,7 +102,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   genderIcon: {
-    borderRadius: 20,
     fontWeight: "bold",
     fontSize: 13,
   },

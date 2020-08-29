@@ -77,7 +77,32 @@ export default function Find({ navigation }) {
       text: "Female",
     },
   ];
+  const age = ["11~20", "21~31", "31~40", "Any"];
+  const gender = ["Male", "Female", "Any"];
+  const categories = [
+    "Language",
+    "Movies",
+    "Pets",
+    "Nature",
+    "Adventure",
+    "Climate",
+    "Handicaft",
+    "Writing",
+    "Beauty",
+    "Makeup",
+    "Fitness",
+    "Cosplay",
+    "Dancing",
+    "Singing",
+    "Anime",
+    "Art",
+    "Cars",
+    "Life",
+  ];
   const [selectedCard, setSelectedCard] = useState([]);
+  const [SAge, setSAge] = useState("Any"); //* selected Age
+  const [SGen, setSGen] = useState("Any"); //* selected Gender
+  const [SCate, setSCate] = useState(); //* selected Categories
   const [SU, setSU] = useState([]);
   const [selectVisible, setSelectVisible] = useState(false);
   const [dialogData, setDialogData] = useState([]);
@@ -212,26 +237,24 @@ export default function Find({ navigation }) {
         <View style={styles.rowAge}>
           <Text size={14}>Age</Text>
           <Row style={{ flexWrap: "wrap" }}>
-            <TouchableOpacity activeOpacity={0.4}>
-              <View style={styles.item}>
-                <Text color={c4}>11~20</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={[styles.item, { backgroundColor: c5 }]}>
-                <Text color={c1}>21~30</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.item}>
-                <Text color={c4}>31~40</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.item}>
-                <Text color={c4}>Any</Text>
-              </View>
-            </TouchableOpacity>
+            {age.map((v, i) => {
+              return (
+                <TouchableOpacity
+                  activeOpacity={0.4}
+                  key={i}
+                  onPress={() => setSAge(v)}
+                >
+                  <View
+                    style={[
+                      styles.item,
+                      { backgroundColor: v == SAge ? c5 : "transparent" },
+                    ]}
+                  >
+                    <Text color={v == SAge ? c1 : c4}>{v}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
           </Row>
         </View>
 
@@ -239,21 +262,49 @@ export default function Find({ navigation }) {
         <View style={styles.rowGender}>
           <Text size={14}>Gender</Text>
           <Row style={{ flexWrap: "wrap" }}>
-            <TouchableOpacity activeOpacity={0.4}>
-              <View style={styles.item}>
-                <Text color={c4}>Male</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={[styles.item, { backgroundColor: c5 }]}>
-                <Text color={c1}>Female</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.item}>
-                <Text color={c4}>Any</Text>
-              </View>
-            </TouchableOpacity>
+            {gender.map((v, i) => {
+              return (
+                <TouchableOpacity
+                  activeOpacity={0.4}
+                  key={i}
+                  onPress={() => setSGen(v)}
+                >
+                  <View
+                    style={[
+                      styles.item,
+                      { backgroundColor: v == SGen ? c5 : "transparent" },
+                    ]}
+                  >
+                    <Text color={v == SGen ? c1 : c4}>{v}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </Row>
+        </View>
+
+        {/* Category */}
+        <View style={styles.rowCategory}>
+          <Text size={14}>Categories</Text>
+          <Row style={{ flexWrap: "wrap" }}>
+            {categories.map((v, i) => {
+              return (
+                <TouchableOpacity
+                  activeOpacity={0.4}
+                  key={i}
+                  onPress={() => setSCate(v)}
+                >
+                  <View
+                    style={[
+                      styles.item,
+                      { backgroundColor: v == SCate ? c5 : "transparent" },
+                    ]}
+                  >
+                    <Text color={v == SCate ? c1 : c4}>{v}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
           </Row>
         </View>
       </ScrollView>
@@ -330,14 +381,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginHorizontal: 5,
     marginVertical: 10,
-    height: 280,
+    height: 238,
     alignItems: "center",
   },
   cardSelected: {
     borderColor: "rgba(26, 59, 202, .8)",
     borderBottomWidth: 30,
-    borderBottomEndRadius: 15,
-    borderBottomStartRadius: 15,
+    borderBottomEndRadius: 10,
+    borderBottomStartRadius: 10,
   },
   cardUnSelected: {
     borderColor: "transparent",
@@ -349,12 +400,12 @@ const styles = StyleSheet.create({
   },
   // ??????????????????????????????????????????????????????
   rowLocation: {
-    paddingHorizontal: 20,
+    marginHorizontal: 20,
     paddingTop: 10,
-    marginBottom: 2,
+    paddingBottom: 5,
     backgroundColor: c1,
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+    borderBottomWidth: 1,
+    borderColor: c5,
   },
   selectLocation: {
     marginTop: 4,
@@ -362,10 +413,12 @@ const styles = StyleSheet.create({
   },
   // ??????????????????????????????????????????????????????
   rowAge: {
-    paddingHorizontal: 20,
-    marginBottom: 2,
+    marginHorizontal: 20,
+    paddingBottom: 10,
     paddingTop: 10,
     backgroundColor: c1,
+    borderBottomWidth: 1,
+    borderColor: c5,
   },
   item: {
     paddingHorizontal: 17,
@@ -376,16 +429,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginRight: 10,
-    marginVertical: 20,
+    marginVertical: 10,
   },
   // ??????????????????????????????????????????????????????
   rowGender: {
-    paddingHorizontal: 20,
+    marginHorizontal: 20,
+    paddingBottom: 10,
+    paddingTop: 10,
+    backgroundColor: c1,
+    borderBottomWidth: 1,
+    borderColor: c5,
+  },
+  // ??????????????????????????????????????????????????????
+  rowCategory: {
+    marginHorizontal: 20,
     marginBottom: 5,
     paddingTop: 10,
     backgroundColor: c1,
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
   },
   // ??????????????????????????????????????????????????????
   rowBtnApply: {
