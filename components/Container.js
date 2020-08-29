@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import Constants from "expo-constants";
+import { c1 } from "../themes/Colors";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -13,6 +14,6 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: c1,
   },
 });

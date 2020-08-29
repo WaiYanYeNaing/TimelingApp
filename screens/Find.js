@@ -13,6 +13,8 @@ import Container from "../components/Container";
 import Row from "../components/Row";
 import Header from "../components/Header";
 import TextM from "../components/TextM";
+import { c3, c4, c1, c5, c2 } from "../themes/Colors";
+import CButton from "../components/CButton";
 
 export default function Find({ navigation }) {
   const users = [
@@ -110,14 +112,14 @@ export default function Find({ navigation }) {
           <Icon
             type="MaterialCommunityIcons"
             name="backburger"
-            style={{ color: "#fff", fontSize: 30 }}
+            style={{ color: c3, fontSize: 30 }}
           />
         </TouchableOpacity>
         <TouchableOpacity>
           <Icon
             type="MaterialIcons"
             name="more-horiz"
-            style={{ color: "#fff", fontSize: 30 }}
+            style={{ color: c3, fontSize: 30 }}
           />
         </TouchableOpacity>
       </Header>
@@ -151,13 +153,11 @@ export default function Find({ navigation }) {
                     />
                     {selectedCard.includes(JSON.stringify(value.id)) ? (
                       <Row>
-                        <Text color={"#fff"} size={13}>
-                          Selected{" "}
-                        </Text>
+                        <Text size={13}>Selected </Text>
                         <Icon
                           type="MaterialCommunityIcons"
                           name="account-check"
-                          style={{ color: "#fff", fontSize: 18 }}
+                          style={{ color: c3, fontSize: 18 }}
                         />
                       </Row>
                     ) : null}
@@ -214,27 +214,22 @@ export default function Find({ navigation }) {
           <Row style={{ flexWrap: "wrap" }}>
             <TouchableOpacity activeOpacity={0.4}>
               <View style={styles.item}>
-                <Text color={"#a2a3a5"}>11~20</Text>
+                <Text color={c4}>11~20</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity>
-              <View
-                style={[
-                  styles.item,
-                  { backgroundColor: "#1A3BCA", borderColor: "#1A3BCA" },
-                ]}
-              >
-                <Text color={"#fff"}>21~30</Text>
+              <View style={[styles.item, { backgroundColor: c5 }]}>
+                <Text color={c1}>21~30</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity>
               <View style={styles.item}>
-                <Text color={"#a2a3a5"}>31~40</Text>
+                <Text color={c4}>31~40</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity>
               <View style={styles.item}>
-                <Text color={"#a2a3a5"}>Any</Text>
+                <Text color={c4}>Any</Text>
               </View>
             </TouchableOpacity>
           </Row>
@@ -246,22 +241,17 @@ export default function Find({ navigation }) {
           <Row style={{ flexWrap: "wrap" }}>
             <TouchableOpacity activeOpacity={0.4}>
               <View style={styles.item}>
-                <Text color={"#a2a3a5"}>Male</Text>
+                <Text color={c4}>Male</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity>
-              <View
-                style={[
-                  styles.item,
-                  { backgroundColor: "#1A3BCA", borderColor: "#1A3BCA" },
-                ]}
-              >
-                <Text color={"#fff"}>Female</Text>
+              <View style={[styles.item, { backgroundColor: c5 }]}>
+                <Text color={c1}>Female</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity>
               <View style={styles.item}>
-                <Text color={"#a2a3a5"}>Any</Text>
+                <Text color={c4}>Any</Text>
               </View>
             </TouchableOpacity>
           </Row>
@@ -270,20 +260,19 @@ export default function Find({ navigation }) {
 
       {/* Btn Apply */}
       <View style={styles.rowBtnApply}>
-        <Button block style={styles.btnApply}>
-          <Text style={{ color: "#1A3BCA" }}>Apply</Text>
-        </Button>
+        <CButton backgroundColor={c3} text={"Apply"} size={15} width={340} />
       </View>
 
       {/* Btn Next */}
       <View style={styles.rowBtnNext}>
-        <Button
-          block
-          style={styles.btnNext}
+        <CButton
+          backgroundColor={c3}
+          text={"Next"}
+          size={15}
+          width={340}
+          backgroundColor={c5}
           onPress={() => navigation.navigate("SendLetter", { SU })}
-        >
-          <Text style={{ color: "#fff" }}>Next</Text>
-        </Button>
+        />
       </View>
 
       {/** Dialog for Location and Gender */}
@@ -298,7 +287,7 @@ export default function Find({ navigation }) {
           })
         }
       >
-        <DialogContent style={{ paddingTop: 20 }}>
+        <DialogContent style={{ paddingTop: 20, backgroundColor: c3 }}>
           <List>
             {dialogData.map((v, index) => (
               <TouchableOpacity
@@ -312,8 +301,14 @@ export default function Find({ navigation }) {
                 key={index}
               >
                 <ListItem selected>
-                  <Text style={{ width: 200 }}>{v.text}</Text>
-                  <Icon type="Entypo" name="chevron-right" />
+                  <Text style={{ width: 200 }} color={c1}>
+                    {v.text}
+                  </Text>
+                  <Icon
+                    type="Entypo"
+                    name="chevron-right"
+                    style={{ color: c2 }}
+                  />
                 </ListItem>
               </TouchableOpacity>
             ))}
@@ -325,9 +320,7 @@ export default function Find({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#0d0630",
-  },
+  container: {},
   rowCard: {
     marginBottom: 20,
     marginLeft: 10,
@@ -359,7 +352,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 10,
     marginBottom: 2,
-    backgroundColor: "#0d0630",
+    backgroundColor: c1,
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
   },
@@ -372,14 +365,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 2,
     paddingTop: 10,
-    backgroundColor: "#0d0630",
+    backgroundColor: c1,
   },
   item: {
     paddingHorizontal: 17,
     borderRadius: 10,
     height: 40,
     borderWidth: 1,
-    borderColor: "#898989",
+    borderColor: c5,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 10,
@@ -390,7 +383,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 5,
     paddingTop: 10,
-    backgroundColor: "#0d0630",
+    backgroundColor: c1,
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10,
   },
@@ -399,26 +392,16 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingHorizontal: 10,
     height: 80,
-    backgroundColor: "#3f259e",
+    backgroundColor: c2,
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
+    alignItems: "center",
   },
   rowBtnNext: {
     paddingTop: 10,
     paddingHorizontal: 10,
     height: 75,
-    backgroundColor: "#3f259e",
-  },
-  btnApply: {
-    backgroundColor: "#fff",
-    borderWidth: 1.5,
-    borderRadius: 10,
-    elevation: 0,
-  },
-  btnNext: {
-    backgroundColor: "#1A3BCA",
-    borderRadius: 10,
-    shadowColor: "#000",
-    elevation: 0,
+    backgroundColor: c2,
+    alignItems: "center",
   },
 });

@@ -13,6 +13,7 @@ import Dialog, {
 } from "react-native-popup-dialog";
 import moment from "moment";
 import Header from "../components/Header";
+import { c3, c5, c2, c4 } from "../themes/Colors";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -59,14 +60,14 @@ export default function ReadMore({ route, navigation }) {
             <Icon
               type="MaterialCommunityIcons"
               name="backburger"
-              style={{ color: "#fff", fontSize: 30 }}
+              style={{ color: c3, fontSize: 30 }}
             />
           </TouchableOpacity>
           <TouchableOpacity>
             <Icon
               type="MaterialIcons"
               name="more-horiz"
-              style={{ color: "#fff", fontSize: 30 }}
+              style={{ color: c3, fontSize: 30 }}
             />
           </TouchableOpacity>
         </Header>
@@ -81,13 +82,13 @@ export default function ReadMore({ route, navigation }) {
               <TouchableOpacity>
                 <Row>
                   <Thumbnail style={styles.thumbnail} source={{ uri: uri }} />
-                  <Text size={14} color={"#a2a3a5"}>
+                  <Text size={14} color={c4}>
                     {"  "}
                     by {route.params.details.sdetails.name},
                   </Text>
                 </Row>
               </TouchableOpacity>
-              <Text size={14} color={"#a2a3a5"} style={{ marginBottom: 10 }}>
+              <Text size={14} color={c4} style={{ marginBottom: 10 }}>
                 {/* {` ${date.toDateString()}, ${date.toLocaleTimeString()}`} */}
                 {` ${moment(date).format("LL")}, ${moment(date).fromNow()}`}
               </Text>
@@ -96,7 +97,7 @@ export default function ReadMore({ route, navigation }) {
           <CardItem style={styles.detail}>
             <Body style={{ height: 340 }}>
               <ScrollView>
-                <Text color={"#666666"} size={15}>
+                <Text size={15}>
                   {route.params.details.text}
                   {route.params.details.text}
                   {route.params.details.text}
@@ -121,7 +122,7 @@ export default function ReadMore({ route, navigation }) {
               <Icon
                 type="MaterialCommunityIcons"
                 name="feather"
-                style={{ color: "#fff", fontSize: 34 }}
+                style={{ color: c2, fontSize: 34 }}
               />
             </Button>
             <TouchableOpacity
@@ -196,14 +197,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-end",
-    backgroundColor: "#fff",
+    backgroundColor: c2,
   },
   card: {
     width: screenWidth,
     borderRadius: 12,
+    borderColor: c2,
     padding: 10,
     elevation: 0,
-    backgroundColor: "#fff",
+    backgroundColor: c2,
   },
   // ??????????????????????????????????????????????????????
   title: {
@@ -235,7 +237,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     justifyContent: "center",
-    backgroundColor: "#4393ff",
+    backgroundColor: c5,
     borderRadius: 100,
   },
   actionTouchable: {},
@@ -254,7 +256,7 @@ const styles = StyleSheet.create({
   dialogButton: {
     width: 100,
     borderRadius: 20,
-    backgroundColor: "#606bff",
+    backgroundColor: c5,
     justifyContent: "center",
   },
 });

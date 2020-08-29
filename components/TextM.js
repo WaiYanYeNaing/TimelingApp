@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { c3 } from "../themes/Colors";
 
 export default function TextM({ style, color, size, children }) {
   return (
@@ -7,7 +8,7 @@ export default function TextM({ style, color, size, children }) {
       <Text
         style={[
           styles.text,
-          { color: color ? color : "#4c4c4c" },
+          { color: color ? color : c3 },
           { fontSize: size },
           style,
         ]}

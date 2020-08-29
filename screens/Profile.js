@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Text from "../components/TextR";
 import Container from "../components/Container";
-import { Thumbnail, Button, Icon } from "native-base";
+import { Thumbnail, Icon } from "native-base";
 import TextM from "../components/TextM";
 import Progress from "../components/Progress";
 import Row from "../components/Row";
@@ -20,6 +20,8 @@ import Dialog, {
 } from "react-native-popup-dialog";
 import { ScrollView } from "react-native-gesture-handler";
 import Axios from "axios";
+import { c5, c4, c3, c2 } from "../themes/Colors";
+import Button from "../components/CButton";
 
 const { width: screenWidth } = Dimensions.get("window");
 export default function Profile({ navigation }) {
@@ -158,7 +160,7 @@ export default function Profile({ navigation }) {
       <View style={styles.thumbnailContainer}>
         <Thumbnail style={styles.thumbnail} source={{ uri: uri }} />
         <View style={styles.level}>
-          <Text style={styles.levelText}>Lvl. 3</Text>
+          <Text>Lvl. 3</Text>
         </View>
       </View>
       <View style={styles.nameContainer}>
@@ -166,7 +168,9 @@ export default function Profile({ navigation }) {
       </View>
       <View style={styles.emailContainer}>
         <View style={styles.email}>
-          <TextM style={styles.emailText}>{email}</TextM>
+          <TextM color={c4} size={16}>
+            {email}
+          </TextM>
         </View>
       </View>
       <View style={styles.progressBarContainer}>
@@ -178,16 +182,16 @@ export default function Profile({ navigation }) {
         <Row style={styles.progressBarText}>
           <Row>
             <Text>XP {calXP(exp)}/</Text>
-            <Text color="#a2a3a5">{curMaxExp(exp)}</Text>
+            <Text color={c4}>{curMaxExp(exp)}</Text>
           </Row>
           <Row>
             <Text>{curMaxExp(exp) - calXP(exp)} XP </Text>
-            <Text color="#a2a3a5">to level up</Text>
+            <Text color={c4}>to level up</Text>
           </Row>
         </Row>
       </View>
       <Row style={styles.userOnlineStatus}>
-        <Text color="#a2a3a5">User Status</Text>
+        <Text color={c4}>User Status</Text>
         <Row>
           <View
             style={[
@@ -204,7 +208,7 @@ export default function Profile({ navigation }) {
       <View style={styles.rewardContainer}>
         <Row>
           <Text size={17}>Rewards </Text>
-          <Text color="#a2a3a5" size={16}>
+          <Text color={c4} size={16}>
             (9)
           </Text>
         </Row>
@@ -224,12 +228,13 @@ export default function Profile({ navigation }) {
                 styles.friendImage,
                 {
                   borderWidth: 1,
+                  borderColor: c5,
                   justifyContent: "center",
                   alignItems: "center",
                 },
               ]}
             >
-              <Text size={16} color="#a2a3a5">
+              <Text size={16} color={c4}>
                 +5
               </Text>
             </View>
@@ -239,7 +244,7 @@ export default function Profile({ navigation }) {
       <View style={styles.friendContainer}>
         <Row>
           <Text size={17}>Friends </Text>
-          <Text color="#a2a3a5" size={16}>
+          <Text color={c4} size={16}>
             (56)
           </Text>
         </Row>
@@ -259,12 +264,13 @@ export default function Profile({ navigation }) {
                 styles.friendImage,
                 {
                   borderWidth: 1,
+                  borderColor: c5,
                   justifyContent: "center",
                   alignItems: "center",
                 },
               ]}
             >
-              <Text size={16} color="#a2a3a5">
+              <Text size={16} color={c4}>
                 +52
               </Text>
             </View>
@@ -273,14 +279,19 @@ export default function Profile({ navigation }) {
         <Loader />
       </View>
       <View style={styles.logoutBtnContainer}>
-        <Button bordered style={styles.logoutBtn} onPress={() => logOut()}>
+        {/* <Button style={styles.logoutBtn} onPress={() => logOut()}>
           <Text size={16}>Log out</Text>
           <Icon
             type="MaterialCommunityIcons"
             name="logout-variant"
             style={styles.logoutBtnIcon}
           />
-        </Button>
+        </Button> */}
+        <Button
+          iconType={"MaterialCommunityIcons"}
+          iconName={"logout-variant"}
+          text={"Log out"}
+        />
       </View>
 
       {/** Dialog Reward */}
@@ -359,7 +370,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   },
   actionIcon: {
-    color: "#848587",
+    color: c3,
   },
   // ??????????????????????????????????????????????????????
   thumbnailContainer: {
@@ -369,19 +380,18 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 100,
+    borderWidth: 3,
+    borderColor: c5,
   },
   level: {
     backgroundColor: "#30AB70",
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#fff",
+    borderColor: c3,
     paddingHorizontal: 12,
     paddingVertical: 5,
     bottom: 10,
     elevation: 3,
-  },
-  levelText: {
-    color: "#fff",
   },
   // ??????????????????????????????????????????????????????
   nameContainer: {
@@ -397,16 +407,12 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   email: {
-    backgroundColor: "#F1F2F4",
+    backgroundColor: c3,
     borderRadius: 30,
     borderWidth: 1,
-    borderColor: "#fff",
+    borderColor: c3,
     paddingHorizontal: 15,
     paddingVertical: 10,
-  },
-  emailText: {
-    fontSize: 16,
-    color: "#a2a3a5",
   },
   // ??????????????????????????????????????????????????????
   progressBarContainer: {
@@ -414,7 +420,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     paddingTop: 10,
     borderTopWidth: 1,
-    borderColor: "#F1F2F4",
+    borderColor: c5,
   },
   progressBar: {
     width: 320,
@@ -428,7 +434,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     paddingTop: 20,
     borderTopWidth: 1,
-    borderColor: "#F1F2F4",
+    borderColor: c5,
     justifyContent: "space-between",
     paddingHorizontal: 35,
   },
@@ -444,7 +450,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     paddingTop: 20,
     borderTopWidth: 1,
-    borderColor: "#F1F2F4",
+    borderColor: c5,
     paddingHorizontal: 35,
   },
   rewardImage: {
@@ -459,7 +465,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     paddingTop: 20,
     borderTopWidth: 1,
-    borderColor: "#F1F2F4",
+    borderColor: c5,
     paddingHorizontal: 35,
   },
   friendImage: {
@@ -470,9 +476,10 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   dialogFriend: {
-    height: 400,
+    height: 470,
     width: screenWidth - 90,
-    marginTop: 15,
+    paddingTop: 15,
+    backgroundColor: c2,
   },
   dialogFriendImageRow: {
     marginLeft: 20,
@@ -492,6 +499,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     paddingTop: 20,
     paddingHorizontal: 35,
+    alignItems: "center",
   },
   logoutBtn: {
     borderColor: "#4c4c4c",

@@ -1,46 +1,68 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { c5, c1 } from "../themes/Colors";
+import { Icon, Button } from "native-base";
+import Row from "./Row";
+import TextM from "./TextM";
 
 export default function CButton({
-  onPress,
-  title,
+  iconType,
+  iconName,
+  iconSize,
+  iconColor,
+  text,
   style,
   backgroundColor,
+  width,
+  color,
   size,
+  onPress,
 }) {
   return (
     <View>
-    <TouchableOpacity
-      onPress={onPress}
-      style={[
-        styles.appButtonContainer,
-        { backgroundColor: backgroundColor ? backgroundColor : "#EA4C89" },
-        { size: size },
-        style,
-      ]}
-    >
-      <Text style={styles.appButtonText}>{title}</Text>
-    </TouchableOpacity>
+      <Button
+        onPress={onPress}
+        style={[
+          styles.appBtnContainer,
+          { backgroundColor: backgroundColor ? backgroundColor : c5 },
+          { width: width ? width : 300 },
+          style,
+        ]}
+      >
+        <TextM
+          color={color ? color : c1}
+          size={size ? size : 17}
+          style={styles.appBtnText}
+        >
+          {text}
+        </TextM>
+        {iconType ? (
+          <Icon
+            type={iconType}
+            name={iconName}
+            style={[
+              styles.appBtnIcon,
+              { fontSize: iconSize ? iconSize : 22 },
+              { color: iconColor ? iconColor : c1 },
+            ]}
+          />
+        ) : null}
+      </Button>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-
-  appButtonContainer: {
-    elevation: 8,
-    backgroundColor: "#009688",
+  appBtnContainer: {
+    elevation: 0,
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
   },
-  appButtonText: {
-    fontFamily: "UbuntuM",
-    fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
-    alignSelf: "center",
-    //textTransform: "uppercase",
-  },
+  appBtnText: {},
+  appBtnIcon: {},
 });

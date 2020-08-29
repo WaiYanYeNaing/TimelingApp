@@ -21,6 +21,7 @@ import BannerAD from "../components/BannerAD";
 import { RewardAD } from "../components/RewardAD";
 import moment from "moment";
 import { AdMobRewarded } from "expo-ads-admob";
+import { c2, c3, c5, c4 } from "../themes/Colors";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -105,7 +106,9 @@ export default function Home({ navigation, config }) {
           onPress={() => navigation.navigate("ReadMore", { details: item })}
           disabled={item._id == "loading..." ? true : false}
         >
-          <Text style={styles.carouselBtnText}>Read More</Text>
+          <Text size={13} color={c3}>
+            Read More
+          </Text>
         </Button>
       </View>
     );
@@ -115,7 +118,7 @@ export default function Home({ navigation, config }) {
     <Container style={styles.container}>
       <Header style={styles.header}>
         <TouchableOpacity onPress={() => logOut()}>
-          <Icon type="FontAwesome" name="sign-out" style={{ color: "#fff" }} />
+          <Icon type="FontAwesome" name="sign-out" style={{ color: c3 }} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
           <Thumbnail small source={{ uri: uri }} />
@@ -125,19 +128,15 @@ export default function Home({ navigation, config }) {
         <BannerAD />
       </Row>
       <Row style={styles.quoteContainer}>
-        <TextM style={styles.quoteText} color={"#fff"}>
-          Lost time is never found again
-        </TextM>
+        <TextM style={styles.quoteText}>Lost time is never found again</TextM>
       </Row>
       <Row style={styles.carouselHeaderContainer}>
-        <TextM style={styles.carouselHeader} color={"#fff"}>
-          Recently Received
-        </TextM>
+        <TextM style={styles.carouselHeader}>Recently Received</TextM>
         <TouchableOpacity onPress={() => getAllLetters()}>
           <Icon
             type="MaterialCommunityIcons"
             name="reload"
-            style={{ color: "#fff" }}
+            style={{ color: c3 }}
           />
         </TouchableOpacity>
       </Row>
@@ -153,7 +152,7 @@ export default function Home({ navigation, config }) {
       </Row>
       <View style={styles.routButtonContainer}>
         <Row>
-          <Text color={"#fff"} size={20} style={styles.routeBtnHeader}>
+          <Text size={20} style={styles.routeBtnHeader}>
             Services
           </Text>
         </Row>
@@ -199,9 +198,7 @@ export default function Home({ navigation, config }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#0d0630",
-  },
+  container: {},
   // ??????????????????????????????????????????????????????
   header: {
     flex: 1,
@@ -246,13 +243,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   carouselTextName: {
-    color: "#fff",
+    color: c3,
     fontSize: 14,
     top: -120,
     left: 10,
   },
   carouselTextDate: {
-    color: "#ededed",
+    color: c3,
     fontSize: 12,
     top: -120,
     left: 10,
@@ -263,14 +260,10 @@ const styles = StyleSheet.create({
     width: 110,
     justifyContent: "center",
   },
-  carouselBtnText: {
-    fontSize: 13,
-    color: "#ededed",
-  },
   // ??????????????????????????????????????????????????????
   routButtonContainer: {
     justifyContent: "flex-end",
-    backgroundColor: "#623CEA",
+    backgroundColor: c2,
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     alignItems: "center",
@@ -297,7 +290,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9e7cc",
   },
   btn3: {
-    backgroundColor: "#f9cdcc",
+    backgroundColor: c5,
   },
   btn4: {
     backgroundColor: "#7dd181",
@@ -309,7 +302,7 @@ const styles = StyleSheet.create({
     color: "#b66e02",
   },
   routeButtonText3: {
-    color: "#e1350e",
+    color: c4,
   },
   routeButtonText4: {
     color: "#4b7f52",
