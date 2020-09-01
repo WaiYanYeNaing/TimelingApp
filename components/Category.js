@@ -8,10 +8,10 @@ import {
 } from "react-native";
 import { Card, CardItem, Body, Icon, Right, CheckBox } from "native-base";
 import Text from "../components/TextR";
+import { c1, c3 } from "../themes/Colors";
 
 const Gender = ({ gender }) => {
-  console.log(gender);
-  if (gender == "male") {
+  if (gender == "Male") {
     return (
       <View style={styles.genderIconContainer}>
         <Icon
@@ -21,7 +21,7 @@ const Gender = ({ gender }) => {
         />
       </View>
     );
-  } else if (gender == "female") {
+  } else if (gender == "Female") {
     return (
       <View style={styles.genderIconContainer}>
         <Icon
@@ -59,7 +59,9 @@ export default function Category(props) {
             style={styles.image}
             imageStyle={{ borderRadius: 5 }}
           >
-            <Text style={styles.text_name}>{props.name}</Text>
+            <View style={styles.textNameContainer}>
+              <Text style={styles.text_name}>{props.name}</Text>
+            </View>
             <Gender gender={props.gender} />
             {/* <CheckBox
               style={styles.checkBox}
@@ -83,19 +85,25 @@ const styles = StyleSheet.create({
     flex: 1,
     width: 150,
   },
-  text_name: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 13,
-    left: 10,
+  textNameContainer: {
+    // backgroundColor: c1,
     marginHorizontal: 5,
     marginTop: 5,
+    paddingBottom: 2,
+    borderRadius: 5,
+  },
+  text_name: {
+    color: c1,
+    fontWeight: "bold",
+    fontSize: 13,
+    marginRight: 5,
+    left: 5,
   },
   genderIconContainer: {
     backgroundColor: "#fff",
     width: 20,
     height: 20,
-    left: 10,
+    left: 5,
     marginHorizontal: 5,
     justifyContent: "center",
     alignItems: "center",

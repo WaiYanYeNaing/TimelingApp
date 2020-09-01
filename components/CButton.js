@@ -18,6 +18,7 @@ export default function CButton({
   color,
   size,
   onPress,
+  height,
 }) {
   return (
     <View>
@@ -27,6 +28,7 @@ export default function CButton({
           styles.appBtnContainer,
           { backgroundColor: backgroundColor ? backgroundColor : c5 },
           { width: width ? width : 300 },
+          { height: height ? height : 48 },
           style,
         ]}
       >

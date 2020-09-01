@@ -63,8 +63,8 @@
 
 
 
-// googleMobileAdsAppId  ios: 
-// googleMobileAdsAppId  android: 
+// googleMobileAdsAppId  android: ca-app-pub-8645062450812910~2925004136
+// googleMobileAdsAppId  ios: ca-app-pub-8645062450812910~1420350777
 // android banner: ca-app-pub-8645062450812910/3407401624
 // android interstitial: ca-app-pub-8645062450812910/9479638343
 // android reward: ca-app-pub-8645062450812910/9916544626
@@ -76,10 +76,10 @@
 // android reward2: ca-app-pub-2526265253172070/3877626175
 
 // googleMobileAdsAppId  android: ca-app-pub-1101099705395721~9625449323
-// googleMobileAdsAppId  ios: ca-app-pub-1101099705395721~9625449323
 // android banner3: ca-app-pub-1101099705395721/4042143673
 // android interstitial3: ca-app-pub-1101099705395721/6041427533
 // android reward3: ca-app-pub-1101099705395721/3578915720
+// googleMobileAdsAppId  ios: 
 // ios banner3: ca-app-pub-1101099705395721/1962775244
 // ios interstitial3: ca-app-pub-1101099705395721/8284447490
 // ios reward3: ca-app-pub-1101099705395721/9761180690

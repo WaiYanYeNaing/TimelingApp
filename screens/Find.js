@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Slider, Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Slider, Image, AsyncStorage } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Category from "../components/Category";
 import Dialog, {
@@ -15,46 +15,66 @@ import Header from "../components/Header";
 import TextM from "../components/TextM";
 import { c3, c4, c1, c5, c2 } from "../themes/Colors";
 import CButton from "../components/CButton";
+import Axios from "axios";
+import Loader from "../components/Loader";
 
 export default function Find({ navigation }) {
-  const users = [
+  const noUser = [
     {
-      id: 1,
-      name: "The Last of Us II",
-      interest: "Dark",
-      image: require("../assets/images/1.jpg"),
+      id: 0,
+      name: "",
+      interest: "",
       uri:
-        "https://images.hdqwalls.com/download/anonmyus-boy-yellow-minimal-4k-pw-500x500.jpg",
-      gender: "male",
-    },
-    {
-      id: 2,
-      name: "The Last of Us II",
-      interest: "Light",
-      image: require("../assets/images/2.jpg"),
-      uri:
-        "https://images.hdqwalls.com/download/viper-valorant-2020-game-sk-500x500.jpg",
-      gender: "any",
-    },
-    {
-      id: 3,
-      name: "Dragon Balls",
-      interest: "Dark",
-      image: require("../assets/images/3.jpg"),
-      uri:
-        "https://images.hdqwalls.com/download/cyberpunk-2077-12k-kp-500x500.jpg",
-      gender: "male",
-    },
-    {
-      id: 4,
-      name: "Apex Legends",
-      interest: "Dark",
-      image: require("../assets/images/apexlegends.gif"),
-      uri:
-        "https://images.hdqwalls.com/download/2020-4k-cyberpunk-2077-81-500x500.jpg",
-      gender: "female",
+        "http://via.placeholder.com/400x350.png/fbde38/1c2550?text=No+User+Currently",
+      gender: "",
     },
   ];
+  const [users, setUsers] = useState([
+    {
+      id: 0,
+      name: "",
+      interest: "",
+      uri:
+        "http://via.placeholder.com/400x350.png/fbde38/1c2550?text=No+User+Currently",
+      gender: "",
+    },
+    // {
+    //   id: 1,
+    //   name: "The Last of Us II",
+    //   interest: "Dark",
+    //   image: require("../assets/images/1.jpg"),
+    //   uri:
+    //     "https://images.hdqwalls.com/download/anonmyus-boy-yellow-minimal-4k-pw-500x500.jpg",
+    //   gender: "Male",
+    // },
+    // {
+    //   id: 2,
+    //   name: "The Last of Us II",
+    //   interest: "Light",
+    //   image: require("../assets/images/2.jpg"),
+    //   uri:
+    //     "https://images.hdqwalls.com/download/viper-valorant-2020-game-sk-500x500.jpg",
+    //   gender: "any",
+    // },
+    // {
+    //   id: 3,
+    //   name: "Dragon Balls",
+    //   interest: "Dark",
+    //   image: require("../assets/images/3.jpg"),
+    //   uri:
+    //     "https://images.hdqwalls.com/download/cyberpunk-2077-12k-kp-500x500.jpg",
+    //   gender: "Male",
+    // },
+    // {
+    //   id: 4,
+    //   name: "Apex Legends",
+    //   interest: "Dark",
+    //   image: require("../assets/images/apexlegends.gif"),
+    //   uri:
+    //     "https://images.hdqwalls.com/download/2020-4k-cyberpunk-2077-81-500x500.jpg",
+    //   gender: "Female",
+    // },
+  ]);
   const dialogDataLocation = [
     {
       text: "Any Location",
@@ -77,7 +97,7 @@ export default function Find({ navigation }) {
       text: "Female",
     },
   ];
-  const age = ["11~20", "21~31", "31~40", "Any"];
+  const age = ["11~20", "21~30", "31~40", "Any"];
   const gender = ["Male", "Female", "Any"];
   const categories = [
     "Language",
@@ -101,6 +121,8 @@ export default function Find({ navigation }) {
   ];
   const [selectedCard, setSelectedCard] = useState([]);
   const [SAge, setSAge] = useState("Any"); //* selected Age
+  const [minage, setMinage] = useState(0); //* selected Min Age
+  const [maxage, setMaxage] = useState(0); //* selected Max Age
   const [SGen, setSGen] = useState("Any"); //* selected Gender
   const [SCate, setSCate] = useState(); //* selected Categories
   const [SU, setSU] = useState([]);
@@ -110,14 +132,75 @@ export default function Find({ navigation }) {
   const [maxAge, setMaxAge] = useState(40);
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedGender, setSelectedGender] = useState("All");
+  const [loader, setLoader] = useState(false);
+
+  useEffect(() => {
+    findUser();
+  }, []);
+
+  const findUser = async () => {
+    const config = {
+      headers: {
+        "auth-token": await AsyncStorage.getItem("token"),
+      },
+    };
+    const temp = {
+      minexp: 0,
+      maxexp: 0,
+      gender: SGen == "Any" ? "" : SGen,
+      minage,
+      maxage,
+    };
+    setLoader(true);
+    Axios.post("https://timeling.herokuapp.com/api/user/", temp, config).then(
+      (res) => {
+        // TODO:: test image
+        let data = [];
+        res.data.map((v) => {
+          data.push({
+            ...v,
+            id: v.uid,
+            uri:
+              "https://images.hdqwalls.com/download/2020-4k-cyberpunk-2077-81-500x500.jpg",
+          });
+        });
+        if (res.data.length) {
+          setUsers(data);
+        } else {
+          setUsers(noUser);
+        }
+        setLoader(false);
+      }
+    );
+  };
+
+  const SAgeHandler = (v) => {
+    setSAge(v);
+    if (v == "11~20") {
+      setMinage(10);
+      setMaxage(21);
+    }
+    if (v == "21~30") {
+      setMinage(20);
+      setMaxage(31);
+    }
+    if (v == "31~40") {
+      setMinage(30);
+      setMaxage(41);
+    }
+    if (v == "Any") {
+      setMinage(0);
+      setMaxage(0);
+    }
+  };
 
   const selectedCardHandler = (v) => {
     // * Selected User ID
     let temp = [...selectedCard];
-    if (temp.includes(JSON.stringify(v.id))) {
-      temp = temp.filter((f) => f != JSON.stringify(v.id));
+    if (temp.includes(v.id)) {
+      temp = temp.filter((f) => f != v.id);
     } else {
-      if (temp.length < 3) temp.push(JSON.stringify(v.id));
+      if (temp.length < 3) temp.push(v.id);
     }
     setSelectedCard(temp); // eg ["1", "3"]
 
@@ -127,6 +210,8 @@ export default function Find({ navigation }) {
       tempSU.push(users.filter((f) => f.id == e)[0]);
     });
     setSU(tempSU);
+    console.log("SU");
+    console.log(SU);
   };
 
   return (
@@ -163,7 +248,7 @@ export default function Find({ navigation }) {
                     key={value.id}
                     style={{
                       ...styles.cardContainer,
-                      ...(selectedCard.includes(JSON.stringify(value.id))
+                      ...(selectedCard.includes(value.id)
                         ? styles.cardSelected
                         : styles.cardUnSelected),
                     }}
@@ -242,7 +327,7 @@ export default function Find({ navigation }) {
                 <TouchableOpacity
                   activeOpacity={0.4}
                   key={i}
-                  onPress={() => setSAge(v)}
+                  onPress={() => SAgeHandler(v)}
                 >
                   <View
                     style={[
@@ -311,7 +396,13 @@ export default function Find({ navigation }) {
 
       {/* Btn Apply */}
       <View style={styles.rowBtnApply}>
-        <CButton backgroundColor={c3} text={"Apply"} size={15} width={340} />
+        <CButton
+          backgroundColor={c3}
+          text={"Apply"}
+          size={15}
+          width={340}
+          onPress={() => findUser()}
+        />
       </View>
 
       {/* Btn Next */}
@@ -366,6 +457,9 @@ export default function Find({ navigation }) {
           </List>
         </DialogContent>
       </Dialog>
+
+      {/** Loading..  */}
+      <Loader visible={loader} />
     </Container>
   );
 }

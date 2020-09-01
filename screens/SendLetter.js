@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   Dimensions,
   Animated,
+  AsyncStorage,
+  Keyboard,
 } from "react-native";
 import Container from "../components/Container";
 import Header from "../components/Header";
@@ -23,12 +25,20 @@ import {
   Toast,
   Content,
 } from "native-base";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import {
+  ScrollView,
+  TextInput,
+  TouchableWithoutFeedback,
+} from "react-native-gesture-handler";
 import Text from "../components/TextR";
 import TextM from "../components/TextM";
+import { c3, c4 } from "../themes/Colors";
+import CButton from "../components/CButton";
+import Axios from "axios";
+import Loader from "../components/Loader";
 
 const { width } = Dimensions.get("window");
-
+let text = "";
 export default function SendLetter({ route, navigation }) {
   const [curTab, setCurTab] = useState(1);
   const [newLetterColor, setNewLetterColor] = useState("#4393ff");
@@ -37,10 +47,11 @@ export default function SendLetter({ route, navigation }) {
   const [selectedUser, setSelectedUser] = useState([]);
   const [tempSU, setTempSU] = useState([]);
   const [curActionBtn, setCurActionBtn] = useState(1);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     setSelectedUser(route.params.SU);
-    console.log(selectedUser);
+    console.log(route.params.SU);
   }, []);
 
   const switchTab = (v) => {
@@ -71,6 +82,29 @@ export default function SendLetter({ route, navigation }) {
     setCurActionBtn(1);
   };
 
+  // TODO:::::::
+  const sendLetter = async () => {
+    setLoader(true);
+    const config = {
+      headers: {
+        "auth-token": await AsyncStorage.getItem("token"),
+      },
+    };
+    for (let x of selectedUser) {
+      const temp = {
+        uid: x.uid,
+        text,
+      };
+      Axios.post(
+        "https://timeling.herokuapp.com/api/letter/",
+        temp,
+        config
+      ).then((res) => {
+        setLoader(false);
+      });
+    }
+  };
+
   // * Create User Tab or Draft tab (component)
   const CreateOrDraft = ({ status }) => {
     if (status === 1) {
@@ -82,6 +116,7 @@ export default function SendLetter({ route, navigation }) {
               style={styles.input}
               placeholder="Enter your title here..."
               onChangeText={(v) => setTitle(v)}
+              value={title}
             />
           </Row>
           <View style={styles.contentContainer}>
@@ -90,17 +125,18 @@ export default function SendLetter({ route, navigation }) {
               bordered
               style={styles.textarea}
               placeholder="Enter your Content here..."
-              onChangeText={(v) => setTitle(v)}
               rowSpan={12}
+              onChangeText={(v) => (text = v)}
             />
           </View>
           <Row style={styles.buttonContainer}>
-            <Button style={styles.btnSave}>
-              <Text style={{ color: "#fff" }}>Save Draft</Text>
-            </Button>
-            <Button style={styles.btnSend}>
-              <Text style={{ color: "#fff" }}>Send</Text>
-            </Button>
+            <CButton width={100} text={"Save Draft"} size={14} />
+            <CButton
+              width={100}
+              text={"Send"}
+              size={14}
+              onPress={() => sendLetter()}
+            />
           </Row>
         </View>
       );
@@ -145,11 +181,13 @@ export default function SendLetter({ route, navigation }) {
     if (status === 1) {
       return (
         <View>
-          <Button style={styles.actionBtn} onPress={() => updateSU()}>
-            <Text color={"#848587"} size={12}>
-              Update
-            </Text>
-          </Button>
+          <CButton
+            width={70}
+            height={30}
+            text={"Update"}
+            size={12}
+            onPress={() => updateSU()}
+          />
         </View>
       );
     }
@@ -157,19 +195,21 @@ export default function SendLetter({ route, navigation }) {
       return (
         <View>
           <Row>
-            <Button
-              style={[styles.actionBtn, { marginRight: 10 }]}
+            <CButton
+              width={70}
+              height={30}
+              text={"Cancel"}
+              size={12}
               onPress={() => cancelSU()}
-            >
-              <Text color={"#848587"} size={12}>
-                Cancel
-              </Text>
-            </Button>
-            <Button style={styles.actionBtn} onPress={() => setCurActionBtn(1)}>
-              <Text color={"#848587"} size={12}>
-                Done
-              </Text>
-            </Button>
+              style={{ marginRight: 10 }}
+            />
+            <CButton
+              width={70}
+              height={30}
+              text={"Done"}
+              size={12}
+              onPress={() => setCurActionBtn(1)}
+            />
           </Row>
         </View>
       );
@@ -178,44 +218,58 @@ export default function SendLetter({ route, navigation }) {
 
   return (
     <Container style={styles.container}>
-      <Header style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon type="Ionicons" name="close" />
-        </TouchableOpacity>
-      </Header>
-      <Row style={styles.actionContainer}>
-        <TouchableOpacity onPress={() => switchTab(1)}>
-          <Icon
-            type="MaterialCommunityIcons"
-            name="book-plus-multiple"
-            style={[styles.actionIcon, { color: newLetterColor }]}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => switchTab(2)}>
-          <Icon
-            type="Entypo"
-            name="bookmarks"
-            style={[styles.actionIcon, { color: draftLetterColor }]}
-          />
-        </TouchableOpacity>
-      </Row>
-      <Row style={styles.titleText}>
-        <TextM size={18}>Create a letter</TextM>
-      </Row>
-      <View style={styles.userContainer}>
-        <Row>
-          <TextM style={styles.thumbnailLabel}>Selected Users</TextM>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        {/* Header */}
+        <Header style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon type="Ionicons" name="close" />
+          </TouchableOpacity>
+        </Header>
+
+        {/* Switch Create and Draft */}
+        <Row style={styles.actionContainer}>
+          <TouchableOpacity onPress={() => switchTab(1)}>
+            <Icon
+              type="MaterialCommunityIcons"
+              name="book-plus-multiple"
+              style={[styles.actionIcon, { color: newLetterColor }]}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => switchTab(2)}>
+            <Icon
+              type="Entypo"
+              name="bookmarks"
+              style={[styles.actionIcon, { color: draftLetterColor }]}
+            />
+          </TouchableOpacity>
         </Row>
-        <Row>
-          {selectedUser.map((v) => {
-            return <UserThumbnail status={curActionBtn} v={v} />;
-          })}
-          <View style={styles.actionBtnContainer}>
-            <ActionBtn status={curActionBtn} />
-          </View>
+
+        {/* Title Text */}
+        <Row style={styles.titleText}>
+          <TextM size={18}>Create a letter</TextM>
         </Row>
-      </View>
-      <CreateOrDraft status={curTab} />
+
+        {/* Container */}
+        <View style={styles.userContainer}>
+          <Row>
+            <TextM style={styles.thumbnailLabel} color={c4} size={15}>
+              Selected Users
+            </TextM>
+          </Row>
+          <Row>
+            {selectedUser.map((v, index) => {
+              return <UserThumbnail status={curActionBtn} v={v} key={index} />;
+            })}
+            <View style={styles.actionBtnContainer}>
+              <ActionBtn status={curActionBtn} />
+            </View>
+          </Row>
+        </View>
+        <CreateOrDraft status={curTab} text={(v) => console.log(v)} />
+
+        {/** Loading..  */}
+        <Loader visible={loader} />
+      </TouchableWithoutFeedback>
     </Container>
   );
 }
@@ -242,8 +296,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   thumbnailLabel: {
-    color: "#a2a3a5",
-    fontSize: 15,
     marginBottom: 15,
   },
   thumbnail: {
@@ -314,6 +366,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Ubuntu",
     borderColor: "#f4f4f4",
+    color: c3,
     borderRadius: 10,
     padding: 10,
   },
@@ -322,18 +375,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginHorizontal: 20,
     marginTop: 40,
-  },
-  btnSave: {
-    width: 100,
-    borderRadius: 8,
-    justifyContent: "center",
-    elevation: 0,
-  },
-  btnSend: {
-    width: 100,
-    borderRadius: 8,
-    justifyContent: "center",
-    backgroundColor: "#4393ff",
-    elevation: 0,
   },
 });

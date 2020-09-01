@@ -17,13 +17,13 @@
     "ios": {
       "supportsTablet": true,
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-1101099705395721~9625449323"
+        "googleMobileAdsAppId": "ca-app-pub-8645062450812910~1420350777"
       }
     },
     "android": {
       "package": "com.waiyanyenaing.Timeling",
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-1101099705395721~9625449323"
+        "googleMobileAdsAppId": "ca-app-pub-8645062450812910~2925004136"
       },
       "versionCode": 1
     },
