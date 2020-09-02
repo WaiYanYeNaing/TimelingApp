@@ -103,7 +103,7 @@ export default function Login({ navigation }) {
           </Row>
         </View>
         <Row style={styles.footerContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Detail")}>
             <Text style={styles.gotoSignUp}>Sign up</Text>
           </TouchableOpacity>
           <TouchableOpacity>
@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
     marginBottom: 60,
     justifyContent: "space-between",
+    //marginTop:-50
   },
   gotoSignUp: {
     color: "#fff",

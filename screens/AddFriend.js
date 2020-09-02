@@ -22,8 +22,8 @@ export default function AddFriend({ navigation }) {
       <Header style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon
-            type="MaterialCommunityIcons"
-            name="backburger"
+            type="Foundation"
+            name="arrow-left"
             style={{ color: c3, fontSize: 30 }}
           />
         </TouchableOpacity>
