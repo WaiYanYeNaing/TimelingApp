@@ -13,7 +13,8 @@ import Dialog, {
 } from "react-native-popup-dialog";
 import moment from "moment";
 import Header from "../components/Header";
-import { c3, c5, c2, c4 } from "../themes/Colors";
+import { c3, c5, c2, c4, c1 } from "../themes/Colors";
+import CButton from "../components/CButton";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -42,7 +43,7 @@ export default function ReadMore({ route, navigation }) {
   const [SU, setSU] = useState([]);
 
   useEffect(() => {
-    let temp = [{ ...route.params.details, uri: uri }];
+    let temp = [{ uid: route.params.details.sdetails._id, uri: uri }];
     setSU(temp);
     console.log(temp);
   }, []);
@@ -90,7 +91,7 @@ export default function ReadMore({ route, navigation }) {
               </TouchableOpacity>
               <Text size={14} color={c4} style={{ marginBottom: 10 }}>
                 {/* {` ${date.toDateString()}, ${date.toLocaleTimeString()}`} */}
-                {` ${moment(date).format("LL")}, ${moment(date).fromNow()}`}
+                {` ${moment(date).format("LL")}`}
               </Text>
             </Row>
           </CardItem>
@@ -112,18 +113,22 @@ export default function ReadMore({ route, navigation }) {
               <Icon
                 type="Ionicons"
                 name="home"
-                style={{ color: "#f87470", fontSize: 35 }}
+                style={{ color: c5, fontSize: 35 }}
               />
+              <Text>Home</Text>
             </TouchableOpacity>
             <Button
               style={styles.actionBtn}
               onPress={() => navigation.navigate("SendLetter", { SU })}
             >
-              <Icon
-                type="MaterialCommunityIcons"
-                name="feather"
-                style={{ color: c2, fontSize: 34 }}
-              />
+              <View style={styles.actionBtnIconText}>
+                <Icon
+                  type="MaterialCommunityIcons"
+                  name="feather"
+                  style={{ color: c2, fontSize: 34 }}
+                />
+                <Text color={c2}>Reply</Text>
+              </View>
             </Button>
             <TouchableOpacity
               onPress={() => setDialogVisible(true)}
@@ -131,9 +136,10 @@ export default function ReadMore({ route, navigation }) {
             >
               <Icon
                 type="MaterialCommunityIcons"
-                name="star-face"
-                style={{ color: "#91D276", fontSize: 35 }}
+                name="star"
+                style={{ color: c5, fontSize: 35 }}
               />
+              <Text>Rate</Text>
             </TouchableOpacity>
           </CardItem>
         </Card>
@@ -166,11 +172,7 @@ export default function ReadMore({ route, navigation }) {
             />
           </Row>
           <Row style={styles.dialogButtonContainer}>
-            <Button style={styles.dialogButton}>
-              <Text color={"#fff"} size={16}>
-                Rate
-              </Text>
-            </Button>
+            <CButton width={100} text={"Rate"} />
           </Row>
         </DialogContent>
       </Dialog>
@@ -234,29 +236,30 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   actionBtn: {
-    width: 80,
-    height: 80,
+    width: 70,
+    height: 70,
     justifyContent: "center",
     backgroundColor: c5,
-    borderRadius: 100,
+    borderRadius: 10,
   },
-  actionTouchable: {},
+  actionBtnIconText: {
+    alignItems: "center",
+  },
+  actionTouchable: {
+    marginTop: 5,
+    alignItems: "center",
+  },
   // ??????????????????????????????????????????????????????
   dialog: {
     paddingTop: 20,
     minWidth: 250,
     alignItems: "center",
+    backgroundColor: c2,
   },
   dialogHeaderContainer: {
     marginBottom: 10,
   },
   dialogButtonContainer: {
     marginTop: 30,
-  },
-  dialogButton: {
-    width: 100,
-    borderRadius: 20,
-    backgroundColor: c5,
-    justifyContent: "center",
   },
 });
