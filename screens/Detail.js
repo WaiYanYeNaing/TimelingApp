@@ -173,7 +173,7 @@ export default function Detail({ navigation }) {
       {/* Topic */}
       <ScrollView>
         <View style={styles.Topic}>
-          <Text size={15}>Pick some topics</Text>
+          <Text size={15} style={{marginLeft:8}}>Pick some topics</Text>
           <Row style={{ flexWrap: "wrap" }}>
             {Topics.map((v, i) => {
               return (
@@ -292,13 +292,13 @@ const styles = StyleSheet.create({
   },
 
   Gender: {
-    marginHorizontal: 20,
+    marginHorizontal: 15,
     paddingBottom: 10,
     paddingTop: 10,
   },
 
   Topic: {
-    marginHorizontal: 20,
+    marginHorizontal: 15,
     paddingBottom: 10,
     paddingTop: 10,
     marginTop: 7,
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    paddingHorizontal: 17,
+    //paddingHorizontal: 15,
     borderRadius: 0,
     height: 40,
     borderWidth: 1,
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
   },
 
   Topicitem: {
-    paddingHorizontal: 12,
+    //paddingHorizontal: 12,
     borderRadius: 10,
     height: 40,
     borderWidth: 1,
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     //marginRight: 10,
     marginVertical: 10,
-    width: 113,
+    width: 110,
     marginLeft: 8,
   },
 
