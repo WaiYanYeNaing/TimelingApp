@@ -49,12 +49,16 @@ export default function Detail({ navigation }) {
   const [date, setDate] = useState({ date: moment(new Date(), "DD-MM-YYYY") });
   const [selected, setSelectedValue] = useState("English");
   const [selectedImage, setSelectedImage] = useState(null);
-  // Topic
+  {
+    /* Topic */
+  }
   const pressHandler = (i) =>
     SelectTopic.includes(i)
       ? setTopic(SelectTopic.filter((s) => s !== i))
       : setTopic([...SelectTopic, i]);
-  //Propic
+  {
+    /* Profile Pic */
+  }
   const openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
     if (permissionResult.granted === false) {
@@ -220,8 +224,8 @@ const styles = StyleSheet.create({
     backgroundColor: c2,
     borderRadius: 50,
     position: "absolute",
-    left: 90,
-    top: 75,
+    left: 100,
+    top: 85,
     justifyContent: "center",
     alignItems: "center",
     alignItems: "center",
@@ -239,8 +243,8 @@ const styles = StyleSheet.create({
   },
 
   propic: {
-    width: 120,
-    height: 120,
+    width: 130,
+    height: 130,
     borderRadius: 150 / 2,
   },
 
