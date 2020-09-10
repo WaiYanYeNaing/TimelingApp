@@ -9,6 +9,7 @@ import Text from "../components/TextR";
 import DatePicker from "react-native-datepicker";
 // import DropDownPicker from "react-native-dropdown-picker";
 import { View, StyleSheet, Picker, Image } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 import moment from "moment";
 
 export default function Detail({ navigation }) {
@@ -47,23 +48,50 @@ export default function Detail({ navigation }) {
   const [SelectTopic, setTopic] = useState([]);
   const [date, setDate] = useState({ date: moment(new Date(), "DD-MM-YYYY") });
   const [selected, setSelectedValue] = useState("English");
-
+  const [selectedImage, setSelectedImage] = useState(null);
+  // Topic
   const pressHandler = (i) =>
     SelectTopic.includes(i)
       ? setTopic(SelectTopic.filter((s) => s !== i))
       : setTopic([...SelectTopic, i]);
+  //Propic
+  const openImagePickerAsync = async () => {
+    let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+    setSelectedImage({ localUri: pickerResult.uri });
+  };
 
   return (
     <Container style={styles.container}>
       {/* Profile Pic */}
       <View style={styles.MainContainer}>
-        <Image
-          source={{
-            uri:
-              "https://static.turbosquid.com/Preview/2019/01/11__00_35_27/FM_TS2.pngEBF2CE9A-EAC1-48D4-BA04-987494C205A2Zoom.jpg",
-          }}
-          style={styles.propic}
-        />
+        <TouchableOpacity onPress={openImagePickerAsync}>
+          <Image
+            style={styles.propic}
+            source={
+              selectedImage
+                ? { uri: selectedImage.localUri } // if clicked a new img
+                : {
+                    uri: "https://i.dlpng.com/static/png/6542357_preview.png",
+                  }
+            }
+          />
+          <View style={styles.addPictureIcon}>
+            <Icon
+              type="AntDesign"
+              name="camerao"
+              size={20}
+              style={styles.camera}
+            />
+          </View>
+        </TouchableOpacity>
       </View>
       {/* Gender */}
       <View style={styles.Gender}>
@@ -183,6 +211,21 @@ export default function Detail({ navigation }) {
   );
 }
 const styles = StyleSheet.create({
+  camera: {
+    color: c5,
+  },
+  addPictureIcon: {
+    height: 30,
+    width: 30,
+    backgroundColor: c2,
+    borderRadius: 50,
+    position: "absolute",
+    left: 90,
+    top: 75,
+    justifyContent: "center",
+    alignItems: "center",
+    alignItems: "center",
+  },
   container: {
     backgroundColor: c2,
     justifyContent: "center",
@@ -196,8 +239,8 @@ const styles = StyleSheet.create({
   },
 
   propic: {
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
     borderRadius: 150 / 2,
   },
 
