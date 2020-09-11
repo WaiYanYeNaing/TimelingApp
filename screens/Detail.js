@@ -243,8 +243,8 @@ const styles = StyleSheet.create({
   },
 
   propic: {
-    borderColor:c5,
-    borderWidth:2,
+    //borderColor:c5,
+    //borderWidth:2,
     width: 130,
     height: 130,
     borderRadius: 150 / 2,
