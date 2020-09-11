@@ -243,6 +243,8 @@ const styles = StyleSheet.create({
   },
 
   propic: {
+    borderColor:c5,
+    borderWidth:2,
     width: 130,
     height: 130,
     borderRadius: 150 / 2,
@@ -328,7 +330,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     //marginRight: 10,
     marginVertical: 10,
-    width: 110,
+    width: 115,
     marginLeft: 8,
   },
 
