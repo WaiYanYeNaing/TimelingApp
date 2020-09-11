@@ -7,10 +7,14 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { c1, c2, c3, c5, c6 } from "../themes/Colors";
 import Text from "../components/TextR";
 import DatePicker from "react-native-datepicker";
-// import DropDownPicker from "react-native-dropdown-picker";
 import { View, StyleSheet, Picker, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import moment from "moment";
+//Responsivewidthheightforalldevices
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 export default function Detail({ navigation }) {
   const Language = ["English", "Burmese", "Thai", "Chinese"];
@@ -49,16 +53,16 @@ export default function Detail({ navigation }) {
   const [date, setDate] = useState({ date: moment(new Date(), "DD-MM-YYYY") });
   const [selected, setSelectedValue] = useState("English");
   const [selectedImage, setSelectedImage] = useState(null);
-  {
-    /* Topic */
-  }
+
+  /* Topic */
+
   const pressHandler = (i) =>
     SelectTopic.includes(i)
       ? setTopic(SelectTopic.filter((s) => s !== i))
       : setTopic([...SelectTopic, i]);
-  {
-    /* Profile Pic */
-  }
+  
+  /* Profile Pic */
+  
   const openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
     if (permissionResult.granted === false) {
@@ -81,7 +85,7 @@ export default function Detail({ navigation }) {
             style={styles.propic}
             source={
               selectedImage
-                ? { uri: selectedImage.localUri } // if clicked a new img
+                ? { uri: selectedImage.localUri } 
                 : {
                     uri: "https://i.dlpng.com/static/png/6542357_preview.png",
                   }
@@ -173,7 +177,9 @@ export default function Detail({ navigation }) {
       {/* Topic */}
       <ScrollView>
         <View style={styles.Topic}>
-          <Text size={15} style={{marginLeft:8}}>Pick some topics</Text>
+          <Text size={15} style={{ marginLeft: 12 }}>
+            Pick some topics
+          </Text>
           <Row style={{ flexWrap: "wrap" }}>
             {Topics.map((v, i) => {
               return (
@@ -203,11 +209,9 @@ export default function Detail({ navigation }) {
       {/* Btn Next */}
       <View style={styles.BtnNext}>
         <Button
-          backgroundColor={c3}
           text={"Next"}
           size={15}
-          width={340}
-          backgroundColor={c5}
+          style={styles.btnnext}
           onPress={() => navigation.navigate("Register")}
         />
       </View>
@@ -243,20 +247,17 @@ const styles = StyleSheet.create({
   },
 
   propic: {
-    //borderColor:c5,
-    //borderWidth:2,
     width: 130,
     height: 130,
     borderRadius: 150 / 2,
   },
 
   picker: {
-    width: 350,
     height: 37,
     color: c6,
   },
   viewpicker: {
-    width: 360,
+    width: wp("93%"),
     marginTop: 7,
     marginBottom: 5,
     borderWidth: 1,
@@ -265,7 +266,6 @@ const styles = StyleSheet.create({
   },
 
   Language: {
-    marginHorizontal: 20,
     paddingBottom: 10,
     paddingTop: 4,
     borderBottomWidth: 1,
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
 
   datepicker: {
     marginTop: 10,
-    width: 360,
+    width: wp("93%"),
     marginBottom: 5,
     color: c6,
   },
@@ -288,19 +288,18 @@ const styles = StyleSheet.create({
   },
 
   dob: {
-    marginHorizontal: 20,
     paddingBottom: 10,
     paddingTop: 4,
   },
 
   Gender: {
-    marginHorizontal: 15,
     paddingBottom: 10,
     paddingTop: 10,
+    marginLeft: wp("1.5%"),
+    marginRight: wp("1.5%"),
   },
 
   Topic: {
-    marginHorizontal: 15,
     paddingBottom: 10,
     paddingTop: 10,
     marginTop: 7,
@@ -308,7 +307,6 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    //paddingHorizontal: 15,
     borderRadius: 0,
     height: 40,
     borderWidth: 1,
@@ -317,21 +315,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 0,
     marginVertical: 10,
-    width: 120,
+    width: wp("31%"),
   },
 
   Topicitem: {
-    //paddingHorizontal: 12,
     borderRadius: 10,
     height: 40,
     borderWidth: 1,
     borderColor: c5,
     justifyContent: "center",
     alignItems: "center",
-    //marginRight: 10,
     marginVertical: 10,
-    width: 110,
-    marginLeft: 8,
+    width: wp("29%"),
+    marginLeft: wp("3.2%"),
   },
 
   BtnNext: {
@@ -341,5 +337,8 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     alignItems: "center",
+  },
+  btnnext: {
+    width: wp("93%"),
   },
 });
