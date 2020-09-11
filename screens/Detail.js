@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     //marginRight: 10,
     marginVertical: 10,
-    width: 115,
+    width: 110,
     marginLeft: 8,
   },
 
