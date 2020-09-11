@@ -161,7 +161,7 @@ export default function Find({ navigation }) {
             ...v,
             id: v.uid,
             uri:
-              "https://images.hdqwalls.com/download/2020-4k-cyberpunk-2077-81-500x500.jpg",
+              "https://images.hdqwalls.com/download/2020-4k-cyberpunk-2077-81-300x300.jpg",
           });
         });
         if (res.data.length) {
