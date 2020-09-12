@@ -17,6 +17,7 @@ import { c3, c4, c1, c5, c2 } from "../themes/Colors";
 import CButton from "../components/CButton";
 import Axios from "axios";
 import Loader from "../components/Loader";
+import CardUser from "../components/CardUser";
 
 export default function Find({ navigation }) {
   const noUser = [
@@ -119,13 +120,11 @@ export default function Find({ navigation }) {
     "Cars",
     "Life",
   ];
-  const [selectedCard, setSelectedCard] = useState([]);
   const [SAge, setSAge] = useState("Any"); //* selected Age
   const [minage, setMinage] = useState(0); //* selected Min Age
   const [maxage, setMaxage] = useState(0); //* selected Max Age
   const [SGen, setSGen] = useState("Any"); //* selected Gender
   const [SCate, setSCate] = useState(); //* selected Categories
-  const [SU, setSU] = useState([]);
   const [selectVisible, setSelectVisible] = useState(false);
   const [dialogData, setDialogData] = useState([]);
   const [minAge, setMinAge] = useState(20);
@@ -133,6 +132,7 @@ export default function Find({ navigation }) {
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedGender, setSelectedGender] = useState("All");
   const [loader, setLoader] = useState(false);
+  const [SU, setSU] = useState([]);
 
   useEffect(() => {
     findUser();
@@ -152,6 +152,7 @@ export default function Find({ navigation }) {
       maxage,
     };
     setLoader(true);
+    setSU("");
     Axios.post("https://timeling.herokuapp.com/api/user/", temp, config).then(
       (res) => {
         // TODO:: test image
@@ -160,8 +161,9 @@ export default function Find({ navigation }) {
           data.push({
             ...v,
             id: v.uid,
-            uri:
-              "https://images.hdqwalls.com/download/2020-4k-cyberpunk-2077-81-300x300.jpg",
+            uri: `https://picsum.photos/200/300?random=${Math.floor(
+              Math.random() * 100
+            )}`,
           });
         });
         if (res.data.length) {
@@ -194,24 +196,10 @@ export default function Find({ navigation }) {
     }
   };
 
-  const selectedCardHandler = (v) => {
-    // * Selected User ID
-    let temp = [...selectedCard];
-    if (temp.includes(v.id)) {
-      temp = temp.filter((f) => f != v.id);
-    } else {
-      if (temp.length < 3) temp.push(v.id);
+  const nextPage = () => {
+    if (SU.length) {
+      navigation.navigate("SendLetter", { SU });
     }
-    setSelectedCard(temp); // eg ["1", "3"]
-
-    // * Selected User Data
-    let tempSU = [];
-    temp.forEach((e) => {
-      tempSU.push(users.filter((f) => f.id == e)[0]);
-    });
-    setSU(tempSU);
-    console.log("SU");
-    console.log(SU);
   };
 
   return (
@@ -242,38 +230,7 @@ export default function Find({ navigation }) {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             >
-              {users.map((value, index) => {
-                return (
-                  <View
-                    key={value.id}
-                    style={{
-                      ...styles.cardContainer,
-                      ...(selectedCard.includes(value.id)
-                        ? styles.cardSelected
-                        : styles.cardUnSelected),
-                    }}
-                  >
-                    <Category
-                      value={value}
-                      id={value.id}
-                      name={value.name}
-                      gender={value.gender}
-                      image={value.uri}
-                      selected={(v) => selectedCardHandler(v)}
-                    />
-                    {selectedCard.includes(JSON.stringify(value.id)) ? (
-                      <Row>
-                        <Text size={13}>Selected </Text>
-                        <Icon
-                          type="MaterialCommunityIcons"
-                          name="account-check"
-                          style={{ color: c3, fontSize: 18 }}
-                        />
-                      </Row>
-                    ) : null}
-                  </View>
-                );
-              })}
+              <CardUser users={users} SU={SU} setSU={setSU} />
             </ScrollView>
           </View>
         </ScrollView>
@@ -413,7 +370,7 @@ export default function Find({ navigation }) {
           size={15}
           width={340}
           backgroundColor={c5}
-          onPress={() => navigation.navigate("SendLetter", { SU })}
+          onPress={() => nextPage()}
         />
       </View>
 
@@ -469,23 +426,6 @@ const styles = StyleSheet.create({
   rowCard: {
     marginBottom: 20,
     marginLeft: 10,
-  },
-  cardContainer: {
-    borderWidth: 3,
-    borderRadius: 8,
-    marginHorizontal: 5,
-    marginVertical: 10,
-    height: 238,
-    alignItems: "center",
-  },
-  cardSelected: {
-    borderColor: "rgba(26, 59, 202, .8)",
-    borderBottomWidth: 30,
-    borderBottomEndRadius: 10,
-    borderBottomStartRadius: 10,
-  },
-  cardUnSelected: {
-    borderColor: "transparent",
   },
   // ??????????????????????????????????????????????????????
   filterHeader: {

@@ -21,6 +21,7 @@ import SendLetter from "./screens/SendLetter";
 import Test from "./screens/Test";
 import AddFriend from "./screens/AddFriend";
 import Detail from "./screens/Detail";
+import FindRandom from "./screens/FindRandom";
 
 const Stack = createStackNavigator();
 const closeConfig = {
@@ -121,6 +122,20 @@ export default class App extends React.Component {
             }}
           />
           <Stack.Screen
+            name="FindRandom"
+            component={FindRandom}
+            options={{
+              title: "Timeling",
+              headerTitleAlign: "center",
+              headerTintColor: "#00203FFF",
+              headerStyle: { backgroundColor: "#fff" },
+              headerTitleStyle: {
+                fontSize: 18,
+              },
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
             name="Find"
             component={Find}
             options={{
@@ -176,7 +191,7 @@ export default class App extends React.Component {
               headerShown: false,
             }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="AddFriend"
             component={AddFriend}
             options={{
@@ -190,7 +205,7 @@ export default class App extends React.Component {
               headerShown: false,
             }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="Detail"
             component={Detail}
             options={{

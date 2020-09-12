@@ -82,7 +82,6 @@ export default function SendLetter({ route, navigation }) {
     setCurActionBtn(1);
   };
 
-  // TODO:::::::
   const sendLetter = async () => {
     setLoader(true);
     const config = {

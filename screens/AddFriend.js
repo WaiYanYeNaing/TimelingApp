@@ -35,7 +35,11 @@ export default function AddFriend({ navigation }) {
         />
         {/* Auto Match Button*/}
         <Row>
-          <Button style={[styles.autobtn]} text={"Auto-Match"}></Button>
+          <Button
+            onPress={() => navigation.navigate("FindRandom")}
+            style={[styles.autobtn]}
+            text={"Auto-Match"}
+          ></Button>
         </Row>
         {/* Manaul Button*/}
         <Row>
