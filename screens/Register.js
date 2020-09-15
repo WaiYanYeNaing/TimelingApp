@@ -83,7 +83,7 @@ export default function Register({ navigation }) {
         <TextR style={styles.titleText1}>
           Fill in your account information
         </TextR>
-        <TextR style={styles.titleText2}> in order to launch out app.</TextR>
+        <TextR style={styles.titleText2}> in order to launch our app.</TextR>
         {/** User Name */}
         <View style={styles.inputContainer}>
           <Item floatingLabel>
