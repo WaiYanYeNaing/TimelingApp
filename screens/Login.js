@@ -107,7 +107,7 @@ export default function Login({ navigation }) {
             <Text style={styles.gotoSignUp}>Sign up</Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Text style={styles.gotoSignUp}>Forgot Passwrod</Text>
+            <Text style={styles.gotoSignUp}>Forgot Password</Text>
           </TouchableOpacity>
         </Row>
 
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
     marginBottom: 60,
     justifyContent: "space-between",
-    marginTop:-50
+    marginTop: -50,
   },
   gotoSignUp: {
     color: "#fff",

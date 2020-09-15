@@ -7,12 +7,17 @@ import {
   Dimensions,
   Image,
 } from "react-native";
+import { c1, c2, c3, c5, c6 } from "../themes/Colors";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from "react-native-gesture-handler";
-import { Label, Item, Input, Button, Icon, Toast } from "native-base";
-import Text from "../components/TextR";
+import { Label, Item, Input, Button, Text } from "native-base";
+import TextR from "../components/TextR";
 import axios from "axios";
 import Dialog, {
   DialogContent,
@@ -20,6 +25,8 @@ import Dialog, {
 } from "react-native-popup-dialog";
 import Row from "../components/Row";
 import Loader from "../components/Loader";
+import { color } from "react-native-reanimated";
+import CButton from "../components/CButton";
 
 const BgImage = require("../assets/images/login-bg.jpg");
 const screenHeight = Math.round(Dimensions.get("window").height);
@@ -46,7 +53,7 @@ export default function Register({ navigation }) {
       .then((res) => {
         setLoader(false);
         let data = res.data;
-        console.log(data);
+        //console.log(data);
         if (data.status === 200) {
           setStatus(data.status);
           setDialogImage(require("../assets/images/success.png"));
@@ -70,94 +77,125 @@ export default function Register({ navigation }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <ImageBackground source={BgImage} style={styles.bgImg}>
-        <View style={styles.container}>
-          <Text style={styles.titleText1}>Create</Text>
-          <Text style={styles.titleText2}>Account</Text>
-          <View style={styles.inputContainer}>
-            <Item floatingLabel>
-              <Label style={styles.inputLabel}>Name</Label>
-              <Input style={styles.input} onChangeText={(v) => setName(v)} />
-            </Item>
-          </View>
-          <View style={styles.inputContainer}>
-            <Item floatingLabel>
-              <Label style={styles.inputLabel}>Email</Label>
-              <Input style={styles.input} onChangeText={(v) => setEmail(v)} />
-            </Item>
-          </View>
-          <View style={styles.inputContainer}>
-            <Item floatingLabel>
-              <Label style={styles.inputLabel}>Password</Label>
-              <Input
-                secureTextEntry={true}
-                style={styles.input}
-                onChangeText={(v) => setPassword(v)}
-              />
-            </Item>
-          </View>
-          <Row style={styles.signUpContainer}>
-            <Text style={styles.textSignIn}>Sign up</Text>
-            <Button style={styles.btnSignIn} onPress={() => signUp()}>
-              <Icon type="Feather" name="arrow-right" />
-            </Button>
-          </Row>
+      {/* <ImageBackground source={BgImage} style={styles.bgImg}> */}
+      <View style={styles.container}>
+        <TextR style={styles.title}>Sign Up,</TextR>
+        <TextR style={styles.titleText1}>
+          Fill in your account information
+        </TextR>
+        <TextR style={styles.titleText2}> in order to launch out app.</TextR>
+        {/** User Name */}
+        <View style={styles.inputContainer}>
+          <Item floatingLabel>
+            <Label style={styles.inputLabel}>User Name</Label>
+            <Input style={styles.input} onChangeText={(v) => setName(v)} />
+          </Item>
         </View>
-        <Row style={styles.footerContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-            <Text style={styles.gotoSignUp}>Sign in</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.gotoSignUp}>Forgot Passwrod</Text>
-          </TouchableOpacity>
+        {/** Email */}
+
+        <View style={styles.inputContainer}>
+          <Item floatingLabel>
+            <Label style={styles.inputLabel}>Email</Label>
+            <Input style={styles.input} onChangeText={(v) => setEmail(v)} />
+          </Item>
+        </View>
+        {/** Password */}
+        <View style={styles.inputContainer}>
+          <Item floatingLabel>
+            <Label style={styles.inputLabel}>Password</Label>
+            <Input
+              secureTextEntry={true}
+              style={styles.input}
+              onChangeText={(v) => setPassword(v)}
+            />
+          </Item>
+        </View>
+        {/** Sign Up Btn */}
+        <Row style={styles.signUpContainer}>
+          <CButton
+            style={styles.btnSignIn}
+            size={15}
+            text={"Submit"}
+            onPress={() => signUp()}
+          ></CButton>
         </Row>
+        {/** Go to Login Page */}
+        <View style={styles.foot}>
+          <TextR style={styles.text}>I'm already member , </TextR>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Row>
+              <Text style={styles.gotoSignUp}>Sign In</Text>
+            </Row>
+          </TouchableOpacity>
+        </View>
+      </View>
 
-        {/** Dialog */}
-        <Dialog
-          visible={dialogVisible}
-          onTouchOutside={() => {
-            setDialogVisible(false);
-          }}
-          dialogAnimation={
-            new SlideAnimation({
-              slideFrom: "bottom",
-            })
-          }
-        >
-          <DialogContent style={styles.dialog}>
-            <Image source={dialogImage} style={styles.dialogImage} />
-            <Text style={styles.dialogText}>{dialogText}</Text>
-            <Button style={styles.dialogButton} onPress={() => dialogButton()}>
-              <Text style={styles.dialogButtonText}>OK</Text>
-            </Button>
-          </DialogContent>
-        </Dialog>
+      {/** Dialog */}
+      <Dialog
+        visible={dialogVisible}
+        onTouchOutside={() => {
+          setDialogVisible(false);
+        }}
+        dialogAnimation={
+          new SlideAnimation({
+            slideFrom: "bottom",
+          })
+        }
+      >
+        <DialogContent style={styles.dialog}>
+          <Image source={dialogImage} style={styles.dialogImage} />
+          <Text style={styles.dialogText}>{dialogText}</Text>
+          <Button style={styles.dialogButton} onPress={() => dialogButton()}>
+            <Text style={styles.dialogButtonText}>OK</Text>
+          </Button>
+        </DialogContent>
+      </Dialog>
 
-        {/** Loading..  */}
-        <Loader visible={loader} />
-      </ImageBackground>
+      {/** Loading..  */}
+      <Loader visible={loader} />
+      {/* </ImageBackground> */}
     </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: c2,
     height: screenHeight,
     justifyContent: "center",
-    marginHorizontal: 40,
   },
-  bgImg: {},
+  text: {
+    color: c6,
+  },
+  title: {
+    marginLeft: wp("3.2%"),
+    marginTop: hp("-14%"),
+    fontSize: 20,
+    fontWeight: "bold",
+    color: c5,
+  },
   titleText1: {
-    fontSize: 30,
+    marginLeft: wp("3.2%"),
+    marginTop: hp("-7%"),
+    fontSize: 16,
     color: "#fff",
   },
   titleText2: {
-    fontSize: 30,
-    marginBottom: 50,
+    marginLeft: wp("2.4%"),
+    marginTop: hp("-3%"),
+    fontSize: 16,
+    marginBottom: hp("3%"),
     color: "#fff",
   },
+  foot: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   inputContainer: {
-    marginVertical: 20,
+    marginLeft: wp("3.2%"),
+    marginRight: wp("3.2%"),
+    marginVertical: 13,
   },
   inputLabel: {
     color: "#eee",
@@ -168,9 +206,13 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   signUpContainer: {
-    marginTop: 20,
-    marginBottom: 60,
-    justifyContent: "space-between",
+    marginTop: hp("5%"),
+    marginBottom: hp("10%"),
+    justifyContent: "center",
+  },
+  footer: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   textSignIn: {
     fontSize: 21,
@@ -178,18 +220,15 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   btnSignIn: {
-    borderRadius: 100,
-    width: 70,
-    height: 70,
+    color: c2,
     justifyContent: "center",
-  },
-  footerContainer: {
-    marginHorizontal: 40,
-    marginBottom: 60,
-    justifyContent: "space-between",
+    marginLeft: wp("3.2%"),
+    marginRight: wp("3.2%"),
+    alignItems: "center",
+    width: wp("90%"),
   },
   gotoSignUp: {
-    color: "#fff",
+    color: c5,
     fontSize: 15,
   },
   dialog: {
