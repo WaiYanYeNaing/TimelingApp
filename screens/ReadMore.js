@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+  AsyncStorage,
+} from "react-native";
 import { Card, CardItem, Body, Button, Icon, Thumbnail } from "native-base";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Text from "../components/TextR";
@@ -15,46 +21,72 @@ import moment from "moment";
 import Header from "../components/Header";
 import { c3, c5, c2, c4, c1 } from "../themes/Colors";
 import CButton from "../components/CButton";
+import Loader from "../components/Loader";
+import Axios from "axios";
 
 const { width: screenWidth } = Dimensions.get("window");
 
 export default function ReadMore({ route, navigation }) {
-  console.log(route.params.details);
+  // console.log(route.params.details);
   const uri =
     "https://images.hdqwalls.com/download/razer-logo-dark-4k-c6-240x240.jpg";
   const BgImage =
     "https://images.hdqwalls.com/download/blue-lake-star-trails-4k-5u-1000x900.jpg";
   const date = new Date(route.params.details.createdAt);
   const reviewLevel = [
-    "Terrible",
-    "Bad",
-    "Meh",
-    "OK",
-    "Good",
-    "Hmm...",
-    "Very Good",
-    "Wow",
-    "Amazing",
-    "Unbelievable",
-    "Jesus",
+    "Terrible ",
+    "Bad ",
+    "Meh ",
+    "OK ",
+    "Good  ",
+    "Hmm... ",
+    "Very Good   ",
+    "Wow  ",
+    "Amazing  ",
+    "Unbelievable   ",
+    "Jesus ",
   ];
   const [dialogVisible, setDialogVisible] = useState(false);
   const [rating, setRating] = useState(0);
   const [SU, setSU] = useState([]);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     let temp = [{ uid: route.params.details.sdetails._id, uri: uri }];
     setSU(temp);
-    console.log(temp);
   }, []);
 
   const ratingCompleted = (rating) => {
     setRating(rating);
-    console.log(reviewLevel[rating - 1]);
+  };
+
+  const rateHandler = async () => {
+    setDialogVisible(false);
+    setLoader(true);
+    const config = {
+      headers: {
+        "auth-token": await AsyncStorage.getItem("token"),
+      },
+    };
+    const temp = {
+      exp: route.params.details.sdetails.exp + rating,
+      lid: route.params.details._id, //lid(letter id) to change rating status
+    };
+    console.log(rating);
+    const sid = route.params.details.sdetails._id;
+    // console.log(sid);
+    Axios.patch(`https://timeling.herokuapp.com/api/user/${sid}`, temp, config)
+      .then((res) => {
+        setLoader(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
     <Container>
+      {/* BackGround Image */}
       <ImageBackground source={{ uri: BgImage }} style={styles.bgImg}>
         <Header style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -73,11 +105,16 @@ export default function ReadMore({ route, navigation }) {
           </TouchableOpacity>
         </Header>
       </ImageBackground>
+
+      {/* Card Container */}
       <View style={styles.cardContainer}>
         <Card style={styles.card}>
+          {/* Title */}
           <CardItem header style={styles.title}>
             <TextM size={24}>The Startup's Guid to Working Remotely</TextM>
           </CardItem>
+
+          {/* Sub Title */}
           <CardItem style={styles.subTitle}>
             <Row>
               <TouchableOpacity>
@@ -95,6 +132,8 @@ export default function ReadMore({ route, navigation }) {
               </Text>
             </Row>
           </CardItem>
+
+          {/* Detail letter */}
           <CardItem style={styles.detail}>
             <Body style={{ height: 340 }}>
               <ScrollView>
@@ -108,6 +147,8 @@ export default function ReadMore({ route, navigation }) {
               </ScrollView>
             </Body>
           </CardItem>
+
+          {/* Action Btn */}
           <CardItem style={styles.action}>
             <TouchableOpacity style={styles.actionTouchable}>
               <Icon
@@ -145,7 +186,7 @@ export default function ReadMore({ route, navigation }) {
         </Card>
       </View>
 
-      {/** Dialog */}
+      {/** Rate Dialog */}
       <Dialog
         visible={dialogVisible}
         onTouchOutside={() => {
@@ -167,15 +208,18 @@ export default function ReadMore({ route, navigation }) {
               reviews={reviewLevel}
               minValue={-5}
               onFinishRating={ratingCompleted}
-              defaultRating={11}
+              defaultRating={rating}
               size={20}
             />
           </Row>
           <Row style={styles.dialogButtonContainer}>
-            <CButton width={100} text={"Rate"} />
+            <CButton width={100} text={"Rate"} onPress={() => rateHandler()} />
           </Row>
         </DialogContent>
       </Dialog>
+
+      {/** Loading..  */}
+      <Loader visible={loader} />
     </Container>
   );
 }

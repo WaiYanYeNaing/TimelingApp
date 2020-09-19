@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import { View, StyleSheet, Slider, Image, AsyncStorage } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Category from "../components/Category";
@@ -18,6 +18,7 @@ import CButton from "../components/CButton";
 import Axios from "axios";
 import Loader from "../components/Loader";
 import CardUser from "../components/CardUser";
+import Toast, { DURATION } from "react-native-easy-toast";
 
 export default function Find({ navigation }) {
   const noUser = [
@@ -133,6 +134,7 @@ export default function Find({ navigation }) {
   const [selectedGender, setSelectedGender] = useState("All");
   const [loader, setLoader] = useState(false);
   const [SU, setSU] = useState([]);
+  const toast = createRef(null);
 
   useEffect(() => {
     findUser();
@@ -199,6 +201,11 @@ export default function Find({ navigation }) {
   const nextPage = () => {
     if (SU.length) {
       navigation.navigate("SendLetter", { SU });
+    } else {
+      toast.current.show(
+        "   Please Select minimal 1 user user",
+        DURATION.LENGTH_LONG
+      );
     }
   };
 
@@ -414,6 +421,18 @@ export default function Find({ navigation }) {
           </List>
         </DialogContent>
       </Dialog>
+
+      {/* Toast */}
+      <Toast
+        ref={toast}
+        style={{ backgroundColor: c5 }}
+        position="bottom"
+        positionValue={150}
+        fadeInDuration={350}
+        fadeOutDuration={1000}
+        opacity={0.8}
+        textStyle={{ color: c1 }}
+      />
 
       {/** Loading..  */}
       <Loader visible={loader} />

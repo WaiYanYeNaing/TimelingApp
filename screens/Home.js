@@ -13,7 +13,10 @@ import Axios from "axios";
 import Container from "../components/Container";
 import TextB from "../components/TextB";
 import TextM from "../components/TextM";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import {
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 import { CommonActions } from "@react-navigation/native";
 import Row from "../components/Row";
 import Header from "../components/Header";
@@ -21,7 +24,7 @@ import BannerAD from "../components/BannerAD";
 import { RewardAD } from "../components/RewardAD";
 import moment from "moment";
 import { AdMobRewarded } from "expo-ads-admob";
-import { c2, c3, c5, c4 } from "../themes/Colors";
+import { c2, c3, c5, c4, c1 } from "../themes/Colors";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -74,10 +77,6 @@ export default function Home({ navigation, config }) {
     navigation.navigate("Login");
   };
 
-  const rewardAdHandler = async () => {
-    RewardAD();
-  };
-
   //* Carousel Container
   const _renderItem = ({ item, index }, parallaxProps) => {
     return (
@@ -116,6 +115,7 @@ export default function Home({ navigation, config }) {
 
   return (
     <Container style={styles.container}>
+      {/* Header Action */}
       <Header style={styles.header}>
         <TouchableOpacity onPress={() => logOut()}>
           <Icon type="FontAwesome" name="sign-out" style={{ color: c3 }} />
@@ -124,12 +124,18 @@ export default function Home({ navigation, config }) {
           <Thumbnail small source={{ uri: uri }} />
         </TouchableOpacity>
       </Header>
+
+      {/* Ad (Test) */}
       <Row style={{ flex: 1 }}>
         <BannerAD />
       </Row>
+
+      {/* Qoute */}
       <Row style={styles.quoteContainer}>
         <TextM style={styles.quoteText}>Lost time is never found again</TextM>
       </Row>
+
+      {/* Carousel header and reload */}
       <Row style={styles.carouselHeaderContainer}>
         <TextM style={styles.carouselHeader}>Recently Received</TextM>
         <TouchableOpacity onPress={() => getAllLetters()}>
@@ -140,6 +146,8 @@ export default function Home({ navigation, config }) {
           />
         </TouchableOpacity>
       </Row>
+
+      {/* Carousel */}
       <Row style={styles.carouselContainer}>
         <Carousel
           data={entries}
@@ -150,6 +158,8 @@ export default function Home({ navigation, config }) {
           hasParallaxImages={true}
         />
       </Row>
+
+      {/* Action btns */}
       <View style={styles.routButtonContainer}>
         <Row>
           <Text size={20} style={styles.routeBtnHeader}>

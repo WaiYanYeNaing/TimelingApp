@@ -1,6 +1,6 @@
 import Axios from "axios";
 import { Icon } from "native-base";
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { View, StyleSheet, Image, AsyncStorage } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { set } from "react-native-reanimated";
@@ -11,7 +11,8 @@ import Header from "../components/Header";
 import Loader from "../components/Loader";
 import TextM from "../components/TextM";
 import Text from "../components/TextR";
-import { c2, c3, c4, c5 } from "../themes/Colors";
+import { c1, c2, c3, c4, c5 } from "../themes/Colors";
+import Toast, { DURATION } from "react-native-easy-toast";
 
 export default function FindRandom({ navigation }) {
   const noUser = [
@@ -37,6 +38,7 @@ export default function FindRandom({ navigation }) {
   ]);
   const [loader, setLoader] = useState(false);
   const [SU, setSU] = useState([]);
+  const toast = createRef(null);
 
   useEffect(() => {
     findUser();
@@ -76,6 +78,11 @@ export default function FindRandom({ navigation }) {
   const nextPage = () => {
     if (SU.length) {
       navigation.navigate("SendLetter", { SU });
+    } else {
+      toast.current.show(
+        "   Please Select minimal 1 user user",
+        DURATION.LENGTH_LONG
+      );
     }
   };
 
@@ -131,6 +138,18 @@ export default function FindRandom({ navigation }) {
           onPress={() => nextPage()}
         />
       </View>
+
+      {/* Toast */}
+      <Toast
+        ref={toast}
+        style={{ backgroundColor: c5 }}
+        position="bottom"
+        positionValue={150}
+        fadeInDuration={350}
+        fadeOutDuration={1000}
+        opacity={0.8}
+        textStyle={{ color: c1 }}
+      />
 
       {/** Loading..  */}
       <Loader visible={loader} />
