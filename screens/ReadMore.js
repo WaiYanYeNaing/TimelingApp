@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import {
   View,
   StyleSheet,
@@ -23,6 +23,7 @@ import { c3, c5, c2, c4, c1 } from "../themes/Colors";
 import CButton from "../components/CButton";
 import Loader from "../components/Loader";
 import Axios from "axios";
+import Toast, { DURATION } from "react-native-easy-toast";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -50,6 +51,8 @@ export default function ReadMore({ route, navigation }) {
   const [rating, setRating] = useState(0);
   const [SU, setSU] = useState([]);
   const [loader, setLoader] = useState(false);
+  const toast = createRef(null);
+  const [ratingStatus, setratingStatus] = useState(false);
 
   useEffect(() => {
     let temp = [{ uid: route.params.details.sdetails._id, uri: uri }];
@@ -72,16 +75,52 @@ export default function ReadMore({ route, navigation }) {
       exp: route.params.details.sdetails.exp + rating,
       lid: route.params.details._id, //lid(letter id) to change rating status
     };
-    console.log(rating);
     const sid = route.params.details.sdetails._id;
-    // console.log(sid);
     Axios.patch(`https://timeling.herokuapp.com/api/user/${sid}`, temp, config)
       .then((res) => {
+        setratingStatus(true);
         setLoader(false);
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const RateIcon = () => {
+    if (route.params.details.ratingStatus || ratingStatus) {
+      return (
+        <TouchableOpacity
+          onPress={() =>
+            toast.current.show(
+              "   You already gave a rating to this user!      ",
+              DURATION.LENGTH_LONG
+            )
+          }
+          style={styles.actionTouchable}
+        >
+          <Icon
+            type="MaterialCommunityIcons"
+            name="star-off"
+            style={{ color: c5, fontSize: 35 }}
+          />
+          <Text>Rate</Text>
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity
+          onPress={() => setDialogVisible(true)}
+          style={styles.actionTouchable}
+        >
+          <Icon
+            type="MaterialCommunityIcons"
+            name="star"
+            style={{ color: c5, fontSize: 35 }}
+          />
+          <Text>Rate</Text>
+        </TouchableOpacity>
+      );
+    }
   };
 
   return (
@@ -171,17 +210,7 @@ export default function ReadMore({ route, navigation }) {
                 <Text color={c2}>Reply</Text>
               </View>
             </Button>
-            <TouchableOpacity
-              onPress={() => setDialogVisible(true)}
-              style={styles.actionTouchable}
-            >
-              <Icon
-                type="MaterialCommunityIcons"
-                name="star"
-                style={{ color: c5, fontSize: 35 }}
-              />
-              <Text>Rate</Text>
-            </TouchableOpacity>
+            <RateIcon />
           </CardItem>
         </Card>
       </View>
@@ -217,6 +246,18 @@ export default function ReadMore({ route, navigation }) {
           </Row>
         </DialogContent>
       </Dialog>
+
+      {/* Toast */}
+      <Toast
+        ref={toast}
+        style={{ backgroundColor: c5 }}
+        position="bottom"
+        positionValue={150}
+        fadeInDuration={350}
+        fadeOutDuration={1000}
+        opacity={0.8}
+        textStyle={{ color: c1 }}
+      />
 
       {/** Loading..  */}
       <Loader visible={loader} />

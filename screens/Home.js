@@ -44,7 +44,7 @@ export default function Home({ navigation, config }) {
 
   useEffect(() => {
     getAllLetters();
-  }, []);
+  });
 
   const getAllLetters = async () => {
     const config = {
