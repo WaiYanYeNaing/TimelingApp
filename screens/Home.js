@@ -44,7 +44,10 @@ export default function Home({ navigation, config }) {
 
   useEffect(() => {
     getAllLetters();
-  });
+    navigation.addListener("focus", () => {
+      getAllLetters();
+    });
+  }, []);
 
   const getAllLetters = async () => {
     const config = {
@@ -184,12 +187,15 @@ export default function Home({ navigation, config }) {
             />
             <Text style={styles.routeButtonText2}>Create</Text>
           </Button>
-          <Button style={[styles.routeButton, styles.btn3]}>
+          <Button
+            style={[styles.routeButton, styles.btn3]}
+            onPress={() => navigation.navigate("Friends")}
+          >
             <Image
-              source={require("../assets/images/draft.png")}
+              source={require("../assets/images/friends.png")}
               style={styles.routeBtnImg}
             />
-            <Text style={styles.routeButtonText3}>Drafts</Text>
+            <Text style={styles.routeButtonText3}>Friends</Text>
           </Button>
           <Button
             style={[styles.routeButton, styles.btn4]}

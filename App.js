@@ -22,6 +22,7 @@ import Test from "./screens/Test";
 import AddFriend from "./screens/AddFriend";
 import Detail from "./screens/Detail";
 import FindRandom from "./screens/FindRandom";
+import Friends from "./screens/Friends";
 
 const Stack = createStackNavigator();
 const closeConfig = {
@@ -108,6 +109,34 @@ export default class App extends React.Component {
             }}
           />
           <Stack.Screen
+            name="AddFriend"
+            component={AddFriend}
+            options={{
+              title: "Timeling",
+              headerTitleAlign: "center",
+              headerTintColor: "#00203FFF",
+              headerStyle: { backgroundColor: "#fff" },
+              headerTitleStyle: {
+                fontSize: 18,
+              },
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Friends"
+            component={Friends}
+            options={{
+              title: "Timeling",
+              headerTitleAlign: "center",
+              headerTintColor: "#00203FFF",
+              headerStyle: { backgroundColor: "#fff" },
+              headerTitleStyle: {
+                fontSize: 18,
+              },
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
             name="SendLetter"
             component={SendLetter}
             options={{
@@ -180,20 +209,6 @@ export default class App extends React.Component {
           <Stack.Screen
             name="Profile"
             component={Profile}
-            options={{
-              title: "Timeling",
-              headerTitleAlign: "center",
-              headerTintColor: "#00203FFF",
-              headerStyle: { backgroundColor: "#fff" },
-              headerTitleStyle: {
-                fontSize: 18,
-              },
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="AddFriend"
-            component={AddFriend}
             options={{
               title: "Timeling",
               headerTitleAlign: "center",
