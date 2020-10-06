@@ -48,19 +48,55 @@ export default function ReadMore({ route, navigation }) {
     "Jesus ",
   ];
   const [dialogVisible, setDialogVisible] = useState(false);
+  const [friends, setfriends] = useState([]);
   const [rating, setRating] = useState(0);
   const [SU, setSU] = useState([]);
   const [loader, setLoader] = useState(false);
   const toast = createRef(null);
+  const [friendStatus, setfriendStatus] = useState(false);
   const [ratingStatus, setratingStatus] = useState(false);
 
   useEffect(() => {
     let temp = [{ uid: route.params.details.sdetails._id, uri: uri }];
     setSU(temp);
+    getAllFriends();
   }, []);
+
+  const getAllFriends = async () => {
+    const config = {
+      headers: {
+        "auth-token": await AsyncStorage.getItem("token"),
+      },
+    };
+    const uid = await AsyncStorage.getItem("uid");
+    Axios.get(`https://timeling.herokuapp.com/api/friend/${uid}`, config).then(
+      (res) => {
+        setfriends(res.data);
+      }
+    );
+  };
 
   const ratingCompleted = (rating) => {
     setRating(rating);
+  };
+
+  const addFriendHandler = async () => {
+    setLoader(true);
+    const config = {
+      headers: {
+        "auth-token": await AsyncStorage.getItem("token"),
+      },
+    };
+    const temp = {
+      uid: await AsyncStorage.getItem("uid"),
+      fid: route.params.details.sdetails._id,
+    };
+    Axios.post(`https://timeling.herokuapp.com/api/friend`, temp, config).then(
+      (res) => {
+        setfriendStatus(true);
+        setLoader(false);
+      }
+    );
   };
 
   const rateHandler = async () => {
@@ -86,6 +122,46 @@ export default function ReadMore({ route, navigation }) {
       });
   };
 
+  const AddFriendIcon = () => {
+    const temp = friends.find(
+      (f) => f.fid == route.params.details.sdetails._id
+    );
+    if (temp || friendStatus) {
+      return (
+        <TouchableOpacity
+          style={styles.actionTouchable}
+          onPress={() =>
+            toast.current.show(
+              "   Add friend already!      ",
+              DURATION.LENGTH_LONG
+            )
+          }
+        >
+          <Icon
+            type="Feather"
+            name="user-check"
+            style={{ color: c5, fontSize: 25, paddingLeft: 3 }}
+          />
+          <Text>Add</Text>
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity
+          style={styles.actionTouchable}
+          onPress={() => addFriendHandler()}
+        >
+          <Icon
+            type="Feather"
+            name="user-plus"
+            style={{ color: c5, fontSize: 25, paddingLeft: 3 }}
+          />
+          <Text>Add</Text>
+        </TouchableOpacity>
+      );
+    }
+  };
+
   const RateIcon = () => {
     if (route.params.details.ratingStatus || ratingStatus) {
       return (
@@ -101,7 +177,7 @@ export default function ReadMore({ route, navigation }) {
           <Icon
             type="MaterialCommunityIcons"
             name="star-off"
-            style={{ color: c5, fontSize: 35 }}
+            style={{ color: c5, fontSize: 30 }}
           />
           <Text>Rate</Text>
         </TouchableOpacity>
@@ -115,7 +191,7 @@ export default function ReadMore({ route, navigation }) {
           <Icon
             type="MaterialCommunityIcons"
             name="star"
-            style={{ color: c5, fontSize: 35 }}
+            style={{ color: c5, fontSize: 30 }}
           />
           <Text>Rate</Text>
         </TouchableOpacity>
@@ -189,14 +265,10 @@ export default function ReadMore({ route, navigation }) {
 
           {/* Action Btn */}
           <CardItem style={styles.action}>
-            <TouchableOpacity style={styles.actionTouchable}>
-              <Icon
-                type="Ionicons"
-                name="home"
-                style={{ color: c5, fontSize: 35 }}
-              />
-              <Text>Home</Text>
-            </TouchableOpacity>
+            {/* AddFriend */}
+            <AddFriendIcon />
+
+            {/* Reply */}
             <Button
               style={styles.actionBtn}
               onPress={() => navigation.navigate("SendLetter", { SU })}
@@ -210,6 +282,8 @@ export default function ReadMore({ route, navigation }) {
                 <Text color={c2}>Reply</Text>
               </View>
             </Button>
+
+            {/* Rate */}
             <RateIcon />
           </CardItem>
         </Card>

@@ -1,6 +1,7 @@
+import Axios from "axios";
 import { Icon, Thumbnail } from "native-base";
-import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { AsyncStorage, Image, StyleSheet, View } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Container from "../components/Container";
 import Header from "../components/Header";
@@ -9,7 +10,30 @@ import TextM from "../components/TextM";
 import Text from "../components/TextR";
 import { c2, c3, c4, c5 } from "../themes/Colors";
 
-export default function Friends() {
+export default function Friends({ navigation }) {
+  const [friends, setfriends] = useState([]);
+
+  useEffect(() => {
+    getAllFriends();
+    navigation.addListener("focus", () => {
+      getAllFriends();
+    });
+  }, []);
+
+  const getAllFriends = async () => {
+    const config = {
+      headers: {
+        "auth-token": await AsyncStorage.getItem("token"),
+      },
+    };
+    const uid = await AsyncStorage.getItem("uid");
+    Axios.get(`https://timeling.herokuapp.com/api/friend/${uid}`, config).then(
+      (res) => {
+        setfriends(res.data);
+      }
+    );
+  };
+
   return (
     <Container style={styles.container}>
       {/* Action Header */}
@@ -38,62 +62,33 @@ export default function Friends() {
 
       {/* Friends */}
       <ScrollView>
-        <Row style={styles.friend_card}>
-          <Row style={{ alignItems: "center" }}>
-            <Thumbnail
-              source={{
-                uri: `https://picsum.photos/200/300?random=${Math.floor(
-                  Math.random() * 100
-                )}`,
-              }}
-              style={styles.thumbnail}
-            />
-            <TextM size={15}>Philippa Santos</TextM>
-          </Row>
-          <Icon type="Feather" name="more-horizontal" style={{ color: c3 }} />
-        </Row>
-        <Row style={styles.friend_card}>
-          <Row style={{ alignItems: "center" }}>
-            <Thumbnail
-              source={{
-                uri: `https://picsum.photos/200/300?random=${Math.floor(
-                  Math.random() * 100
-                )}`,
-              }}
-              style={styles.thumbnail}
-            />
-            <TextM size={15}>Nina Nolan</TextM>
-          </Row>
-          <Icon type="Feather" name="more-horizontal" style={{ color: c3 }} />
-        </Row>
-        <Row style={styles.friend_card}>
-          <Row style={{ alignItems: "center" }}>
-            <Thumbnail
-              source={{
-                uri: `https://picsum.photos/200/300?random=${Math.floor(
-                  Math.random() * 100
-                )}`,
-              }}
-              style={styles.thumbnail}
-            />
-            <TextM size={15}>Elle Hurst</TextM>
-          </Row>
-          <Icon type="Feather" name="more-horizontal" style={{ color: c3 }} />
-        </Row>
-        <Row style={styles.friend_card}>
-          <Row style={{ alignItems: "center" }}>
-            <Thumbnail
-              source={{
-                uri: `https://picsum.photos/200/300?random=${Math.floor(
-                  Math.random() * 100
-                )}`,
-              }}
-              style={styles.thumbnail}
-            />
-            <TextM size={15}>Demi Cross</TextM>
-          </Row>
-          <Icon type="Feather" name="more-horizontal" style={{ color: c3 }} />
-        </Row>
+        {friends.map((v, i) => {
+          return (
+            <Row style={styles.friend_card} key={i}>
+              <Row style={{ alignItems: "center" }}>
+                <Thumbnail
+                  source={{
+                    uri: `https://picsum.photos/200/300?random=${Math.floor(
+                      Math.random() * 100
+                    )}`,
+                  }}
+                  style={styles.thumbnail}
+                />
+                <View>
+                  <TextM size={15}>{v.name}</TextM>
+                  <Text size={12} color={c4}>
+                    Reputation: {v.exp}
+                  </Text>
+                </View>
+              </Row>
+              <Icon
+                type="Feather"
+                name="more-horizontal"
+                style={{ color: c3 }}
+              />
+            </Row>
+          );
+        })}
       </ScrollView>
     </Container>
   );
