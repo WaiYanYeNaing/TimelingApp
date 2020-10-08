@@ -128,15 +128,15 @@ export default function Home({ navigation, config }) {
         </TouchableOpacity>
       </Header>
 
-      {/* Ad (Test) */}
+      {/* Ad (Test)
       <Row style={{ flex: 1 }}>
         <BannerAD />
       </Row>
 
-      {/* Qoute */}
+      Qoute
       <Row style={styles.quoteContainer}>
         <TextM style={styles.quoteText}>Lost time is never found again</TextM>
-      </Row>
+      </Row> */}
 
       {/* Carousel header and reload */}
       <Row style={styles.carouselHeaderContainer}>
