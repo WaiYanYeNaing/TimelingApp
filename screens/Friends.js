@@ -64,29 +64,31 @@ export default function Friends({ navigation }) {
       <ScrollView>
         {friends.map((v, i) => {
           return (
-            <Row style={styles.friend_card} key={i}>
-              <Row style={{ alignItems: "center" }}>
-                <Thumbnail
-                  source={{
-                    uri: `https://picsum.photos/200/300?random=${Math.floor(
-                      Math.random() * 100
-                    )}`,
-                  }}
-                  style={styles.thumbnail}
+            <TouchableOpacity activeOpacity={0.6} onPress={() => navigation.navigate('Chat')}>
+              <Row style={styles.friend_card} key={i}>
+                <Row style={{ alignItems: "center" }}>
+                  <Thumbnail
+                    source={{
+                      uri: `https://picsum.photos/200/300?random=${Math.floor(
+                        Math.random() * 100
+                      )}`,
+                    }}
+                    style={styles.thumbnail}
+                  />
+                  <View>
+                    <TextM size={15}>{v.name}</TextM>
+                    <Text size={12} color={c4}>
+                      Reputation: {v.exp}
+                    </Text>
+                  </View>
+                </Row>
+                <Icon
+                  type="Feather"
+                  name="more-horizontal"
+                  style={{ color: c3 }}
                 />
-                <View>
-                  <TextM size={15}>{v.name}</TextM>
-                  <Text size={12} color={c4}>
-                    Reputation: {v.exp}
-                  </Text>
-                </View>
               </Row>
-              <Icon
-                type="Feather"
-                name="more-horizontal"
-                style={{ color: c3 }}
-              />
-            </Row>
+            </TouchableOpacity>
           );
         })}
       </ScrollView>
