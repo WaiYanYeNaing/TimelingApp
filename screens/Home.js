@@ -164,12 +164,12 @@ export default function Home({ navigation, config }) {
 
       {/* Action btns */}
       <View style={styles.routButtonContainer}>
-        <Row>
+        {/* <Row>
           <Text size={20} style={styles.routeBtnHeader}>
             Services
           </Text>
-        </Row>
-        <Row>
+        </Row> */}
+        <Row style={styles.categoryrow}>
           <Button style={[styles.routeButton, styles.btn1]}>
             <Image
               source={require("../assets/images/history.png")}
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     alignItems: "center",
-    paddingBottom: 20,
+    // paddingBottom: 20,
   },
   routeBtnHeader: {
     marginVertical: 20,
@@ -327,5 +327,8 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     marginBottom: 5,
+  },
+  categoryrow: {
+    marginTop: 10,
   },
 });
