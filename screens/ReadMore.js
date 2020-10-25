@@ -1,16 +1,10 @@
 import React, { useState, useEffect, createRef } from "react";
-import {
-  View,
-  StyleSheet,
-  ImageBackground,
-  Dimensions,
-  AsyncStorage,
-} from "react-native";
+import { View, StyleSheet, Dimensions, AsyncStorage } from "react-native";
 import { Card, CardItem, Body, Button, Icon, Thumbnail } from "native-base";
+import OptionsMenu from "react-native-options-menu";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Text from "../components/TextR";
 import Container from "../components/Container";
-import TextM from "../components/TextM";
 import Row from "../components/Row";
 import { AirbnbRating } from "react-native-ratings";
 import Dialog, {
@@ -19,7 +13,7 @@ import Dialog, {
 } from "react-native-popup-dialog";
 import moment from "moment";
 import Header from "../components/Header";
-import { c3, c5, c2, c4, c1 } from "../themes/Colors";
+import { c3, c5, c2, c4, c1, c6 } from "../themes/Colors";
 import CButton from "../components/CButton";
 import Loader from "../components/Loader";
 import Axios from "axios";
@@ -28,7 +22,6 @@ import Toast, { DURATION } from "react-native-easy-toast";
 const { width: screenWidth } = Dimensions.get("window");
 
 export default function ReadMore({ route, navigation }) {
-  // console.log(route.params.details);
   const uri =
     "https://images.hdqwalls.com/download/razer-logo-dark-4k-c6-240x240.jpg";
   const BgImage =
@@ -47,6 +40,7 @@ export default function ReadMore({ route, navigation }) {
     "Unbelievable   ",
     "Jesus ",
   ];
+
   const [dialogVisible, setDialogVisible] = useState(false);
   const [friends, setfriends] = useState([]);
   const [rating, setRating] = useState(0);
@@ -79,7 +73,6 @@ export default function ReadMore({ route, navigation }) {
   const ratingCompleted = (rating) => {
     setRating(rating);
   };
-
   const addFriendHandler = async () => {
     setLoader(true);
     const config = {
@@ -201,57 +194,39 @@ export default function ReadMore({ route, navigation }) {
 
   return (
     <Container>
-      {/* BackGround Image */}
-      <ImageBackground source={{ uri: BgImage }} style={styles.bgImg}>
-        <Header style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon
-              type="MaterialCommunityIcons"
-              name="backburger"
-              style={{ color: c3, fontSize: 30 }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
+      <Header style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon type="Foundation" name="arrow-left" style={styles.bckicon} />
+        </TouchableOpacity>
+        {/* <SenderName> */}
+        <TouchableOpacity>
+          <Text size={16} color={c6} style={styles.txt}>
+            {"  "}
+            {route.params.details.sdetails.name}
+          </Text>
+        </TouchableOpacity>
+
+        {/* <OptionPicker> */}
+        <OptionsMenu
+          customButton={
             <Icon
               type="MaterialIcons"
               name="more-horiz"
               style={{ color: c3, fontSize: 30 }}
             />
-          </TouchableOpacity>
-        </Header>
-      </ImageBackground>
+          }
+          destructiveIndex={1}
+          options={["Profile", "Delete", "Report", "Block", "Cancel"]}
+        />
+      </Header>
 
       {/* Card Container */}
       <View style={styles.cardContainer}>
-        <Card style={styles.card}>
-          {/* Title */}
-          <CardItem header style={styles.title}>
-            <TextM size={24}>The Startup's Guid to Working Remotely</TextM>
-          </CardItem>
-
-          {/* Sub Title */}
-          <CardItem style={styles.subTitle}>
-            <Row>
-              <TouchableOpacity>
-                <Row>
-                  <Thumbnail style={styles.thumbnail} source={{ uri: uri }} />
-                  <Text size={14} color={c4}>
-                    {"  "}
-                    by {route.params.details.sdetails.name},
-                  </Text>
-                </Row>
-              </TouchableOpacity>
-              <Text size={14} color={c4} style={{ marginBottom: 10 }}>
-                {/* {` ${date.toDateString()}, ${date.toLocaleTimeString()}`} */}
-                {` ${moment(date).format("LL")}`}
-              </Text>
-            </Row>
-          </CardItem>
-
-          {/* Detail letter */}
-          <CardItem style={styles.detail}>
-            <Body style={{ height: 340 }}>
-              <ScrollView>
+        <ScrollView>
+          <Card style={styles.card}>
+            {/* Detail letter */}
+            <CardItem style={styles.detail}>
+              <Body>
                 <Text size={15}>
                   {route.params.details.text}
                   {route.params.details.text}
@@ -259,29 +234,51 @@ export default function ReadMore({ route, navigation }) {
                   {route.params.details.text}
                   {route.params.details.text}
                 </Text>
-              </ScrollView>
-            </Body>
-          </CardItem>
-
+              </Body>
+            </CardItem>
+            {/* User Name & Pic & Date */}
+            <Card style={styles.infocard}>
+              <Row style={styles.info}>
+                <Thumbnail style={styles.thumbnail} source={{ uri: uri }} />
+                <View>
+                  <Text size={16} color={c6} style={styles.txt}>
+                    {"  "}
+                    {route.params.details.sdetails.name}
+                  </Text>
+                  <Text
+                    size={14}
+                    color={c4}
+                    style={{ marginBottom: 20, marginLeft: 5 }}
+                  >
+                    {` ${moment(date).format("LL")}`}
+                  </Text>
+                </View>
+              </Row>
+            </Card>
+          </Card>
+        </ScrollView>
+      </View>
+      {/* Actions Container */}
+      <View style={styles.actionContainer}>
+        <Card style={styles.actioncard}>
           {/* Action Btn */}
           <CardItem style={styles.action}>
             {/* AddFriend */}
             <AddFriendIcon />
 
             {/* Reply */}
-            <Button
-              style={styles.actionBtn}
+            <TouchableOpacity
               onPress={() => navigation.navigate("SendLetter", { SU })}
             >
               <View style={styles.actionBtnIconText}>
                 <Icon
                   type="MaterialCommunityIcons"
                   name="feather"
-                  style={{ color: c2, fontSize: 34 }}
+                  style={{ color: c5, fontSize: 25 }}
                 />
-                <Text color={c2}>Reply</Text>
+                <Text color={c6}>Reply</Text>
               </View>
-            </Button>
+            </TouchableOpacity>
 
             {/* Rate */}
             <RateIcon />
@@ -332,7 +329,6 @@ export default function ReadMore({ route, navigation }) {
         opacity={0.8}
         textStyle={{ color: c1 }}
       />
-
       {/** Loading..  */}
       <Loader visible={loader} />
     </Container>
@@ -343,48 +339,60 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  bgImg: {
+  infocard: {
+    borderColor: c2,
     flex: 1,
+    justifyContent: "flex-end",
+    backgroundColor: c2,
+    elevation: 0,
+    shadowOpacity: 0,
   },
-  bgImgText: {
-    flex: 1,
-    marginHorizontal: 40,
-    justifyContent: "center",
+  info: {
+    marginLeft: 18,
+    marginTop: 20,
   },
-  // ??????????????????????????????????????????????????????
-  header: {},
-  // ??????????????????????????????????????????????????????
+  bckicon: {
+    marginTop: 5,
+    color: c3,
+    fontSize: 25,
+  },
+
+  txt: {
+    marginTop: 3,
+  },
   cardContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "flex-end",
-    backgroundColor: c2,
   },
   card: {
-    width: screenWidth,
-    borderRadius: 12,
+    width: 390,
+    minHeight: 400,
     borderColor: c2,
-    padding: 10,
-    elevation: 0,
     backgroundColor: c2,
+    elevation: 0,
   },
-  // ??????????????????????????????????????????????????????
+
+  actioncard: {
+    justifyContent: "flex-end",
+    width: screenWidth,
+    borderColor: c2,
+    backgroundColor: c1,
+  },
+
   title: {
     backgroundColor: "transparent",
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     flexDirection: "row",
   },
-  subTitle: {
-    backgroundColor: "transparent",
-  },
+
   thumbnail: {
-    width: 22,
-    height: 22,
+    width: 45,
+    height: 45,
     borderRadius: 100,
   },
   detail: {
-    backgroundColor: "transparent",
+    backgroundColor: c2,
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
   },
@@ -395,11 +403,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   actionBtn: {
-    width: 70,
-    height: 70,
+    width: 65,
+    height: 65,
     justifyContent: "center",
     backgroundColor: c5,
-    borderRadius: 10,
+    borderRadius: 100,
   },
   actionBtnIconText: {
     alignItems: "center",
