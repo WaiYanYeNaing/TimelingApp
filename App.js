@@ -24,6 +24,7 @@ import Detail from "./screens/Detail";
 import FindRandom from "./screens/FindRandom";
 import Friends from "./screens/Friends";
 import Chat from "./screens/Chat";
+import Setting from "./screens/Setting";
 
 const Stack = createStackNavigator();
 const closeConfig = {
@@ -238,6 +239,20 @@ export default class App extends React.Component {
           <Stack.Screen
             name="Detail"
             component={Detail}
+            options={{
+              title: "Timeling",
+              headerTitleAlign: "center",
+              headerTintColor: "#00203FFF",
+              headerStyle: { backgroundColor: "#fff" },
+              headerTitleStyle: {
+                fontSize: 18,
+              },
+              headerShown: false,
+            }}
+          />
+           <Stack.Screen
+            name="Setting"
+            component={Setting}
             options={{
               title: "Timeling",
               headerTitleAlign: "center",
