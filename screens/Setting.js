@@ -70,7 +70,7 @@ export default function Settings({ navigation }) {
           <ListItem
             key={i}
             containerStyle={{ backgroundColor: c1 }}
-            bottomDivider={{color:c5}}
+            bottomDivider
           >
             <Icon name={item.icon} style={{ color: c5 }} />
             <ListItem.Content>
