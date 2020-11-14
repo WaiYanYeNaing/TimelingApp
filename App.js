@@ -25,6 +25,7 @@ import FindRandom from "./screens/FindRandom";
 import Friends from "./screens/Friends";
 import Chat from "./screens/Chat";
 import Setting from "./screens/Setting";
+import History from "./screens/History";
 
 const Stack = createStackNavigator();
 const closeConfig = {
@@ -107,6 +108,20 @@ export default class App extends React.Component {
               headerTitleAlign: "center",
               headerTintColor: "#00203FFF",
               headerStyle: { backgroundColor: "#fff" },
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="History"
+            component={History}
+            options={{
+              title: "Timeling",
+              headerTitleAlign: "center",
+              headerTintColor: "#00203FFF",
+              headerStyle: { backgroundColor: "#fff" },
+              headerTitleStyle: {
+                fontSize: 18,
+              },
               headerShown: false,
             }}
           />
@@ -250,7 +265,7 @@ export default class App extends React.Component {
               headerShown: false,
             }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="Setting"
             component={Setting}
             options={{

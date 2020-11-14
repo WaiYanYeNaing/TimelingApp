@@ -170,7 +170,10 @@ export default function Home({ navigation, config }) {
           </Text>
         </Row> */}
         <Row style={styles.categoryrow}>
-          <Button style={[styles.routeButton, styles.btn1]}   onPress={() => RewardAD()}>
+          <Button
+            style={[styles.routeButton, styles.btn1]}
+            onPress={() => navigation.navigate("History")}
+          >
             <Image
               source={require("../assets/images/history.png")}
               style={styles.routeBtnImg}
@@ -200,7 +203,6 @@ export default function Home({ navigation, config }) {
           <Button
             style={[styles.routeButton, styles.btn4]}
             onPress={() => navigation.navigate("Setting")}
-          
           >
             <Image
               source={require("../assets/images/settings.png")}
