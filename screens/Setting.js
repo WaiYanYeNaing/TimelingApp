@@ -49,7 +49,6 @@ export default function Settings({ navigation }) {
       title: "Log Out",
       icon: "log-out",
     },
-
   ];
   return (
     <Container>
@@ -60,7 +59,7 @@ export default function Settings({ navigation }) {
             <Icon
               type="Foundation"
               name="arrow-left"
-              style={{ color: c3, fontSize: 30, marginTop: -3 }}
+              style={{ color: c3, fontSize: 33, marginTop: -3 }}
             />
           </TouchableOpacity>
           <Text size={16} color={c6} style={styles.txt}>
@@ -86,7 +85,6 @@ export default function Settings({ navigation }) {
             {/* <ListItem.Chevron/> */}
           </ListItem>
         ))}
-        
       </View>
     </Container>
   );
@@ -99,6 +97,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     fontWeight: "bold",
     fontSize: 19,
+    marginTop: 3,
   },
   row: {
     marginLeft: -4,
