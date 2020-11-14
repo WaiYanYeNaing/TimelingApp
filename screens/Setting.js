@@ -9,7 +9,7 @@ import Header from "../components/Header";
 import Row from "../components/Row";
 import TextM from "../components/TextM";
 import Text from "../components/TextR";
-import { c2, c3, c4, c5, c6 } from "../themes/Colors";
+import { c1 ,c2, c3, c4, c5, c6 } from "../themes/Colors";
 
 export default function Settings({ navigation }) {
   const list = [
@@ -69,16 +69,16 @@ export default function Settings({ navigation }) {
         {list.map((item, i) => (
           <ListItem
             key={i}
-            containerStyle={{ backgroundColor: c2 }}
-            bottomDivider
+            containerStyle={{ backgroundColor: c1 }}
+            bottomDivider={{color:c5}}
           >
-            <Icon name={item.icon} style={{ color: c6 }} />
+            <Icon name={item.icon} style={{ color: c5 }} />
             <ListItem.Content>
               <ListItem.Title style={{ color: c6 }}>
                 {item.title}
               </ListItem.Title>
             </ListItem.Content>
-            <ListItem.Chevron />
+            <ListItem.Chevron/>
           </ListItem>
         ))}
       </View>
