@@ -22,7 +22,11 @@ import { ScrollView } from "react-native-gesture-handler";
 import Axios from "axios";
 import { c5, c4, c3, c2 } from "../themes/Colors";
 import Button from "../components/CButton";
-
+//Responsivewidthheightforalldevices
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 const { width: screenWidth } = Dimensions.get("window");
 export default function Profile({ navigation }) {
   const uri = "https://images.hdqwalls.com/download/necromancer-tn-240x240.jpg";
@@ -89,6 +93,8 @@ export default function Profile({ navigation }) {
         "https://images.hdqwalls.com/download/cyberpunk-2077-12k-kp-140x140.jpg",
     },
   ]);
+
+  const Topics = ["Movies", "Anime", "Music"];
   const [dialogRewardVisible, setDialogRewardVisible] = useState(false);
   const [dialogFriendVisible, setDialogFriendVisible] = useState(false);
 
@@ -149,48 +155,142 @@ export default function Profile({ navigation }) {
 
   return (
     <Container style={styles.container}>
-      <Row style={styles.actionContainer}>
-        <TouchableOpacity>
-          <Icon type="Octicons" name="settings" style={styles.actionIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Icon type="Feather" name="edit" style={styles.actionIcon} />
-        </TouchableOpacity>
-      </Row>
-      <View style={styles.thumbnailContainer}>
-        <Thumbnail style={styles.thumbnail} source={{ uri: uri }} />
-        <View style={styles.level}>
-          <Text>Lvl. 3</Text>
-        </View>
-      </View>
-      <View style={styles.nameContainer}>
-        <TextM style={styles.nameText}>{name}</TextM>
-      </View>
-      <View style={styles.emailContainer}>
-        <View style={styles.email}>
-          <TextM color={c4} size={16}>
-            {email}
-          </TextM>
-        </View>
-      </View>
-      <View style={styles.progressBarContainer}>
-        <Progress
-          style={styles.progressBar}
-          done={calProgress(exp)}
-          level={calProgress(exp)}
-        />
-        <Row style={styles.progressBarText}>
-          <Row>
-            <Text>XP {calXP(exp)}/</Text>
-            <Text color={c4}>{curMaxExp(exp)}</Text>
+      <ScrollView>
+        <View style={styles.card}>
+          <Row style={styles.actionContainer}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon
+                type="Foundation"
+                name="arrow-left"
+                style={{ color: c3, fontSize: 30 }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Icon
+                type="MaterialIcons"
+                name="more-horiz"
+                style={styles.actionIcon}
+              />
+            </TouchableOpacity>
           </Row>
           <Row>
-            <Text>{curMaxExp(exp) - calXP(exp)} XP </Text>
-            <Text color={c4}>to level up</Text>
+            <View style={styles.thumbnailContainer}>
+              <Thumbnail style={styles.thumbnail} source={{ uri: uri }} />
+              <View style={styles.level}>
+                <Text>Lvl.5</Text>
+              </View>
+            </View>
+            <View style={styles.nameContainer}>
+              {/*name*/}
+              <TextM style={styles.nameText}>{name}</TextM>
+              {/*email*/}
+              <View style={styles.email}>
+                <TextM color={c4} size={10}>
+                  {email}
+                </TextM>
+              </View>
+              <Row>
+                {/*friends*/}
+                <TouchableOpacity onPress={() => setDialogFriendVisible(true)}>
+                  <View>
+                    <Row>
+                      <View style={styles.usericon}>
+                        <Icon
+                          type="FontAwesome"
+                          name="user-o"
+                          style={{ color: c3, fontSize: 26 }}
+                        />
+                      </View>
+                      <View style={styles.count}>
+                        <Text size={14}>7</Text>
+                      </View>
+                    </Row>
+                    <View style={styles.friend}>
+                      <Text color={c4} size={14}>
+                        Friends
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+                {/*Ratings*/}
+                <View style={styles.ratingcontainer}>
+                  <Row>
+                    <View style={styles.rating}>
+                      <Icon
+                        type="FontAwesome5"
+                        name="star"
+                        style={{ color: c3, fontSize: 25 }}
+                      />
+                    </View>
+                    <View style={styles.count}>
+                      <Text size={14}>5.0</Text>
+                    </View>
+                  </Row>
+                  <View style={styles.friend}>
+                    <Text color={c4} size={14}>
+                      Ratings
+                    </Text>
+                  </View>
+                </View>
+              </Row>
+            </View>
           </Row>
-        </Row>
-      </View>
-      <Row style={styles.userOnlineStatus}>
+        </View>
+        {/*About Me*/}
+        <View style={styles.aboutme}>
+          <Text>About Me</Text>
+        </View>
+        <View style={styles.aboutcard}>
+          <Text style={styles.name}>{name}</Text>
+          <View style={styles.birth}>
+            <Row>
+              <Icon
+                type="FontAwesome"
+                name="birthday-cake"
+                style={{ color: c3, fontSize: 20, marginRight: 20 }}
+              />
+              <Text size={15}>Birthday</Text>
+              <Text size={15} style={{ marginLeft: 20 }}>
+                Feb 20, 2000
+              </Text>
+            </Row>
+          </View>
+          <View style={styles.birth}>
+            <Row>
+              <Icon
+                type="Entypo"
+                name="location"
+                style={{ color: c3, fontSize: 22, marginRight: 20 }}
+              />
+              <Text size={15}>Location</Text>
+              <Text size={15} style={{ marginLeft: 20 }}>
+                Myanmar, Yangon
+              </Text>
+            </Row>
+          </View>
+        </View>
+        {/*Progress*/}
+        <View style={styles.aboutme}>
+          <Text>Progress of Level Up</Text>
+        </View>
+        <View style={styles.progressBarContainer}>
+          <Progress
+            style={styles.progressBar}
+            done={calProgress(exp)}
+            level={calProgress(exp)}
+          />
+          <Row style={styles.progressBarText}>
+            <Row>
+              <Text>XP {calXP(exp)}/</Text>
+              <Text color={c4}>{curMaxExp(exp)}</Text>
+            </Row>
+            <Row>
+              <Text>{curMaxExp(exp) - calXP(exp)} XP </Text>
+              <Text color={c4}>to level up</Text>
+            </Row>
+          </Row>
+        </View>
+        {/* <Row style={styles.userOnlineStatus}>
         <Text color={c4}>User Status</Text>
         <Row>
           <View
@@ -204,44 +304,80 @@ export default function Profile({ navigation }) {
           />
           <Text>{onlineStatus}</Text>
         </Row>
-      </Row>
-      <View style={styles.rewardContainer}>
-        <Row>
-          <Text size={17}>Rewards </Text>
-          <Text color={c4} size={16}>
-            (9)
-          </Text>
-        </Row>
-        <Row>
-          {rewardImages.slice(0, 4).map((v, i) => {
-            return (
-              <Image
-                source={{ uri: v.uri }}
-                key={i}
-                style={styles.rewardImage}
-              />
-            );
-          })}
-          <TouchableOpacity onPress={() => setDialogRewardVisible(true)}>
-            <View
-              style={[
-                styles.friendImage,
-                {
-                  borderWidth: 1,
-                  borderColor: c5,
-                  justifyContent: "center",
-                  alignItems: "center",
-                },
-              ]}
-            >
-              <Text size={16} color={c4}>
-                +5
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </Row>
-      </View>
-      <View style={styles.friendContainer}>
+      </Row> */}
+        {/*Reward*/}
+        <View style={styles.aboutme}>
+          <Row>
+            <Text size={15}>Rewards </Text>
+            <Text color={c4} size={15}>
+              (9)
+            </Text>
+          </Row>
+        </View>
+        <View style={styles.rewardContainer}>
+          <Row>
+            {rewardImages.slice(0, 4).map((v, i) => {
+              return (
+                <Image
+                  source={{ uri: v.uri }}
+                  key={i}
+                  style={styles.rewardImage}
+                />
+              );
+            })}
+            <TouchableOpacity onPress={() => setDialogRewardVisible(true)}>
+              <View
+                style={[
+                  styles.friendImage,
+                  {
+                    borderWidth: 1,
+                    borderColor: c5,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  },
+                ]}
+              >
+                <Text size={16} color={c4}>
+                  +5
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </Row>
+        </View>
+        {/*Topic of interest*/}
+        <View style={styles.aboutme}>
+          <Row>
+            <Text size={15}>Topics of Interest</Text>
+          </Row>
+        </View>
+        <View style={styles.rewardContainer}>
+          <Row style={styles.topics}>
+            {Topics.slice(0, 4).map((v, i) => {
+              return (
+                <View
+                  style={[
+                    styles.Topicitem,
+                    {
+                      backgroundColor: "transparent",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    },
+                  ]}
+                >
+                  <Text>{v}</Text>
+                </View>
+              );
+            })}
+            <TouchableOpacity onPress={() => setDialogRewardVisible(false)}>
+              <View style={styles.Topicitem}>
+                <Text size={16} color={c4}>
+                  ...
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </Row>
+        </View>
+        {/* <View style={styles.friendContainer}>
         <Row>
           <Text size={17}>Friends </Text>
           <Text color={c4} size={16}>
@@ -277,8 +413,8 @@ export default function Profile({ navigation }) {
           </TouchableOpacity>
         </Row>
         <Loader />
-      </View>
-      <View style={styles.logoutBtnContainer}>
+      </View> */}
+        {/* <View style={styles.logoutBtnContainer}> */}
         {/* <Button style={styles.logoutBtn} onPress={() => logOut()}>
           <Text size={16}>Log out</Text>
           <Icon
@@ -287,79 +423,109 @@ export default function Profile({ navigation }) {
             style={styles.logoutBtnIcon}
           />
         </Button> */}
-        <Button
+        {/* <Button
           iconType={"MaterialCommunityIcons"}
           iconName={"logout-variant"}
           text={"Log out"}
+          onPress={() => logOut()}
         />
-      </View>
+      </View> */}
 
-      {/** Dialog Reward */}
-      <Dialog
-        visible={dialogRewardVisible}
-        onTouchOutside={() => {
-          setDialogRewardVisible(false);
-        }}
-        dialogAnimation={
-          new SlideAnimation({
-            slideFrom: "bottom",
-          })
-        }
-      >
-        <DialogContent style={styles.dialogFriend}>
-          <ScrollView>
-            <Row style={styles.dialogFriendImageRow}>
-              {rewardImages.map((v, i) => {
-                return (
-                  <View key={i} style={{ width: 115 }}>
-                    <Image
-                      source={{ uri: v.uri }}
-                      style={styles.dialogFriendImage}
-                    />
-                    <Text style={{ marginHorizontal: 10 }}>{v.name}</Text>
-                  </View>
-                );
-              })}
-            </Row>
-          </ScrollView>
-        </DialogContent>
-      </Dialog>
+        {/** Dialog Reward */}
+        <Dialog
+          visible={dialogRewardVisible}
+          onTouchOutside={() => {
+            setDialogRewardVisible(false);
+          }}
+          dialogAnimation={
+            new SlideAnimation({
+              slideFrom: "bottom",
+            })
+          }
+        >
+          <DialogContent style={styles.dialogFriend}>
+            <ScrollView>
+              <Row style={styles.dialogFriendImageRow}>
+                {rewardImages.map((v, i) => {
+                  return (
+                    <View key={i} style={{ width: 115 }}>
+                      <Image
+                        source={{ uri: v.uri }}
+                        style={styles.dialogFriendImage}
+                      />
+                      <Text style={{ marginHorizontal: 10 }}>{v.name}</Text>
+                    </View>
+                  );
+                })}
+              </Row>
+            </ScrollView>
+          </DialogContent>
+        </Dialog>
 
-      {/** Dialog Friend */}
-      <Dialog
-        visible={dialogFriendVisible}
-        onTouchOutside={() => {
-          setDialogFriendVisible(false);
-        }}
-        dialogAnimation={
-          new SlideAnimation({
-            slideFrom: "bottom",
-          })
-        }
-      >
-        <DialogContent style={styles.dialogFriend}>
-          <ScrollView>
-            <Row style={styles.dialogFriendImageRow}>
-              {friendImages.map((v, i) => {
-                return (
-                  <View key={i} style={{ width: 115 }}>
-                    <Image
-                      source={{ uri: v.uri }}
-                      style={styles.dialogFriendImage}
-                    />
-                    <Text style={{ marginHorizontal: 10 }}>{v.name}</Text>
-                  </View>
-                );
-              })}
-            </Row>
-          </ScrollView>
-        </DialogContent>
-      </Dialog>
+        {/** Dialog Friend */}
+        <Dialog
+          visible={dialogFriendVisible}
+          onTouchOutside={() => {
+            setDialogFriendVisible(false);
+          }}
+          dialogAnimation={
+            new SlideAnimation({
+              slideFrom: "bottom",
+            })
+          }
+        >
+          <DialogContent style={styles.dialogFriend}>
+            <ScrollView>
+              <Row style={styles.dialogFriendImageRow}>
+                {friendImages.map((v, i) => {
+                  return (
+                    <View key={i} style={{ width: 115 }}>
+                      <Image
+                        source={{ uri: v.uri }}
+                        style={styles.dialogFriendImage}
+                      />
+                      <Text style={{ marginHorizontal: 10 }}>{v.name}</Text>
+                    </View>
+                  );
+                })}
+              </Row>
+            </ScrollView>
+          </DialogContent>
+        </Dialog>
+      </ScrollView>
     </Container>
   );
 }
 
 const styles = StyleSheet.create({
+  aboutcard: {
+    minHeight: 130,
+    backgroundColor: c2,
+    marginTop: 10,
+    elevation: 0,
+    borderWidth: 1,
+    borderTopColor: c5,
+    borderBottomColor: c5,
+  },
+  card: {
+    minHeight: 220,
+    backgroundColor: c2,
+    marginTop: -15,
+    elevation: 0,
+    borderBottomStartRadius: 20,
+    borderBottomEndRadius: 20,
+  },
+  Topicitem: {
+    borderRadius: 10,
+    height: 40,
+    borderWidth: 1,
+    borderColor: c5,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+    width: wp("20%"),
+    marginLeft: wp("3.2%"),
+  },
   container: {
     paddingTop: 40,
     justifyContent: "flex-start",
@@ -367,69 +533,126 @@ const styles = StyleSheet.create({
   // ??????????????????????????????????????????????????????
   actionContainer: {
     justifyContent: "space-between",
-    marginHorizontal: 30,
+    marginHorizontal: 25,
+    marginTop: 20,
   },
   actionIcon: {
     color: c3,
   },
   // ??????????????????????????????????????????????????????
   thumbnailContainer: {
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   thumbnail: {
-    width: 120,
-    height: 120,
-    borderRadius: 100,
-    borderWidth: 3,
+    height: 130,
+    width: 130,
     borderColor: c5,
+    // borderRadius: 80,
+    marginLeft: 20,
+    marginTop: 20,
+    borderWidth: 1,
   },
   level: {
-    backgroundColor: "#30AB70",
+    backgroundColor: c2,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: c3,
+    borderColor: c5,
     paddingHorizontal: 12,
     paddingVertical: 5,
     bottom: 10,
     elevation: 3,
+    marginLeft: 50,
   },
-  // ??????????????????????????????????????????????????????
   nameContainer: {
-    alignItems: "center",
-    marginTop: 10,
+    // alignItems: "center",
+    marginTop: 30,
+    marginLeft: 20,
+  },
+  friend: {
+    marginLeft: 40,
+    marginTop: -16,
+  },
+  rating: {
+    marginTop: 30,
+    backgroundColor: c2,
+    borderRadius: 5,
+    elevation: 3,
+    paddingLeft: 2,
+    paddingRight: 2,
+    paddingTop: 2,
+    paddingBottom: 2,
+    borderWidth: 1,
+    borderColor: c5,
+  },
+  ratingcontainer: {
+    marginLeft: 20,
+  },
+  usericon: {
+    backgroundColor: c2,
+    borderRadius: 5,
+    elevation: 3,
+    marginTop: 30,
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingTop: 2,
+    paddingBottom: 2,
+    borderWidth: 1,
+    borderColor: c5,
+  },
+  count: {
+    marginTop: 20,
+    marginLeft: 10,
   },
   nameText: {
     fontSize: 20,
   },
-  // ??????????????????????????????????????????????????????
+  birth: {
+    marginLeft: 20,
+    marginTop: 20,
+  },
+  name: {
+    fontSize: 15,
+    fontWeight: "bold",
+    marginLeft: 20,
+    marginTop: 10,
+  },
+
   emailContainer: {
     alignItems: "center",
     marginTop: 5,
   },
   email: {
-    backgroundColor: c3,
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: c3,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    marginTop: 5,
+    // backgroundColor: c3,
+    // borderRadius: 30,
+    // borderWidth: 1,
+    // borderColor: c3,
+    // paddingHorizontal: 15,
+    // paddingVertical: 10,
   },
-  // ??????????????????????????????????????????????????????
+  aboutme: {
+    marginTop: 10,
+    marginLeft: 25,
+  },
+
   progressBarContainer: {
     alignItems: "center",
-    marginTop: 25,
-    paddingTop: 10,
-    borderTopWidth: 1,
-    borderColor: c5,
+    minHeight: 90,
+    backgroundColor: c2,
+    marginTop: 10,
+    elevation: 0,
+    borderWidth: 1,
+    borderTopColor: c5,
+    borderBottomColor: c5,
   },
   progressBar: {
-    width: 320,
+    width: 360,
   },
   progressBarText: {
     justifyContent: "space-between",
-    width: 320,
+    width: 360,
   },
-  // ??????????????????????????????????????????????????????
+
   userOnlineStatus: {
     marginTop: 15,
     paddingTop: 20,
@@ -445,13 +668,19 @@ const styles = StyleSheet.create({
     marginTop: 2,
     marginRight: 7,
   },
-  // ??????????????????????????????????????????????????????
+  topics: {
+    marginTop: 14,
+  },
+
   rewardContainer: {
-    marginTop: 15,
-    paddingTop: 20,
-    borderTopWidth: 1,
-    borderColor: c5,
-    paddingHorizontal: 35,
+    alignItems: "center",
+    minHeight: 90,
+    backgroundColor: c2,
+    marginTop: 10,
+    elevation: 0,
+    borderWidth: 1,
+    borderTopColor: c5,
+    borderBottomColor: c5,
   },
   rewardImage: {
     width: 50,
@@ -460,7 +689,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginRight: 20,
   },
-  // ??????????????????????????????????????????????????????
+
   friendContainer: {
     marginTop: 15,
     paddingTop: 20,
@@ -494,7 +723,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginRight: 20,
   },
-  // ??????????????????????????????????????????????????????
+
   logoutBtnContainer: {
     marginTop: 15,
     paddingTop: 20,
